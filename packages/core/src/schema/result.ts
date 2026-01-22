@@ -3,7 +3,7 @@
  */
 export interface ParseError {
 	/** 'error' stops generation, 'warning' continues */
-	type: "error" | "warning";
+	type: 'error' | 'warning';
 	/** Line number in source markdown (1-indexed) */
 	line?: number;
 	/** Column number (1-indexed) */

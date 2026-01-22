@@ -22,12 +22,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Template System
 
-- [ ] **TMPL-01**: Templates use single-column ATS-compliant layout
-- [ ] **TMPL-02**: Templates use standard section headers (Work Experience, Education, Skills, etc.)
-- [ ] **TMPL-03**: Templates use standard fonts only (Arial, Calibri, Times New Roman)
+- [x] **TMPL-01**: Templates use single-column ATS-compliant layout
+- [x] **TMPL-02**: Templates use standard section headers (Work Experience, Education, Skills, etc.)
+- [x] **TMPL-03**: Templates use standard fonts only (Arial, Calibri, Times New Roman)
 - [ ] **TMPL-04**: Three template themes available: Modern, Minimal, Classic
 - [ ] **TMPL-05**: Templates support style variations (colors, fonts, margins) via configuration
-- [ ] **TMPL-06**: Templates stored in `/templates/` directory with config.json per template
+- [x] **TMPL-06**: Templates stored in `/templates/` directory with config.json per template
 
 ### CV Data Schema
 
@@ -56,10 +56,10 @@ Requirements for initial release. Each maps to roadmap phases.
 ### ATS Optimization
 
 - [ ] **ATS-01**: PDF text layers are copy-paste verifiable (no garbled characters)
-- [ ] **ATS-02**: All contact info in main body (not headers/footers)
-- [ ] **ATS-03**: No tables used for layout (CSS/flexbox only)
+- [x] **ATS-02**: All contact info in main body (not headers/footers)
+- [x] **ATS-03**: No tables used for layout (CSS/flexbox only)
 - [ ] **ATS-04**: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
-- [ ] **ATS-05**: Semantic HTML structure (h1 for name, h2 for sections)
+- [x] **ATS-05**: Semantic HTML structure (h1 for name, h2 for sections)
 - [ ] **ATS-06**: Warning printed when images are included (ATS cannot parse image content)
 
 ### Repository
@@ -116,12 +116,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OUT-08 | Phase 3 | Pending |
 | OUT-09 | Phase 4 | Pending |
 | OUT-10 | Phase 5 | Pending |
-| TMPL-01 | Phase 2 | Pending |
-| TMPL-02 | Phase 2 | Pending |
-| TMPL-03 | Phase 2 | Pending |
+| TMPL-01 | Phase 2 | Complete |
+| TMPL-02 | Phase 2 | Complete |
+| TMPL-03 | Phase 2 | Complete |
 | TMPL-04 | Phase 8 | Pending |
 | TMPL-05 | Phase 8 | Pending |
-| TMPL-06 | Phase 2 | Pending |
+| TMPL-06 | Phase 2 | Complete |
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
@@ -141,10 +141,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CLI-05 | Phase 6 | Pending |
 | CLI-06 | Phase 6 | Pending |
 | ATS-01 | Phase 4 | Pending |
-| ATS-02 | Phase 2 | Pending |
-| ATS-03 | Phase 2 | Pending |
+| ATS-02 | Phase 2 | Complete |
+| ATS-03 | Phase 2 | Complete |
 | ATS-04 | Phase 4 | Pending |
-| ATS-05 | Phase 2 | Pending |
+| ATS-05 | Phase 2 | Complete |
 | ATS-06 | Phase 3 | Pending |
 | REPO-01 | Phase 8 | Pending |
 | REPO-02 | Phase 1 | Complete |
@@ -169,4 +169,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 1 complete: 9 requirements delivered)*
+*Last updated: 2026-01-22 (Phase 2 complete: 16 requirements delivered)*

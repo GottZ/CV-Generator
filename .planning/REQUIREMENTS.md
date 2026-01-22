@@ -106,55 +106,67 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| OUT-01 | TBD | Pending |
-| OUT-02 | TBD | Pending |
-| OUT-03 | TBD | Pending |
-| OUT-04 | TBD | Pending |
-| OUT-05 | TBD | Pending |
-| OUT-06 | TBD | Pending |
-| OUT-07 | TBD | Pending |
-| OUT-08 | TBD | Pending |
-| OUT-09 | TBD | Pending |
-| OUT-10 | TBD | Pending |
-| TMPL-01 | TBD | Pending |
-| TMPL-02 | TBD | Pending |
-| TMPL-03 | TBD | Pending |
-| TMPL-04 | TBD | Pending |
-| TMPL-05 | TBD | Pending |
-| TMPL-06 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| DATA-04 | TBD | Pending |
-| DATA-05 | TBD | Pending |
-| DATA-06 | TBD | Pending |
-| DATA-07 | TBD | Pending |
-| DATA-08 | TBD | Pending |
-| DATA-09 | TBD | Pending |
-| DATA-10 | TBD | Pending |
-| DATA-11 | TBD | Pending |
-| DATA-12 | TBD | Pending |
-| CLI-01 | TBD | Pending |
-| CLI-02 | TBD | Pending |
-| CLI-03 | TBD | Pending |
-| CLI-04 | TBD | Pending |
-| CLI-05 | TBD | Pending |
-| CLI-06 | TBD | Pending |
-| ATS-01 | TBD | Pending |
-| ATS-02 | TBD | Pending |
-| ATS-03 | TBD | Pending |
-| ATS-04 | TBD | Pending |
-| ATS-05 | TBD | Pending |
-| ATS-06 | TBD | Pending |
-| REPO-01 | TBD | Pending |
-| REPO-02 | TBD | Pending |
-| REPO-03 | TBD | Pending |
+| OUT-01 | Phase 4 | Pending |
+| OUT-02 | Phase 3 | Pending |
+| OUT-03 | Phase 5 | Pending |
+| OUT-04 | Phase 3 | Pending |
+| OUT-05 | Phase 3 | Pending |
+| OUT-06 | Phase 3 | Pending |
+| OUT-07 | Phase 4 | Pending |
+| OUT-08 | Phase 3 | Pending |
+| OUT-09 | Phase 4 | Pending |
+| OUT-10 | Phase 5 | Pending |
+| TMPL-01 | Phase 2 | Pending |
+| TMPL-02 | Phase 2 | Pending |
+| TMPL-03 | Phase 2 | Pending |
+| TMPL-04 | Phase 8 | Pending |
+| TMPL-05 | Phase 8 | Pending |
+| TMPL-06 | Phase 2 | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| DATA-03 | Phase 1 | Pending |
+| DATA-04 | Phase 1 | Pending |
+| DATA-05 | Phase 1 | Pending |
+| DATA-06 | Phase 7 | Pending |
+| DATA-07 | Phase 7 | Pending |
+| DATA-08 | Phase 7 | Pending |
+| DATA-09 | Phase 1 | Pending |
+| DATA-10 | Phase 1 | Pending |
+| DATA-11 | Phase 3 | Pending |
+| DATA-12 | Phase 3 | Pending |
+| CLI-01 | Phase 6 | Pending |
+| CLI-02 | Phase 6 | Pending |
+| CLI-03 | Phase 6 | Pending |
+| CLI-04 | Phase 6 | Pending |
+| CLI-05 | Phase 6 | Pending |
+| CLI-06 | Phase 6 | Pending |
+| ATS-01 | Phase 4 | Pending |
+| ATS-02 | Phase 2 | Pending |
+| ATS-03 | Phase 2 | Pending |
+| ATS-04 | Phase 4 | Pending |
+| ATS-05 | Phase 2 | Pending |
+| ATS-06 | Phase 3 | Pending |
+| REPO-01 | Phase 8 | Pending |
+| REPO-02 | Phase 1 | Pending |
+| REPO-03 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 41 total
-- Mapped to phases: 0
-- Unmapped: 41 (pending roadmap creation)
+- Mapped to phases: 41
+- Unmapped: 0
+
+**Requirements per Phase:**
+| Phase | Count | Requirements |
+|-------|-------|--------------|
+| Phase 1 | 9 | DATA-01, DATA-02, DATA-03, DATA-04, DATA-05, DATA-09, DATA-10, REPO-02, REPO-03 |
+| Phase 2 | 7 | TMPL-01, TMPL-02, TMPL-03, TMPL-06, ATS-02, ATS-03, ATS-05 |
+| Phase 3 | 8 | OUT-02, OUT-04, OUT-05, OUT-06, OUT-08, DATA-11, DATA-12, ATS-06 |
+| Phase 4 | 5 | OUT-01, OUT-07, OUT-09, ATS-01, ATS-04 |
+| Phase 5 | 2 | OUT-03, OUT-10 |
+| Phase 6 | 6 | CLI-01, CLI-02, CLI-03, CLI-04, CLI-05, CLI-06 |
+| Phase 7 | 3 | DATA-06, DATA-07, DATA-08 |
+| Phase 8 | 3 | TMPL-04, TMPL-05, REPO-01 |
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after initial definition*
+*Last updated: 2026-01-22 after roadmap creation*

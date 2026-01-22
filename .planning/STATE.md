@@ -1,25 +1,25 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 1 execution
+**Session:** Phase 2 execution
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 2 - Template Engine (Phase 1 complete)
+**Current Focus:** Phase 2 - Template Engine (in progress)
 
 ## Current Position
 
-**Phase:** 1 of 8 - Foundation + Data Schema (COMPLETE)
-**Plan:** 3 of 3 complete
-**Status:** Phase complete
-**Last activity:** 2026-01-22 - Completed quick task 002: set up pre-commit hook for Biome linting
+**Phase:** 2 of 8 - Template Engine (IN PROGRESS)
+**Plan:** 1 of 3 complete (02-02-PLAN.md done)
+**Status:** In progress
+**Last activity:** 2026-01-22 - Completed 02-02-PLAN.md (base template files)
 
 **Progress:**
 ```
 Phase 1: [██████████] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
-Phase 2: [..........] 0% - Template Engine
+Phase 2: [███.......] 33% - Template Engine (1/3 plans)
 Phase 3: [..........] 0% - HTML Output
 Phase 4: [..........] 0% - PDF Output
 Phase 5: [..........] 0% - DOCX Output
@@ -28,14 +28,14 @@ Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 1/8 phases complete (3/~24 plans complete, ~12%)
+**Overall:** 1/8 phases complete (4/~24 plans complete, ~17%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 3 |
-| Plans Completed | 3 |
+| Plans Created | 6 |
+| Plans Completed | 4 |
 | Requirements Delivered | 9/41 (DATA-01 through DATA-05, DATA-09, DATA-10, REPO-02, REPO-03) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -56,6 +56,9 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | gray-matter for frontmatter | Standard library, well-tested YAML parsing | 2026-01-22 |
 | EN/DE section normalization | Hardcoded variants to canonical types (summary, experience, education, skills) | 2026-01-22 |
 | Entry delimiter --- | Separates multiple entries within a section | 2026-01-22 |
+| Standard fonts only | Arial, Helvetica for maximum ATS compatibility (TMPL-03) | 2026-01-22 |
+| CSS bullets via ::before | Using pseudo-element on divs instead of ul/li for better ATS parsing | 2026-01-22 |
+| Contact in body | Not HTML header/footer per ATS-02 requirement | 2026-01-22 |
 
 ### Technical Context
 
@@ -85,6 +88,12 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - Entries: `### Title at Company`, `*dates | location*`, `- bullets`
 - Skills: `### Category` with `- Skill (level)` items
 
+**Template Structure (established):**
+- Directory: `/templates/{name}/` with config.json, template.njk, styles.css
+- Base template: Usable standalone or as foundation for custom templates
+- CSS: Custom properties for typography, colors, spacing
+- HTML: Semantic h1/h2/h3 hierarchy, single-column flexbox layout
+
 **Critical ATS Constraints:**
 - Single-column layouts only
 - Standard fonts (Arial, Calibri, Times New Roman)
@@ -99,7 +108,10 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Execute 01-01-PLAN.md (monorepo setup)
 - [x] Execute 01-02-PLAN.md (TypeScript interfaces)
 - [x] Execute 01-03-PLAN.md (Markdown parser)
-- [ ] Plan Phase 2 with `/gsd:plan-phase 2`
+- [x] Plan Phase 2 with `/gsd:plan-phase 2`
+- [x] Execute 02-02-PLAN.md (base template files)
+- [ ] Execute 02-01-PLAN.md (template package setup)
+- [ ] Execute 02-03-PLAN.md (template rendering)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
 
@@ -119,19 +131,20 @@ None currently.
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
-| 001 | fix Biome version references in research docs (1.9.4 → 2.3.11) | 2026-01-22 | 6b6bc5d | [001-fix-biome-version-references-in-research-docs](./quick/001-fix-biome-version-references-in-research-docs/) |
+| 001 | fix Biome version references in research docs (1.9.4 -> 2.3.11) | 2026-01-22 | 6b6bc5d | [001-fix-biome-version-references-in-research-docs](./quick/001-fix-biome-version-references-in-research-docs/) |
 | 002 | set up pre-commit hook for Biome linting | 2026-01-22 | (local) | [002-ensure-linting-is-done-appropriately-pri](./quick/002-ensure-linting-is-done-appropriately-pri/) |
 
 ## Session Continuity
 
 ### For Next Session
 
-**Immediate next step:** Plan Phase 2 (Template Engine) with `/gsd:plan-phase 2`.
+**Immediate next step:** Execute 02-01-PLAN.md (template package setup) or 02-03-PLAN.md (template rendering).
 
 **Context to remember:**
 - Phase 1 complete: monorepo, schema, parser all working
-- parseCV function takes markdown string, returns ParseResult<CVData>
-- Example CV in examples/jane-developer/cv.md demonstrates full format
+- Phase 2 Plan 02 complete: base template files created
+- Base template expects custom Nunjucks filters: sectionHeader, formatDate, md
+- Templates directory structure established at /templates/base/
 - All exports available from @gottz/cv-core
 
 ### Files to Reference
@@ -143,8 +156,9 @@ None currently.
 - `/workspace/.planning/phases/01-foundation-data-schema/01-01-SUMMARY.md` - Plan 01-01 completion
 - `/workspace/.planning/phases/01-foundation-data-schema/01-02-SUMMARY.md` - Plan 01-02 completion
 - `/workspace/.planning/phases/01-foundation-data-schema/01-03-SUMMARY.md` - Plan 01-03 completion
+- `/workspace/.planning/phases/02-template-engine/02-02-SUMMARY.md` - Plan 02-02 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (quick task 002 complete)*
+*Last updated: 2026-01-22 (02-02-PLAN.md complete)*

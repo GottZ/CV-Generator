@@ -27,8 +27,10 @@ export interface BuildOptions {
 	quiet?: boolean;
 	json?: boolean;
 	htmlOnly?: boolean;
-	noPdf?: boolean;
-	noDocx?: boolean;
+	// Commander --no-* flags set option to false, not noPdf: true
+	// --no-pdf sets pdf: false, --no-docx sets docx: false
+	pdf?: boolean;
+	docx?: boolean;
 }
 
 // Exit codes per CONTEXT.md
@@ -178,13 +180,14 @@ async function runBuild(
 	const supportedFormats = ['html', 'pdf', 'docx'];
 
 	// Handle --html-only, --no-pdf, --no-docx flags
+	// Commander --no-* flags set the option to false (not noPdf: true)
 	if (options.htmlOnly) {
 		formats = formats.filter((f) => f === 'html');
 	} else {
-		if (options.noPdf) {
+		if (options.pdf === false) {
 			formats = formats.filter((f) => f !== 'pdf');
 		}
-		if (options.noDocx) {
+		if (options.docx === false) {
 			formats = formats.filter((f) => f !== 'docx');
 		}
 	}

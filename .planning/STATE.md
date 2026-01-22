@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 5 complete
+**Session:** Phase 5 gap closure complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 5 - DOCX Output (COMPLETE)
+**Current Focus:** Phase 5 - DOCX Output (GAP CLOSURE)
 
 ## Current Position
 
 **Phase:** 5 of 8 - DOCX Output
-**Plan:** 3 of 3 complete
-**Status:** Phase complete
-**Last activity:** 2026-01-22 - Completed 05-03-PLAN.md (Build command integration)
+**Plan:** 5 of 5 complete (gap closure plans)
+**Status:** Gap closure complete
+**Last activity:** 2026-01-22 - Completed 05-05-PLAN.md (DOCX linebreak handling)
 
 **Progress:**
 ```
@@ -22,21 +22,21 @@ Phase 1: [##########] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
-Phase 5: [##########] 100% - DOCX Output (3/3 plans) COMPLETE
+Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 5/8 phases complete (15/~24 plans complete, ~63%)
+**Overall:** 5/8 phases complete (17/~25 plans complete, ~68%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 15 |
-| Plans Completed | 15 |
-| Requirements Delivered | 30/41 (Phase 1-5 complete) |
+| Plans Created | 17 |
+| Plans Completed | 17 |
+| Requirements Delivered | 30/41 (Phase 1-5 core complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -83,6 +83,10 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | docx-section-builders | Pure functions returning Paragraph[] for each CV section | 2026-01-22 |
 | docx-direct-from-cvdata | DOCX builds directly from CVData (no HTML intermediate) | 2026-01-22 |
 | commander-negated-options | Commander --no-* flags need explicit definition and manual check | 2026-01-22 |
+| css-regex-extraction | Use regex to parse CSS custom properties for DOCX (no Puppeteer) | 2026-01-22 |
+| docx-style-config | DocxStyleConfig interface for DOCX font sizes, colors, fonts, spacing | 2026-01-22 |
+| docx-break-number | docx library uses break: number (1 = one line break), not boolean | 2026-01-22 |
+| docx-internal-structure | TextRun stores elements in root array with rootKey identifiers (w:br, w:t, w:rPr) | 2026-01-22 |
 
 ### Technical Context
 
@@ -159,7 +163,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 
 **DOCX Generation (implemented):**
 - docx-generator.ts: generateDocx() with DocxOptions, DocxResult interfaces
-- docx-sections.ts: buildDocumentContent(), loadImageForDocx()
+- docx-sections.ts: buildDocumentContent(), loadImageForDocx(), textWithBreaks()
+- docx-style-extractor.ts: extractStylesFromCss(), DocxStyleConfig, DEFAULT_DOCX_STYLES
 - Footer with native Word field codes (PageNumber.CURRENT, PageNumber.TOTAL_PAGES)
 - i18n page labels: "Page X of Y" (en) / "Seite X von Y" (de)
 - Document metadata: creator, title, subject, description
@@ -168,6 +173,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - HeadingLevel.HEADING_1 for name, HEADING_2 for sections (Navigation Pane)
 - Image embedding with sharp dimension extraction and type mapping
 - Contact info and links with ExternalHyperlink
+- CSS style extraction: font sizes (half-points), colors (hex), alignment
+- Contact/links left-aligned, date ranges right-aligned (matching HTML)
 
 ### Open TODOs
 
@@ -183,6 +190,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Execute 05-01-PLAN.md (DOCX generator core)
 - [x] Execute 05-02-PLAN.md (Section content and images)
 - [x] Execute 05-03-PLAN.md (Build command integration)
+- [x] Execute 05-04-PLAN.md (CSS style extraction for DOCX)
+- [ ] Execute 05-05-PLAN.md (Linebreak handling)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
 
@@ -208,6 +217,9 @@ None currently.
 - docx ImageRun requires explicit type property (jpg/png/gif/bmp) - map from sharp format
 - docx ImageRun without transformation dimensions creates corrupt files
 - Commander.js --no-* flags need explicit .option() definition and manual `options.flag === false` check
+- docx TextRun break property uses number (1) not boolean (true)
+- docx TextRun internal structure uses root array with rootKey identifiers (w:br, w:t, w:rPr)
+- textWithBreaks utility converts single newlines to w:br elements, double newlines to separate paragraphs
 
 ### Quick Tasks Completed
 
@@ -232,10 +244,9 @@ None currently.
 - PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
 - DOCX files have Word Navigation Pane support, proper headings, and native page numbering
 
-**Known gaps for future work:**
-- DOCX CSS styling gap: Output doesn't reflect template CSS (alignment, colors, spacing)
-  - Recommended fix: Puppeteer-based layout extraction to match HTML/PDF styling
-- DOCX linebreak quirk: Linebreaks may not render as expected, needs investigation
+**Known gaps (CLOSED):**
+- DOCX CSS styling gap: RESOLVED via 05-04-PLAN.md (CSS-to-DOCX style extraction)
+- DOCX linebreak quirk: RESOLVED via 05-05-PLAN.md (textWithBreaks utility)
 
 ### Files to Reference
 
@@ -259,6 +270,8 @@ None currently.
 - `/workspace/.planning/phases/05-docx-output/05-01-SUMMARY.md` - Plan 05-01 completion
 - `/workspace/.planning/phases/05-docx-output/05-02-SUMMARY.md` - Plan 05-02 completion
 - `/workspace/.planning/phases/05-docx-output/05-03-SUMMARY.md` - Plan 05-03 completion
+- `/workspace/.planning/phases/05-docx-output/05-04-SUMMARY.md` - Plan 05-04 completion (CSS style extraction)
+- `/workspace/.planning/phases/05-docx-output/05-05-SUMMARY.md` - Plan 05-05 completion (DOCX linebreak handling)
 
 ---
 

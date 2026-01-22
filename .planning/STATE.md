@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 4 Plan 01 complete
+**Session:** Phase 4 Plan 02 complete
 
 ## Project Reference
 
@@ -12,30 +12,30 @@
 ## Current Position
 
 **Phase:** 4 of 8 - PDF Output
-**Plan:** 1 of 3 complete
+**Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-22 - Completed 04-01-PLAN.md (PDF core with Puppeteer)
+**Last activity:** 2026-01-22 - Completed 04-02-PLAN.md (PDF metadata and bookmarks)
 
 **Progress:**
 ```
 Phase 1: [██████████] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [██████████] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [██████████] 100% - HTML Output (3/3 plans) COMPLETE
-Phase 4: [███.......] 33% - PDF Output (1/3 plans)
+Phase 4: [██████....] 67% - PDF Output (2/3 plans)
 Phase 5: [..........] 0% - DOCX Output
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 3/8 phases complete (10/~24 plans complete, ~42%)
+**Overall:** 3/8 phases complete (11/~24 plans complete, ~46%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 12 |
-| Plans Completed | 10 |
+| Plans Completed | 11 |
 | Requirements Delivered | 24/41 (Phase 1-3 complete, Phase 4 in progress) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -73,6 +73,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | browser-singleton | Puppeteer browser reuse with connected check for crash recovery | 2026-01-22 |
 | pdf-lib-page-count | Use pdf-lib for accurate page count instead of DOM estimation | 2026-01-22 |
 | ats-css-injection | Inject ligature-disabling CSS at generation time via page.addStyleTag | 2026-01-22 |
+| buffer-pdf-io | Use Buffer for PDF module input/output for consistency with Node.js file APIs | 2026-01-22 |
+| page-1-bookmarks | Default all CV section bookmarks to page 1 (typical for 1-2 page CVs) | 2026-01-22 |
 
 ### Technical Context
 
@@ -140,8 +142,11 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 **PDF Generation (implemented):**
 - browser-manager.ts: Singleton browser lifecycle with getBrowser()/closeBrowser()
 - pdf-generator.ts: generatePdf() with FooterConfig, PdfOptions, PdfResult interfaces
+- pdf-metadata.ts: setPdfMetadata() with PdfMetadata interface (title, author, subject, creator, keywords)
+- pdf-bookmarks.ts: addPdfBookmarks() with SectionInfo, getDefaultSections(locale)
 - Configurable footer: enabled/showName/showPageNumbers/template
 - i18n page numbers: "Page X of Y" (en) / "Seite X von Y" (de)
+- i18n section bookmarks: Experience/Berufserfahrung, Education/Ausbildung, Skills/Kenntnisse
 - ATS CSS injection: Disables ligatures, hides theme toggle, controls page breaks
 
 ### Open TODOs
@@ -189,7 +194,7 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 04-02-PLAN.md (PDF metadata and bookmarks).
+**Immediate next step:** Execute 04-03-PLAN.md (integrate PDF into build command).
 
 **Context to remember:**
 - Phases 1-3 complete: monorepo, schema, parser, templates, HTML output all working
@@ -197,8 +202,8 @@ None currently.
 - HTML files are self-contained with embedded CSS and base64 images
 - Watch mode with debounced rebuilds functional
 - JSON output mode for CI integration
-- PDF core complete: browser-manager and pdf-generator modules ready
-- Next: Add metadata (title, author) and bookmarks via pdf-lib and outline-pdf
+- PDF modules complete: browser-manager, pdf-generator, pdf-metadata, pdf-bookmarks
+- Next: Integrate PDF generation into build command with buildPdf function
 
 ### Files to Reference
 
@@ -217,8 +222,9 @@ None currently.
 - `/workspace/.planning/phases/03-html-output/03-03-SUMMARY.md` - Plan 03-03 completion
 - `/workspace/.planning/phases/03-html-output/03-VERIFICATION.md` - Phase 3 verification
 - `/workspace/.planning/phases/04-pdf-output/04-01-SUMMARY.md` - Plan 04-01 completion
+- `/workspace/.planning/phases/04-pdf-output/04-02-SUMMARY.md` - Plan 04-02 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Plan 04-01 complete)*
+*Last updated: 2026-01-22 (Plan 04-02 complete)*

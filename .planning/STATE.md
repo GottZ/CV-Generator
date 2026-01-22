@@ -14,7 +14,7 @@
 **Phase:** 3 of 8 - HTML Output
 **Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-22 - Completed 03-02-PLAN.md (image processing utilities)
+**Last activity:** 2026-01-22 - Completed 03-01-PLAN.md (CLI scaffold)
 
 **Progress:**
 ```
@@ -68,6 +68,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | sharp-for-images | Sharp library for image processing - 4-5x faster than ImageMagick | 2026-01-22 |
 | jpeg-to-webp | Convert photos (JPEG) to WebP for smaller size; keep PNG for graphics | 2026-01-22 |
 | picocolors-for-terminal | Smallest and fastest terminal color library, zero dependencies | 2026-01-22 |
+| tty-aware-output | TTY detection for colored vs plain output per RESEARCH.md Pattern 5 | 2026-01-22 |
+| stderr-for-warnings | Warnings go to stderr for clean stdout redirection | 2026-01-22 |
 
 ### Technical Context
 
@@ -194,9 +196,10 @@ None currently.
 - `/workspace/.planning/phases/02-template-engine/02-01-SUMMARY.md` - Plan 02-01 completion
 - `/workspace/.planning/phases/02-template-engine/02-02-SUMMARY.md` - Plan 02-02 completion
 - `/workspace/.planning/phases/02-template-engine/02-03-SUMMARY.md` - Plan 02-03 completion
+- `/workspace/.planning/phases/03-html-output/03-01-SUMMARY.md` - Plan 03-01 completion
 - `/workspace/.planning/phases/03-html-output/03-02-SUMMARY.md` - Plan 03-02 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (03-02-PLAN.md complete)*
+*Last updated: 2026-01-22 (03-01-PLAN.md complete)*

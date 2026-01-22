@@ -1,0 +1,11 @@
+{
+  "name": "@gottz/cvgen",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "cvgen": "./src/index.ts"
+  },
+  "dependencies": {
+    "@gottz/cv-core": "workspace:*"
+  }
+}

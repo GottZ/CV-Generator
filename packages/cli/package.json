@@ -8,12 +8,15 @@
 	"dependencies": {
 		"@gottz/cv-core": "workspace:*",
 		"@gottz/cv-templates": "workspace:*",
+		"@lillallol/outline-pdf": "^4.0.0",
 		"chokidar": "^5.0.0",
 		"commander": "^14.0.0",
 		"fuse.js": "^7.0.0",
 		"lodash.debounce": "^4.0.8",
 		"mime-types": "^2.1.0",
+		"pdf-lib": "^1.17.1",
 		"picocolors": "^1.1.0",
+		"puppeteer": "^24.36.0",
 		"sharp": "^0.33.0"
 	},
 	"devDependencies": {

@@ -53,9 +53,14 @@
     --color-surface: #374151;
   }
 
-  :root:not([data-theme="light"]) body,
-  body:has(:root:not([data-theme="light"])) {
+  /* Body background for system dark mode */
+  :root:not([data-theme="light"]) body {
     background: #111827;
+  }
+
+  /* Skill pills for system dark mode */
+  :root:not([data-theme="light"]) .skill {
+    background: var(--color-surface);
   }
 }
 

@@ -10,13 +10,13 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Output Formats
 
 - [ ] **OUT-01**: CLI generates PDF output via Puppeteer with ATS-optimized text layers
-- [ ] **OUT-02**: CLI generates HTML output with fully embedded CSS (self-contained single file)
+- [x] **OUT-02**: CLI generates HTML output with fully embedded CSS (self-contained single file)
 - [ ] **OUT-03**: CLI generates DOCX output with proper Word styles (Heading 1/2, Normal)
-- [ ] **OUT-04**: Output files named `{name}_{template}.{format}` (e.g., `johndoe_modern.pdf`)
-- [ ] **OUT-05**: Regeneration overwrites existing output files
-- [ ] **OUT-06**: Output written to `/people/[name]/output/` directory
+- [x] **OUT-04**: Output files named `{name}_{template}.{format}` (e.g., `johndoe_modern.pdf`)
+- [x] **OUT-05**: Regeneration overwrites existing output files
+- [x] **OUT-06**: Output written to `/people/[name]/output/` directory
 - [ ] **OUT-07**: PDF and DOCX include configurable header/footer for page identification (e.g., "Name - Page X of Y")
-- [ ] **OUT-08**: HTML output base64 encodes images for self-contained file
+- [x] **OUT-08**: HTML output base64 encodes images for self-contained file
 - [ ] **OUT-09**: PDF output embeds images properly
 - [ ] **OUT-10**: DOCX output embeds images properly
 
@@ -41,8 +41,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **DATA-08**: Schema supports tech stack per job position
 - [x] **DATA-09**: Missing sections are skipped silently (no empty sections, no errors)
 - [x] **DATA-10**: Unknown sections trigger warning but generation continues without them
-- [ ] **DATA-11**: Images stored in `/people/[name]/images/` directory
-- [ ] **DATA-12**: Standard markdown image syntax supported (`![alt](./images/file.png)`)
+- [x] **DATA-11**: Images stored in `/people/[name]/images/` directory
+- [x] **DATA-12**: Standard markdown image syntax supported (`![alt](./images/file.png)`)
 
 ### CLI Interface
 
@@ -60,7 +60,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ATS-03**: No tables used for layout (CSS/flexbox only)
 - [ ] **ATS-04**: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
 - [x] **ATS-05**: Semantic HTML structure (h1 for name, h2 for sections)
-- [ ] **ATS-06**: Warning printed when images are included (ATS cannot parse image content)
+- [x] **ATS-06**: Warning printed when images are included (ATS cannot parse image content)
 
 ### Repository
 
@@ -107,13 +107,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | OUT-01 | Phase 4 | Pending |
-| OUT-02 | Phase 3 | Pending |
+| OUT-02 | Phase 3 | Complete |
 | OUT-03 | Phase 5 | Pending |
-| OUT-04 | Phase 3 | Pending |
-| OUT-05 | Phase 3 | Pending |
-| OUT-06 | Phase 3 | Pending |
+| OUT-04 | Phase 3 | Complete |
+| OUT-05 | Phase 3 | Complete |
+| OUT-06 | Phase 3 | Complete |
 | OUT-07 | Phase 4 | Pending |
-| OUT-08 | Phase 3 | Pending |
+| OUT-08 | Phase 3 | Complete |
 | OUT-09 | Phase 4 | Pending |
 | OUT-10 | Phase 5 | Pending |
 | TMPL-01 | Phase 2 | Complete |
@@ -132,8 +132,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-08 | Phase 7 | Pending |
 | DATA-09 | Phase 1 | Complete |
 | DATA-10 | Phase 1 | Complete |
-| DATA-11 | Phase 3 | Pending |
-| DATA-12 | Phase 3 | Pending |
+| DATA-11 | Phase 3 | Complete |
+| DATA-12 | Phase 3 | Complete |
 | CLI-01 | Phase 6 | Pending |
 | CLI-02 | Phase 6 | Pending |
 | CLI-03 | Phase 6 | Pending |
@@ -145,7 +145,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ATS-03 | Phase 2 | Complete |
 | ATS-04 | Phase 4 | Pending |
 | ATS-05 | Phase 2 | Complete |
-| ATS-06 | Phase 3 | Pending |
+| ATS-06 | Phase 3 | Complete |
 | REPO-01 | Phase 8 | Pending |
 | REPO-02 | Phase 1 | Complete |
 | REPO-03 | Phase 1 | Complete |
@@ -169,4 +169,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 2 complete: 16 requirements delivered)*
+*Last updated: 2026-01-22 (Phase 3 complete: 24 requirements delivered)*

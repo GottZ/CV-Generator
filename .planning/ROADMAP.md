@@ -103,9 +103,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — CLI scaffold (dependencies, console utilities, Commander.js entry point)
-- [ ] 03-02-PLAN.md — Image processing (Sharp-based processing, base64 encoding, HTML embedding)
-- [ ] 03-03-PLAN.md — Build command (CV parsing, rendering, output writing, watch mode)
+- [x] 03-01-PLAN.md — CLI scaffold (dependencies, console utilities, Commander.js entry point)
+- [x] 03-02-PLAN.md — Image processing (Sharp-based processing, base64 encoding, HTML embedding)
+- [x] 03-03-PLAN.md — Build command (CV parsing, rendering, output writing, watch mode)
 
 ---
 
@@ -216,7 +216,7 @@ Plans:
 |-------|------|--------------|--------|
 | 1 | Foundation + Data Schema | 9 | Complete |
 | 2 | Template Engine | 7 | Complete |
-| 3 | HTML Output | 8 | Planned |
+| 3 | HTML Output | 8 | Complete |
 | 4 | PDF Output | 5 | Pending |
 | 5 | DOCX Output | 2 | Pending |
 | 6 | CLI Commands | 6 | Pending |
@@ -258,4 +258,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 3 planned)*
+*Last updated: 2026-01-22 (Phase 3 complete)*

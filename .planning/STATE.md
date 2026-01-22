@@ -14,7 +14,7 @@
 **Phase:** 1 of 8 - Foundation + Data Schema (COMPLETE)
 **Plan:** 3 of 3 complete
 **Status:** Phase complete
-**Last activity:** 2026-01-22 - Completed 01-03-PLAN.md
+**Last activity:** 2026-01-22 - Completed quick task 001: fix Biome version references in research docs
 
 **Progress:**
 ```
@@ -114,6 +114,12 @@ None currently.
 - Bun lockfile is bun.lock (not bun.lockb)
 - Biome organizeImports rule reorders exports alphabetically, scrambling semantic comments
 - TypeScript strict mode requires nullish coalescing for array access and regex match groups
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 001 | fix Biome version references in research docs (1.9.4 → 2.3.11) | 2026-01-22 | 6b6bc5d | [001-fix-biome-version-references-in-research-docs](./quick/001-fix-biome-version-references-in-research-docs/) |
 
 ## Session Continuity
 

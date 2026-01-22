@@ -6,6 +6,36 @@ const TEST_HTML_PATH = path.resolve(
 	'../people/testuser/output/testuser_base_en.html',
 );
 
+/**
+ * Capture computed styles from key elements for visual parity comparison.
+ * These are the elements that should look identical between system and explicit modes.
+ */
+async function captureStyles(page: import('@playwright/test').Page) {
+	return page.evaluate(() => {
+		const getStyles = (selector: string) => {
+			const el = document.querySelector(selector);
+			if (!el) return null;
+			const styles = getComputedStyle(el);
+			return {
+				backgroundColor: styles.backgroundColor,
+				color: styles.color,
+				borderColor: styles.borderColor,
+			};
+		};
+
+		return {
+			body: getStyles('body'),
+			cvPage: getStyles('.cv-page'),
+			h1: getStyles('h1'),
+			h2: getStyles('h2'),
+			skill: getStyles('.skill'),
+			contactLink: getStyles('.contact-link'),
+			bulletItem: getStyles('.bullet-item'),
+			themeToggle: getStyles('.theme-toggle'),
+		};
+	});
+}
+
 test.describe('Theme toggle', () => {
 	test.beforeEach(async ({ page }) => {
 		// Navigate to the test HTML file
@@ -227,5 +257,119 @@ test.describe('Theme toggle', () => {
 			'aria-label',
 			'Current: dark mode. Click to switch to system preference.',
 		);
+	});
+});
+
+test.describe('Visual parity between system and explicit modes', () => {
+	test('system dark mode matches explicit dark mode visually', async ({
+		page,
+	}) => {
+		await page.goto(`file://${TEST_HTML_PATH}`);
+
+		// Capture explicit dark mode styles
+		await page.emulateMedia({ colorScheme: 'light' }); // Start with light system
+		const toggle = page.locator('.theme-toggle');
+		await toggle.click(); // system -> light
+		await toggle.click(); // light -> dark (explicit)
+		await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+		const explicitDarkStyles = await captureStyles(page);
+
+		// Reset to system mode with dark system preference
+		await toggle.click(); // dark -> system
+		await page.emulateMedia({ colorScheme: 'dark' });
+		await page.reload();
+		await expect(page.locator('html')).toHaveAttribute('data-theme', 'system');
+		const systemDarkStyles = await captureStyles(page);
+
+		// Verify all key elements have matching styles
+		expect(systemDarkStyles.body).toEqual(explicitDarkStyles.body);
+		expect(systemDarkStyles.cvPage).toEqual(explicitDarkStyles.cvPage);
+		expect(systemDarkStyles.h1).toEqual(explicitDarkStyles.h1);
+		expect(systemDarkStyles.h2).toEqual(explicitDarkStyles.h2);
+		expect(systemDarkStyles.skill).toEqual(explicitDarkStyles.skill);
+		expect(systemDarkStyles.contactLink).toEqual(
+			explicitDarkStyles.contactLink,
+		);
+		expect(systemDarkStyles.bulletItem).toEqual(explicitDarkStyles.bulletItem);
+	});
+
+	test('system light mode matches explicit light mode visually', async ({
+		page,
+	}) => {
+		await page.goto(`file://${TEST_HTML_PATH}`);
+
+		// Capture explicit light mode styles
+		await page.emulateMedia({ colorScheme: 'dark' }); // Start with dark system
+		const toggle = page.locator('.theme-toggle');
+		await toggle.click(); // system -> light (explicit)
+		await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+		const explicitLightStyles = await captureStyles(page);
+
+		// Reset to system mode with light system preference
+		await toggle.click(); // light -> dark
+		await toggle.click(); // dark -> system
+		await page.emulateMedia({ colorScheme: 'light' });
+		await page.reload();
+		await expect(page.locator('html')).toHaveAttribute('data-theme', 'system');
+		const systemLightStyles = await captureStyles(page);
+
+		// Verify all key elements have matching styles
+		expect(systemLightStyles.body).toEqual(explicitLightStyles.body);
+		expect(systemLightStyles.cvPage).toEqual(explicitLightStyles.cvPage);
+		expect(systemLightStyles.h1).toEqual(explicitLightStyles.h1);
+		expect(systemLightStyles.h2).toEqual(explicitLightStyles.h2);
+		expect(systemLightStyles.skill).toEqual(explicitLightStyles.skill);
+		expect(systemLightStyles.contactLink).toEqual(
+			explicitLightStyles.contactLink,
+		);
+		expect(systemLightStyles.bulletItem).toEqual(
+			explicitLightStyles.bulletItem,
+		);
+	});
+
+	test('all four theme states have distinct and correct colors', async ({
+		page,
+	}) => {
+		await page.goto(`file://${TEST_HTML_PATH}`);
+		const toggle = page.locator('.theme-toggle');
+
+		// Expected colors
+		const DARK_BG = 'rgb(31, 41, 55)'; // #1f2937
+		const DARK_BODY_BG = 'rgb(17, 24, 39)'; // #111827
+		const LIGHT_BG = 'rgb(255, 255, 255)'; // #ffffff
+		const LIGHT_BODY_BG = 'rgb(243, 244, 246)'; // #f3f4f6
+		const DARK_SKILL_BG = 'rgb(55, 65, 81)'; // #374151 (surface)
+		const LIGHT_SKILL_BG = 'rgb(243, 244, 246)'; // #f3f4f6
+
+		// 1. System light mode
+		await page.emulateMedia({ colorScheme: 'light' });
+		await page.reload();
+		let styles = await captureStyles(page);
+		expect(styles.body?.backgroundColor).toBe(LIGHT_BODY_BG);
+		expect(styles.cvPage?.backgroundColor).toBe(LIGHT_BG);
+		expect(styles.skill?.backgroundColor).toBe(LIGHT_SKILL_BG);
+
+		// 2. Explicit light mode (with dark system - should override)
+		await page.emulateMedia({ colorScheme: 'dark' });
+		await toggle.click(); // system -> light
+		styles = await captureStyles(page);
+		expect(styles.body?.backgroundColor).toBe(LIGHT_BODY_BG);
+		expect(styles.cvPage?.backgroundColor).toBe(LIGHT_BG);
+		expect(styles.skill?.backgroundColor).toBe(LIGHT_SKILL_BG);
+
+		// 3. Explicit dark mode
+		await toggle.click(); // light -> dark
+		styles = await captureStyles(page);
+		expect(styles.body?.backgroundColor).toBe(DARK_BODY_BG);
+		expect(styles.cvPage?.backgroundColor).toBe(DARK_BG);
+		expect(styles.skill?.backgroundColor).toBe(DARK_SKILL_BG);
+
+		// 4. System dark mode
+		await toggle.click(); // dark -> system (system is still dark)
+		await page.reload(); // Ensure system preference applies
+		styles = await captureStyles(page);
+		expect(styles.body?.backgroundColor).toBe(DARK_BODY_BG);
+		expect(styles.cvPage?.backgroundColor).toBe(DARK_BG);
+		expect(styles.skill?.backgroundColor).toBe(DARK_SKILL_BG);
 	});
 });

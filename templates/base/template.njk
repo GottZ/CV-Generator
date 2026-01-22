@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ contact.name }} - CV</title>
+  <style>
+    {{ css | safe }}
+  </style>
+</head>
+<body>
+  <div class="cv-page">
+    {# Contact in body, not header - ATS-02 #}
+    <header class="contact">
+      <h1>{{ contact.name }}</h1>
+      <div class="contact-info">
+        {% if contact.email %}<span class="contact-item">{{ contact.email }}</span>{% endif %}
+        {% if contact.phone %}<span class="contact-item">{{ contact.phone }}</span>{% endif %}
+        {% if contact.location %}<span class="contact-item">{{ contact.location }}</span>{% endif %}
+      </div>
+      {% if contact.links and contact.links | length > 0 %}
+      <div class="contact-links">
+        {% for link in contact.links %}
+        <a href="{{ link.url }}" class="contact-link">{{ link.label or link.type }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    <main>
+      {# Summary section #}
+      {% if summary %}
+      <section class="section summary">
+        <h2>{{ 'summary' | sectionHeader(locale) }}</h2>
+        <p class="summary-text">{{ summary | md | safe }}</p>
+      </section>
+      {% endif %}
+
+      {# Work Experience section #}
+      {% if experience and experience | length > 0 %}
+      <section class="section experience">
+        <h2>{{ 'experience' | sectionHeader(locale) }}</h2>
+        {% for job in experience %}
+        <article class="entry experience-entry">
+          <div class="entry-header">
+            <h3 class="entry-title">{{ job.role }} at {{ job.company }}</h3>
+            <span class="date-range">{{ job.startDate | formatDate(locale) }} - {{ job.endDate | formatDate(locale) }}</span>
+          </div>
+          {% if job.location %}<div class="entry-location">{{ job.location }}</div>{% endif %}
+          {% if job.bullets and job.bullets | length > 0 %}
+          <div class="bullet-list">
+            {% for bullet in job.bullets %}
+            <div class="bullet-item">{{ bullet | md | safe }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {# Education section #}
+      {% if education and education | length > 0 %}
+      <section class="section education">
+        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
+        {% for edu in education %}
+        <article class="entry education-entry">
+          <div class="entry-header">
+            <h3 class="entry-title">{{ edu.degree }}{% if edu.field %}, {{ edu.field }}{% endif %}</h3>
+            <span class="date-range">{{ edu.startDate | formatDate(locale) }} - {{ edu.endDate | formatDate(locale) }}</span>
+          </div>
+          <div class="entry-institution">{{ edu.institution }}</div>
+          {% if edu.location %}<div class="entry-location">{{ edu.location }}</div>{% endif %}
+          {% if edu.honors %}<div class="entry-honors">{{ edu.honors }}</div>{% endif %}
+          {% if edu.notes %}<div class="entry-notes">{{ edu.notes | md | safe }}</div>{% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {# Skills section #}
+      {% if skills and skills | length > 0 %}
+      <section class="section skills">
+        <h2>{{ 'skills' | sectionHeader(locale) }}</h2>
+        {% for category in skills %}
+        <div class="skill-category">
+          <h3 class="skill-category-name">{{ category.name }}</h3>
+          <div class="skill-list">
+            {% for skill in category.skills %}
+            <span class="skill">{{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+    </main>
+  </div>
+</body>
+</html>

@@ -1,42 +1,42 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 3 complete
+**Session:** Phase 4 Plan 01 complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 4 - PDF Output (next)
+**Current Focus:** Phase 4 - PDF Output (in progress)
 
 ## Current Position
 
-**Phase:** 3 of 8 - HTML Output
-**Plan:** 3 of 3 complete
-**Status:** Complete
-**Last activity:** 2026-01-22 - Phase 3 execution complete, verified
+**Phase:** 4 of 8 - PDF Output
+**Plan:** 1 of 3 complete
+**Status:** In progress
+**Last activity:** 2026-01-22 - Completed 04-01-PLAN.md (PDF core with Puppeteer)
 
 **Progress:**
 ```
 Phase 1: [██████████] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [██████████] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [██████████] 100% - HTML Output (3/3 plans) COMPLETE
-Phase 4: [..........] 0% - PDF Output
+Phase 4: [███.......] 33% - PDF Output (1/3 plans)
 Phase 5: [..........] 0% - DOCX Output
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 3/8 phases complete (9/~24 plans complete, ~38%)
+**Overall:** 3/8 phases complete (10/~24 plans complete, ~42%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 9 |
-| Plans Completed | 9 |
-| Requirements Delivered | 24/41 (Phase 1-3 complete) |
+| Plans Created | 12 |
+| Plans Completed | 10 |
+| Requirements Delivered | 24/41 (Phase 1-3 complete, Phase 4 in progress) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -70,13 +70,16 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | picocolors-for-terminal | Smallest and fastest terminal color library, zero dependencies | 2026-01-22 |
 | tty-aware-output | TTY detection for colored vs plain output per RESEARCH.md Pattern 5 | 2026-01-22 |
 | stderr-for-warnings | Warnings go to stderr for clean stdout redirection | 2026-01-22 |
+| browser-singleton | Puppeteer browser reuse with connected check for crash recovery | 2026-01-22 |
+| pdf-lib-page-count | Use pdf-lib for accurate page count instead of DOM estimation | 2026-01-22 |
+| ats-css-injection | Inject ligature-disabling CSS at generation time via page.addStyleTag | 2026-01-22 |
 
 ### Technical Context
 
 **Stack (from research + implementation):**
 - Runtime: Bun with TypeScript 5.9.3
 - CLI: Commander.js 12+ (installed)
-- PDF: Puppeteer 24+ (planned)
+- PDF: Puppeteer 24.36+ (installed), pdf-lib 1.17+ (installed), @lillallol/outline-pdf 4.0+ (installed)
 - DOCX: docx 9.5+ (planned)
 - Markdown: marked 17+ with gray-matter 4+
 - Templates: Nunjucks 3.2.4 (installed)
@@ -132,6 +135,14 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - No tables for layout
 - Semantic HTML (h1 for name, h2 for sections)
 - Text layers must be copy-paste verifiable
+- Font ligatures disabled (font-variant-ligatures: none)
+
+**PDF Generation (implemented):**
+- browser-manager.ts: Singleton browser lifecycle with getBrowser()/closeBrowser()
+- pdf-generator.ts: generatePdf() with FooterConfig, PdfOptions, PdfResult interfaces
+- Configurable footer: enabled/showName/showPageNumbers/template
+- i18n page numbers: "Page X of Y" (en) / "Seite X von Y" (de)
+- ATS CSS injection: Disables ligatures, hides theme toggle, controls page breaks
 
 ### Open TODOs
 
@@ -161,6 +172,8 @@ None currently.
 - nunjucks requires @types/nunjucks for TypeScript support
 - marked.parseInline() avoids <p> wrapping for inline markdown
 - @types/bun includes Node.js types for Bun runtime
+- Puppeteer page.evaluate callbacks need DOM types; use pdf-lib for page count instead
+- Browser singleton needs browser?.connected check for crash recovery
 
 ### Quick Tasks Completed
 
@@ -176,7 +189,7 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Plan Phase 4 with `/gsd:plan-phase 4` (PDF Output).
+**Immediate next step:** Execute 04-02-PLAN.md (PDF metadata and bookmarks).
 
 **Context to remember:**
 - Phases 1-3 complete: monorepo, schema, parser, templates, HTML output all working
@@ -184,7 +197,8 @@ None currently.
 - HTML files are self-contained with embedded CSS and base64 images
 - Watch mode with debounced rebuilds functional
 - JSON output mode for CI integration
-- PDF output is next: Puppeteer for rendering, text layer optimization for ATS
+- PDF core complete: browser-manager and pdf-generator modules ready
+- Next: Add metadata (title, author) and bookmarks via pdf-lib and outline-pdf
 
 ### Files to Reference
 
@@ -202,8 +216,9 @@ None currently.
 - `/workspace/.planning/phases/03-html-output/03-02-SUMMARY.md` - Plan 03-02 completion
 - `/workspace/.planning/phases/03-html-output/03-03-SUMMARY.md` - Plan 03-03 completion
 - `/workspace/.planning/phases/03-html-output/03-VERIFICATION.md` - Phase 3 verification
+- `/workspace/.planning/phases/04-pdf-output/04-01-SUMMARY.md` - Plan 04-01 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 3 complete, verified)*
+*Last updated: 2026-01-22 (Plan 04-01 complete)*

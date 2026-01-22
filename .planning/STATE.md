@@ -14,7 +14,7 @@
 **Phase:** 1 of 8 - Foundation + Data Schema (COMPLETE)
 **Plan:** 3 of 3 complete
 **Status:** Phase complete
-**Last activity:** 2026-01-22 - Completed quick task 001: fix Biome version references in research docs
+**Last activity:** 2026-01-22 - Completed quick task 002: set up pre-commit hook for Biome linting
 
 **Progress:**
 ```
@@ -120,6 +120,7 @@ None currently.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 001 | fix Biome version references in research docs (1.9.4 → 2.3.11) | 2026-01-22 | 6b6bc5d | [001-fix-biome-version-references-in-research-docs](./quick/001-fix-biome-version-references-in-research-docs/) |
+| 002 | set up pre-commit hook for Biome linting | 2026-01-22 | (local) | [002-ensure-linting-is-done-appropriately-pri](./quick/002-ensure-linting-is-done-appropriately-pri/) |
 
 ## Session Continuity
 
@@ -146,4 +147,4 @@ None currently.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 1 complete)*
+*Last updated: 2026-01-22 (quick task 002 complete)*

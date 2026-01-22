@@ -15,5 +15,8 @@
 		"@biomejs/biome": "^2.3.11",
 		"@types/bun": "^1.2.0",
 		"typescript": "^5.9.3"
+	},
+	"optionalDependencies": {
+		"playwright": "^1.57.0"
 	}
 }

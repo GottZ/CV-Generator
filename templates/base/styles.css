@@ -40,15 +40,24 @@
   --page-margin: 20mm;
 }
 
-/* Dark mode support (optional) */
+/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-heading: #f0f0f0;
-    --color-body: #e0e0e0;
+    --color-heading: #f9fafb;
+    --color-body: #e5e7eb;
     --color-accent: #60a5fa;
-    --color-muted: #a0a0a0;
-    --color-border: #4b5563;
+    --color-muted: #9ca3af;
+    --color-border: #374151;
     --color-background: #1f2937;
+    --color-surface: #374151;
+  }
+
+  body {
+    background: #111827;
+  }
+
+  .skill {
+    background: var(--color-surface);
   }
 }
 

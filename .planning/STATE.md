@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 5 Plan 01 complete
+**Session:** Phase 5 Plan 02 complete
 
 ## Project Reference
 
@@ -12,9 +12,9 @@
 ## Current Position
 
 **Phase:** 5 of 8 - DOCX Output
-**Plan:** 1 of 3 complete
+**Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-22 - Completed 05-01-PLAN.md (DOCX core generator)
+**Last activity:** 2026-01-22 - Completed 05-02-PLAN.md (Section content and images)
 
 **Progress:**
 ```
@@ -22,20 +22,20 @@ Phase 1: [##########] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
-Phase 5: [###.......] 33% - DOCX Output (1/3 plans)
+Phase 5: [######....] 67% - DOCX Output (2/3 plans)
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 4/8 phases complete (13/~24 plans complete, ~54%)
+**Overall:** 4/8 phases complete (14/~24 plans complete, ~58%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 13 |
-| Plans Completed | 13 |
+| Plans Created | 15 |
+| Plans Completed | 14 |
 | Requirements Delivered | 27/41 (Phase 1-4 complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -78,6 +78,9 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | docx-packer-toBuffer | Use Packer.toBuffer() for Node/Bun (toBlob is browser-only) | 2026-01-22 |
 | native-word-field-codes | PageNumber.CURRENT/TOTAL_PAGES for proper Word field codes | 2026-01-22 |
 | twip-margins | Page margins in TWIPs (1mm ~ 57 TWIPs) matching PDF output | 2026-01-22 |
+| docx-heading-levels | Use HeadingLevel.HEADING_1/2 for Navigation Pane support | 2026-01-22 |
+| docx-image-type-required | ImageRun requires explicit type (jpg/png/gif/bmp) from sharp metadata | 2026-01-22 |
+| docx-section-builders | Pure functions returning Paragraph[] for each CV section | 2026-01-22 |
 
 ### Technical Context
 
@@ -152,13 +155,17 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - i18n section bookmarks: Experience/Berufserfahrung, Education/Ausbildung, Skills/Kenntnisse
 - ATS CSS injection: Disables ligatures, hides theme toggle, controls page breaks
 
-**DOCX Generation (in progress):**
+**DOCX Generation (implemented):**
 - docx-generator.ts: generateDocx() with DocxOptions, DocxResult interfaces
+- docx-sections.ts: buildDocumentContent(), loadImageForDocx()
 - Footer with native Word field codes (PageNumber.CURRENT, PageNumber.TOTAL_PAGES)
 - i18n page labels: "Page X of Y" (en) / "Seite X von Y" (de)
 - Document metadata: creator, title, subject, description
 - Page margins in TWIPs matching PDF (~20mm/~25mm)
-- Placeholder content - full sections to be added in Plan 05-02
+- Section builders: summary, experience, education, skills
+- HeadingLevel.HEADING_1 for name, HEADING_2 for sections (Navigation Pane)
+- Image embedding with sharp dimension extraction and type mapping
+- Contact info and links with ExternalHyperlink
 
 ### Open TODOs
 
@@ -172,7 +179,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Execute 02-03-PLAN.md (template rendering)
 - [x] Plan Phase 5 with `/gsd:plan-phase 5`
 - [x] Execute 05-01-PLAN.md (DOCX generator core)
-- [ ] Execute 05-02-PLAN.md (Section content and images)
+- [x] Execute 05-02-PLAN.md (Section content and images)
 - [ ] Execute 05-03-PLAN.md (Build command integration)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
@@ -196,6 +203,8 @@ None currently.
 - docx font sizes use half-points (9pt = size: 18)
 - docx margins use TWIPs (1mm ~ 57 TWIPs)
 - Packer.toBlob() is browser-only; use Packer.toBuffer() for Node/Bun
+- docx ImageRun requires explicit type property (jpg/png/gif/bmp) - map from sharp format
+- docx ImageRun without transformation dimensions creates corrupt files
 
 ### Quick Tasks Completed
 
@@ -211,16 +220,17 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 05-02-PLAN.md (Section content and images for DOCX).
+**Immediate next step:** Execute 05-03-PLAN.md (Build command integration for DOCX).
 
 **Context to remember:**
 - Phases 1-4 complete: monorepo, schema, parser, templates, HTML output, PDF output all working
-- Phase 5 Plan 01 complete: docx library installed, docx-generator.ts with footer and metadata
+- Phase 5 Plans 01-02 complete: DOCX generation fully implemented with all CV sections
 - Build command: `cvgen build <name> <template>` generates HTML and PDF files (DOCX pending Plan 05-03)
 - HTML files are self-contained with embedded CSS and base64 images
 - PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
-- DOCX generator has placeholder content - needs section rendering from CVData in Plan 05-02
+- DOCX generation complete: all CV sections render with proper Word styles
 - docx-generator.ts exports: generateDocx, DocxOptions, DocxResult
+- docx-sections.ts exports: buildDocumentContent, loadImageForDocx
 
 ### Files to Reference
 
@@ -242,8 +252,9 @@ None currently.
 - `/workspace/.planning/phases/04-pdf-output/04-02-SUMMARY.md` - Plan 04-02 completion
 - `/workspace/.planning/phases/04-pdf-output/04-03-SUMMARY.md` - Plan 04-03 completion
 - `/workspace/.planning/phases/05-docx-output/05-01-SUMMARY.md` - Plan 05-01 completion
+- `/workspace/.planning/phases/05-docx-output/05-02-SUMMARY.md` - Plan 05-02 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 5 Plan 01 complete)*
+*Last updated: 2026-01-22 (Phase 5 Plan 02 complete)*

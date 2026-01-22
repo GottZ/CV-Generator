@@ -35,6 +35,7 @@ export function parseFrontmatter(markdown: string): FrontmatterResult {
 						phone: data.phone as string | undefined,
 						location: data.location as string | undefined,
 						links: parseLinks(data.links),
+						slug: data.slug as string | undefined,
 					}
 				: null;
 

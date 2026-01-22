@@ -24,4 +24,6 @@ export interface Contact {
 	location?: string;
 	/** External profile links */
 	links?: Link[];
+	/** Optional slug for filename (defaults to directory name) */
+	slug?: string;
 }

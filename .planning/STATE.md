@@ -12,13 +12,13 @@
 ## Current Position
 
 **Phase:** 1 of 8 - Foundation + Data Schema
-**Plan:** 1 of 3 complete
+**Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-22 - Completed 01-01-PLAN.md
+**Last activity:** 2026-01-22 - Completed 01-02-PLAN.md
 
 **Progress:**
 ```
-Phase 1: [███.......] 33% - Foundation + Data Schema (1/3 plans)
+Phase 1: [██████....] 67% - Foundation + Data Schema (2/3 plans)
 Phase 2: [..........] 0% - Template Engine
 Phase 3: [..........] 0% - HTML Output
 Phase 4: [..........] 0% - PDF Output
@@ -28,15 +28,15 @@ Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 0/8 phases complete (1/~24 plans complete, ~4%)
+**Overall:** 0/8 phases complete (2/~24 plans complete, ~8%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 3 |
-| Plans Completed | 1 |
-| Requirements Delivered | 0/41 |
+| Plans Completed | 2 |
+| Requirements Delivered | 6/41 (DATA-01 through DATA-05, INTL-01) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -52,6 +52,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | DOCX after PDF | Parallel capability but deferred to ensure HTML foundation | 2026-01-22 |
 | Biome v2.3.11 with tabs | Biome v2 has breaking changes from v1; tabs are more accessible | 2026-01-22 |
 | Exclude .planning from Biome | Planning docs have different formatting requirements | 2026-01-22 |
+| Alphabetical schema exports | Biome organizeImports scrambles semantic comments; clean order preferred | 2026-01-22 |
 
 ### Technical Context
 
@@ -63,6 +64,11 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - Markdown: marked 17+ with gray-matter 4+
 - Templates: Nunjucks 3.2.4 (planned)
 - Linting: Biome 2.3.11
+
+**Schema Structure (implemented):**
+- CVData: Main interface with contact, summary, experience, education, skills
+- Localized<T>: Wrapper for multi-language content
+- ParseResult<T>: Error collection pattern with errors and warnings arrays
 
 **Critical ATS Constraints:**
 - Single-column layouts only
@@ -76,7 +82,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 
 - [x] Plan Phase 1 with `/gsd:plan-phase 1`
 - [x] Execute 01-01-PLAN.md (monorepo setup)
-- [ ] Execute 01-02-PLAN.md (TypeScript interfaces)
+- [x] Execute 01-02-PLAN.md (TypeScript interfaces)
 - [ ] Execute 01-03-PLAN.md (Markdown parser)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
@@ -90,17 +96,20 @@ None currently.
 - gray-matter ships its own TypeScript types; no @types/gray-matter needed
 - Biome v2 moved organizeImports to assist.actions.source.organizeImports
 - Bun lockfile is bun.lock (not bun.lockb)
+- Biome organizeImports rule reorders exports alphabetically, scrambling semantic comments
 
 ## Session Continuity
 
 ### For Next Session
 
-**Immediate next step:** Execute 01-02-PLAN.md to define TypeScript interfaces for CV data structures.
+**Immediate next step:** Execute 01-03-PLAN.md to implement the markdown parser that produces CVData.
 
 **Context to remember:**
 - Monorepo is set up with packages/core and packages/cli
 - TypeScript and Biome are configured and passing
 - gray-matter and marked are installed in packages/core
+- CVData interface is complete with all section types
+- Localized<T> wrapper and ParseResult types ready for parser
 
 ### Files to Reference
 
@@ -109,8 +118,9 @@ None currently.
 - `/workspace/.planning/ROADMAP.md` - Phase structure and success criteria
 - `/workspace/.planning/research/SUMMARY.md` - Technology decisions and pitfalls
 - `/workspace/.planning/phases/01-foundation-data-schema/01-01-SUMMARY.md` - Plan 01-01 completion
+- `/workspace/.planning/phases/01-foundation-data-schema/01-02-SUMMARY.md` - Plan 01-02 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Plan 01-01 complete)*
+*Last updated: 2026-01-22 (Plan 01-02 complete)*

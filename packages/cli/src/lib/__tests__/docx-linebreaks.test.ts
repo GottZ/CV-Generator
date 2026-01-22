@@ -2,7 +2,7 @@
  * Tests for DOCX linebreak handling in section builders.
  *
  * Linebreak behavior in DOCX:
- * - Single \n: Creates line break within paragraph (TextRun with break: true)
+ * - Single \n: Creates line break within paragraph (TextRun with break: 1)
  * - Double \n\n: Creates separate paragraphs
  * - Bullets: Content after bullet marker respects single newlines
  * - Windows \r\n: Normalized to \n for consistent handling
@@ -13,8 +13,15 @@ import type { CVData } from '@gottz/cv-core';
 import type { Paragraph } from 'docx';
 import { buildDocumentContent, textWithBreaks } from '../docx-sections';
 
+/** Internal TextRun options structure for testing */
+interface TextRunOptions {
+	text?: string;
+	break?: number;
+	bold?: boolean;
+}
+
 /**
- * Helper to count TextRun objects with break: true in paragraphs.
+ * Helper to count TextRun objects with break: 1 in paragraphs.
  * Inspects the internal children array of each Paragraph.
  */
 function countLineBreaks(paragraphs: Paragraph[]): number {
@@ -26,8 +33,9 @@ function countLineBreaks(paragraphs: Paragraph[]): number {
 
 		for (const child of root) {
 			// TextRun has options with break property
-			const options = (child as { options?: { break?: boolean } }).options;
-			if (options?.break === true) {
+			const options = (child as unknown as { options?: TextRunOptions })
+				.options;
+			if (options?.break === 1) {
 				count++;
 			}
 		}
@@ -46,7 +54,8 @@ function extractText(paragraphs: Paragraph[]): string[] {
 
 		let paragraphText = '';
 		for (const child of root) {
-			const options = (child as { options?: { text?: string } }).options;
+			const options = (child as unknown as { options?: TextRunOptions })
+				.options;
 			if (options?.text) {
 				paragraphText += options.text;
 			}
@@ -63,9 +72,8 @@ describe('DOCX linebreak handling', () => {
 		it('returns single TextRun for text without newlines', () => {
 			const runs = textWithBreaks('Hello world');
 			expect(runs).toHaveLength(1);
-			expect((runs[0] as { options: { text: string } }).options.text).toBe(
-				'Hello world',
-			);
+			const first = runs[0] as unknown as { options: TextRunOptions };
+			expect(first.options.text).toBe('Hello world');
 		});
 
 		it('creates line break for single newline', () => {
@@ -73,14 +81,14 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(2);
 
 			// First line - no break
-			const first = runs[0] as { options: { text: string; break?: boolean } };
+			const first = runs[0] as unknown as { options: TextRunOptions };
 			expect(first.options.text).toBe('Line one');
 			expect(first.options.break).toBeUndefined();
 
 			// Second line - has break
-			const second = runs[1] as { options: { text: string; break: boolean } };
+			const second = runs[1] as unknown as { options: TextRunOptions };
 			expect(second.options.text).toBe('Line two');
-			expect(second.options.break).toBe(true);
+			expect(second.options.break).toBe(1);
 		});
 
 		it('handles multiple single newlines', () => {
@@ -88,10 +96,10 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(3);
 
 			// Lines 2 and 3 should have breaks
-			const line2 = runs[1] as { options: { break: boolean } };
-			const line3 = runs[2] as { options: { break: boolean } };
-			expect(line2.options.break).toBe(true);
-			expect(line3.options.break).toBe(true);
+			const line2 = runs[1] as unknown as { options: TextRunOptions };
+			const line3 = runs[2] as unknown as { options: TextRunOptions };
+			expect(line2.options.break).toBe(1);
+			expect(line3.options.break).toBe(1);
 		});
 
 		it('skips empty lines (no empty TextRuns)', () => {
@@ -105,7 +113,8 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(2);
 
 			for (const run of runs) {
-				const options = (run as { options: { bold: boolean } }).options;
+				const options = (run as unknown as { options: { bold: boolean } })
+					.options;
 				expect(options.bold).toBe(true);
 			}
 		});
@@ -114,25 +123,22 @@ describe('DOCX linebreak handling', () => {
 			const runs = textWithBreaks('Windows\r\nline breaks');
 			expect(runs).toHaveLength(2);
 
-			const second = runs[1] as { options: { break: boolean } };
-			expect(second.options.break).toBe(true);
+			const second = runs[1] as unknown as { options: TextRunOptions };
+			expect(second.options.break).toBe(1);
 		});
 
 		it('handles trailing newlines without creating empty TextRuns', () => {
 			const runs = textWithBreaks('Content\n');
 			expect(runs).toHaveLength(1);
-			expect((runs[0] as { options: { text: string } }).options.text).toBe(
-				'Content',
-			);
+			const first = runs[0] as unknown as { options: TextRunOptions };
+			expect(first.options.text).toBe('Content');
 		});
 
 		it('handles leading newlines', () => {
 			const runs = textWithBreaks('\nContent');
 			expect(runs).toHaveLength(1);
-			expect(
-				(runs[0] as { options: { text: string; break: boolean } }).options
-					.break,
-			).toBe(true);
+			const first = runs[0] as unknown as { options: TextRunOptions };
+			expect(first.options.break).toBe(1);
 		});
 	});
 
@@ -198,6 +204,8 @@ describe('DOCX linebreak handling', () => {
 						{
 							company: 'Test Co',
 							role: 'Developer',
+							startDate: '2020-01',
+							endDate: '2023-12',
 							bullets: ['Main point\nSupporting detail'],
 						},
 					],
@@ -211,7 +219,9 @@ describe('DOCX linebreak handling', () => {
 				const root = (p as unknown as { root: unknown[] }).root;
 				if (!root || root.length === 0) return false;
 
-				const firstChild = root[0] as { options?: { text?: string } };
+				const firstChild = root[0] as unknown as {
+					options?: { text?: string };
+				};
 				return firstChild.options?.text?.startsWith('\u2022');
 			});
 
@@ -230,6 +240,8 @@ describe('DOCX linebreak handling', () => {
 						{
 							company: 'Test Co',
 							role: 'Developer',
+							startDate: '2020-01',
+							endDate: '2023-12',
 							bullets: ['Line 1\nLine 2\nLine 3'],
 						},
 					],
@@ -242,7 +254,9 @@ describe('DOCX linebreak handling', () => {
 				const root = (p as unknown as { root: unknown[] }).root;
 				if (!root || root.length === 0) return false;
 
-				const firstChild = root[0] as { options?: { text?: string } };
+				const firstChild = root[0] as unknown as {
+					options?: { text?: string };
+				};
 				return firstChild.options?.text?.startsWith('\u2022');
 			});
 
@@ -355,6 +369,8 @@ describe('DOCX linebreak handling', () => {
 						{
 							institution: 'University',
 							degree: 'BS',
+							startDate: '2015-09',
+							endDate: '2019-05',
 							notes: 'Note line 1\nNote line 2',
 						},
 					],
@@ -382,6 +398,8 @@ describe('DOCX linebreak handling', () => {
 						{
 							institution: 'University',
 							degree: 'BS',
+							startDate: '2015-09',
+							endDate: '2019-05',
 							honors: 'Magna Cum Laude\nDeans List',
 						},
 					],

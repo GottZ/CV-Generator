@@ -3,6 +3,12 @@
  *
  * Transforms CVData sections into docx library Paragraph arrays with proper
  * Word built-in styles for Navigation Pane support.
+ *
+ * Linebreak behavior in DOCX:
+ * - Single \n: Creates line break within paragraph (TextRun with break: true)
+ * - Double \n\n: Creates separate paragraphs
+ * - Bullets: Content after bullet marker respects single newlines
+ * - Windows \r\n: Normalized to \n for consistent handling
  */
 
 import type {
@@ -14,6 +20,7 @@ import type {
 } from '@gottz/cv-core';
 import { getSectionHeader } from '@gottz/cv-templates';
 import {
+	AlignmentType,
 	ExternalHyperlink,
 	HeadingLevel,
 	ImageRun,
@@ -21,6 +28,10 @@ import {
 	TextRun,
 } from 'docx';
 import sharp from 'sharp';
+import {
+	DEFAULT_DOCX_STYLES,
+	type DocxStyleConfig,
+} from './docx-style-extractor.ts';
 
 /**
  * Spacing constants in TWIPs (1 line ~ 240 TWIPs for 12pt text).
@@ -65,6 +76,74 @@ const PROFILE_IMAGE_NAMES = [
  * Maximum width for profile images in pixels.
  */
 const PROFILE_IMAGE_MAX_WIDTH = 150;
+
+/**
+ * Options for textWithBreaks formatting.
+ */
+interface TextRunOptions {
+	bold?: boolean;
+	italics?: boolean;
+	size?: number;
+	color?: string;
+	font?: string;
+}
+
+/**
+ * Convert text with newlines to array of TextRuns.
+ *
+ * Single \n becomes a line break within the paragraph (TextRun with break: 1).
+ * Use for content that should stay in one paragraph but have visual line breaks.
+ *
+ * Normalizes Windows newlines (\r\n) to Unix newlines (\n).
+ * Skips empty lines to avoid empty TextRuns.
+ *
+ * @param text - Text that may contain newlines
+ * @param options - Optional formatting (bold, italics, size, color, font)
+ * @returns Array of TextRun objects
+ */
+export function textWithBreaks(
+	text: string,
+	options?: TextRunOptions,
+): TextRun[] {
+	// Normalize Windows newlines
+	const normalized = text.replace(/\r\n/g, '\n');
+	const lines = normalized.split('\n');
+	const runs: TextRun[] = [];
+
+	for (let i = 0; i < lines.length; i++) {
+		const line = lines[i] ?? '';
+		const trimmed = line.trim();
+
+		// Skip empty lines
+		if (!trimmed) continue;
+
+		if (i > 0 || (i === 0 && normalized.startsWith('\n'))) {
+			// Add line break before this line (except first non-empty line unless leading newline)
+			// Check if this is the first non-empty line after empty ones
+			const hasNonEmptyBefore = lines.slice(0, i).some((l) => l.trim());
+			if (hasNonEmptyBefore || normalized.startsWith('\n')) {
+				runs.push(
+					new TextRun({
+						text: trimmed,
+						break: 1,
+						...options,
+					}),
+				);
+				continue;
+			}
+		}
+
+		// First line or line without break
+		runs.push(
+			new TextRun({
+				text: trimmed,
+				...options,
+			}),
+		);
+	}
+
+	return runs;
+}
 
 /**
  * Map sharp format to docx image type.
@@ -167,8 +246,12 @@ async function findProfileImage(imagesDir: string): Promise<Paragraph | null> {
 
 /**
  * Build contact info line (email | phone | location).
+ * Contact info is left-aligned per HTML flexbox layout.
  */
-function buildContactLine(cv: CVData): Paragraph | null {
+function buildContactLine(
+	cv: CVData,
+	styles: DocxStyleConfig,
+): Paragraph | null {
 	const parts: string[] = [];
 
 	if (cv.contact.email) {
@@ -186,15 +269,27 @@ function buildContactLine(cv: CVData): Paragraph | null {
 	}
 
 	return new Paragraph({
-		children: [new TextRun({ text: parts.join(' | ') })],
+		alignment: AlignmentType.LEFT,
+		children: [
+			new TextRun({
+				text: parts.join(' | '),
+				size: styles.fontSizes.body,
+				color: styles.colors.muted,
+				font: styles.fonts.body,
+			}),
+		],
 		spacing: { after: SPACING.afterContact },
 	});
 }
 
 /**
  * Build links line with clickable hyperlinks.
+ * Links are left-aligned per HTML flexbox layout.
  */
-function buildLinksLine(links: Link[]): Paragraph | null {
+function buildLinksLine(
+	links: Link[],
+	styles: DocxStyleConfig,
+): Paragraph | null {
 	if (links.length === 0) {
 		return null;
 	}
@@ -213,6 +308,9 @@ function buildLinksLine(links: Link[]): Paragraph | null {
 					new TextRun({
 						text: label,
 						style: 'Hyperlink',
+						size: styles.fontSizes.body,
+						color: styles.colors.accent,
+						font: styles.fonts.body,
 					}),
 				],
 				link: link.url,
@@ -221,11 +319,19 @@ function buildLinksLine(links: Link[]): Paragraph | null {
 
 		// Add separator between links
 		if (i < links.length - 1) {
-			children.push(new TextRun({ text: ' | ' }));
+			children.push(
+				new TextRun({
+					text: ' | ',
+					size: styles.fontSizes.body,
+					color: styles.colors.muted,
+					font: styles.fonts.body,
+				}),
+			);
 		}
 	}
 
 	return new Paragraph({
+		alignment: AlignmentType.LEFT,
 		children,
 		spacing: { after: SPACING.afterContact },
 	});
@@ -234,24 +340,41 @@ function buildLinksLine(links: Link[]): Paragraph | null {
 /**
  * Build summary section paragraphs.
  */
-function buildSummarySection(summary: string, locale: string): Paragraph[] {
+function buildSummarySection(
+	summary: string,
+	locale: string,
+	styles: DocxStyleConfig,
+): Paragraph[] {
 	const paragraphs: Paragraph[] = [];
 
 	// Section header (Heading 2)
 	paragraphs.push(
 		new Paragraph({
-			text: getSectionHeader('summary', locale),
 			heading: HeadingLevel.HEADING_2,
 			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('summary', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
 		}),
 	);
 
 	// Summary text - split by double newlines for multiple paragraphs
+	// Within each paragraph, single newlines become line breaks
 	const summaryParagraphs = summary.split(/\n\n+/).filter((p) => p.trim());
 	for (const text of summaryParagraphs) {
 		paragraphs.push(
 			new Paragraph({
-				text: text.trim(),
+				children: textWithBreaks(text.trim(), {
+					size: styles.fontSizes.body,
+					color: styles.colors.body,
+					font: styles.fonts.body,
+				}),
 				spacing: { after: SPACING.afterParagraph },
 			}),
 		);
@@ -262,19 +385,29 @@ function buildSummarySection(summary: string, locale: string): Paragraph[] {
 
 /**
  * Build experience section paragraphs.
+ * Date ranges are right-aligned per HTML entry-header space-between layout.
  */
 function buildExperienceSection(
 	experiences: WorkExperience[],
 	locale: string,
+	styles: DocxStyleConfig,
 ): Paragraph[] {
 	const paragraphs: Paragraph[] = [];
 
 	// Section header (Heading 2)
 	paragraphs.push(
 		new Paragraph({
-			text: getSectionHeader('experience', locale),
 			heading: HeadingLevel.HEADING_2,
 			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('experience', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
 		}),
 	);
 
@@ -283,14 +416,25 @@ function buildExperienceSection(
 		paragraphs.push(
 			new Paragraph({
 				children: [
-					new TextRun({ text: exp.company, bold: true }),
-					new TextRun({ text: ` | ${exp.role}` }),
+					new TextRun({
+						text: exp.company,
+						bold: true,
+						size: styles.fontSizes.subsection,
+						color: styles.colors.heading,
+						font: styles.fonts.heading,
+					}),
+					new TextRun({
+						text: ` | ${exp.role}`,
+						size: styles.fontSizes.body,
+						color: styles.colors.body,
+						font: styles.fonts.body,
+					}),
 				],
 				spacing: { before: SPACING.beforeEntry },
 			}),
 		);
 
-		// Dates | Location (italic)
+		// Dates | Location (italic, right-aligned)
 		const dateParts: string[] = [];
 		if (exp.startDate) {
 			dateParts.push(exp.startDate);
@@ -303,21 +447,37 @@ function buildExperienceSection(
 
 		paragraphs.push(
 			new Paragraph({
+				alignment: AlignmentType.RIGHT,
 				children: [
 					new TextRun({
 						text: `${dateStr}${locationStr}`,
 						italics: true,
+						size: styles.fontSizes.small,
+						color: styles.colors.muted,
+						font: styles.fonts.body,
 					}),
 				],
 				spacing: { after: SPACING.afterDateLine },
 			}),
 		);
 
-		// Bullet highlights
+		// Bullet highlights - single newlines within bullets become line breaks
 		for (const bullet of exp.bullets) {
 			paragraphs.push(
 				new Paragraph({
-					text: `\u2022 ${bullet}`,
+					children: [
+						new TextRun({
+							text: '\u2022 ',
+							size: styles.fontSizes.body,
+							color: styles.colors.body,
+							font: styles.fonts.body,
+						}),
+						...textWithBreaks(bullet, {
+							size: styles.fontSizes.body,
+							color: styles.colors.body,
+							font: styles.fonts.body,
+						}),
+					],
 					spacing: { after: SPACING.afterBullet },
 				}),
 			);
@@ -329,19 +489,29 @@ function buildExperienceSection(
 
 /**
  * Build education section paragraphs.
+ * Date ranges are right-aligned per HTML entry-header space-between layout.
  */
 function buildEducationSection(
 	education: Education[],
 	locale: string,
+	styles: DocxStyleConfig,
 ): Paragraph[] {
 	const paragraphs: Paragraph[] = [];
 
 	// Section header (Heading 2)
 	paragraphs.push(
 		new Paragraph({
-			text: getSectionHeader('education', locale),
 			heading: HeadingLevel.HEADING_2,
 			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('education', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
 		}),
 	);
 
@@ -350,8 +520,19 @@ function buildEducationSection(
 		paragraphs.push(
 			new Paragraph({
 				children: [
-					new TextRun({ text: edu.institution, bold: true }),
-					new TextRun({ text: ` | ${edu.degree}` }),
+					new TextRun({
+						text: edu.institution,
+						bold: true,
+						size: styles.fontSizes.subsection,
+						color: styles.colors.heading,
+						font: styles.fonts.heading,
+					}),
+					new TextRun({
+						text: ` | ${edu.degree}`,
+						size: styles.fontSizes.body,
+						color: styles.colors.body,
+						font: styles.fonts.body,
+					}),
 				],
 				spacing: { before: SPACING.beforeEntry },
 			}),
@@ -361,12 +542,19 @@ function buildEducationSection(
 		if (edu.field) {
 			paragraphs.push(
 				new Paragraph({
-					text: edu.field,
+					children: [
+						new TextRun({
+							text: edu.field,
+							size: styles.fontSizes.body,
+							color: styles.colors.body,
+							font: styles.fonts.body,
+						}),
+					],
 				}),
 			);
 		}
 
-		// Dates | Location (italic)
+		// Dates | Location (italic, right-aligned)
 		const dateParts: string[] = [];
 		if (edu.startDate) {
 			dateParts.push(edu.startDate);
@@ -379,31 +567,44 @@ function buildEducationSection(
 
 		paragraphs.push(
 			new Paragraph({
+				alignment: AlignmentType.RIGHT,
 				children: [
 					new TextRun({
 						text: `${dateStr}${locationStr}`,
 						italics: true,
+						size: styles.fontSizes.small,
+						color: styles.colors.muted,
+						font: styles.fonts.body,
 					}),
 				],
 				spacing: { after: SPACING.afterDateLine },
 			}),
 		);
 
-		// Honors (if present)
+		// Honors (if present) - single newlines become line breaks
 		if (edu.honors) {
 			paragraphs.push(
 				new Paragraph({
-					text: edu.honors,
+					children: textWithBreaks(edu.honors, {
+						italics: true,
+						size: styles.fontSizes.small,
+						color: styles.colors.muted,
+						font: styles.fonts.body,
+					}),
 					spacing: { after: SPACING.afterBullet },
 				}),
 			);
 		}
 
-		// Notes (if present)
+		// Notes (if present) - single newlines become line breaks
 		if (edu.notes) {
 			paragraphs.push(
 				new Paragraph({
-					text: edu.notes,
+					children: textWithBreaks(edu.notes, {
+						size: styles.fontSizes.small,
+						color: styles.colors.body,
+						font: styles.fonts.body,
+					}),
 					spacing: { after: SPACING.afterBullet },
 				}),
 			);
@@ -419,15 +620,24 @@ function buildEducationSection(
 function buildSkillsSection(
 	skillCategories: SkillCategory[],
 	locale: string,
+	styles: DocxStyleConfig,
 ): Paragraph[] {
 	const paragraphs: Paragraph[] = [];
 
 	// Section header (Heading 2)
 	paragraphs.push(
 		new Paragraph({
-			text: getSectionHeader('skills', locale),
 			heading: HeadingLevel.HEADING_2,
 			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('skills', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
 		}),
 	);
 
@@ -435,7 +645,15 @@ function buildSkillsSection(
 		// Category name (bold)
 		paragraphs.push(
 			new Paragraph({
-				children: [new TextRun({ text: category.name, bold: true })],
+				children: [
+					new TextRun({
+						text: category.name,
+						bold: true,
+						size: styles.fontSizes.body,
+						color: styles.colors.heading,
+						font: styles.fonts.body,
+					}),
+				],
 				spacing: { before: SPACING.beforeEntry },
 			}),
 		);
@@ -448,7 +666,14 @@ function buildSkillsSection(
 
 			paragraphs.push(
 				new Paragraph({
-					text: `\u2022 ${skillText}`,
+					children: [
+						new TextRun({
+							text: `\u2022 ${skillText}`,
+							size: styles.fontSizes.small,
+							color: styles.colors.body,
+							font: styles.fonts.body,
+						}),
+					],
 					spacing: { after: SPACING.afterBullet },
 				}),
 			);
@@ -479,33 +704,44 @@ function buildSkillsSection(
  * @param cv - CV data to render
  * @param locale - Locale for i18n section headers (en, de)
  * @param imagesDir - Optional directory containing profile images
+ * @param styles - Optional style configuration (defaults to DEFAULT_DOCX_STYLES)
  * @returns Array of Paragraph elements for document content
  */
 export async function buildDocumentContent(
 	cv: CVData,
 	locale: string,
 	imagesDir?: string,
+	styles?: DocxStyleConfig,
 ): Promise<Paragraph[]> {
 	const paragraphs: Paragraph[] = [];
+	const s = styles ?? DEFAULT_DOCX_STYLES;
 
 	// 1. Name (Heading 1)
 	paragraphs.push(
 		new Paragraph({
-			text: cv.contact.name,
 			heading: HeadingLevel.HEADING_1,
 			spacing: { after: SPACING.afterName },
+			children: [
+				new TextRun({
+					text: cv.contact.name,
+					size: s.fontSizes.name,
+					color: s.colors.heading,
+					font: s.fonts.heading,
+					bold: true,
+				}),
+			],
 		}),
 	);
 
-	// 2. Contact info
-	const contactLine = buildContactLine(cv);
+	// 2. Contact info (left-aligned per HTML flexbox)
+	const contactLine = buildContactLine(cv, s);
 	if (contactLine) {
 		paragraphs.push(contactLine);
 	}
 
-	// 3. Links
+	// 3. Links (left-aligned per HTML flexbox)
 	if (cv.contact.links && cv.contact.links.length > 0) {
-		const linksLine = buildLinksLine(cv.contact.links);
+		const linksLine = buildLinksLine(cv.contact.links, s);
 		if (linksLine) {
 			paragraphs.push(linksLine);
 		}
@@ -522,25 +758,25 @@ export async function buildDocumentContent(
 	// 5. Summary section
 	const summaryContent = cv.summary?.[locale];
 	if (summaryContent) {
-		paragraphs.push(...buildSummarySection(summaryContent, locale));
+		paragraphs.push(...buildSummarySection(summaryContent, locale, s));
 	}
 
 	// 6. Experience section
 	const experienceContent = cv.experience?.[locale];
 	if (experienceContent && experienceContent.length > 0) {
-		paragraphs.push(...buildExperienceSection(experienceContent, locale));
+		paragraphs.push(...buildExperienceSection(experienceContent, locale, s));
 	}
 
 	// 7. Education section
 	const educationContent = cv.education?.[locale];
 	if (educationContent && educationContent.length > 0) {
-		paragraphs.push(...buildEducationSection(educationContent, locale));
+		paragraphs.push(...buildEducationSection(educationContent, locale, s));
 	}
 
 	// 8. Skills section
 	const skillsContent = cv.skills?.[locale];
 	if (skillsContent && skillsContent.length > 0) {
-		paragraphs.push(...buildSkillsSection(skillsContent, locale));
+		paragraphs.push(...buildSkillsSection(skillsContent, locale, s));
 	}
 
 	return paragraphs;

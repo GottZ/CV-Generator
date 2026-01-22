@@ -17,6 +17,7 @@
 		"sharp": "^0.33.0"
 	},
 	"devDependencies": {
+		"@types/chokidar": "^2.1.7",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/mime-types": "^2.1.4"
 	}

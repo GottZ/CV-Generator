@@ -466,7 +466,7 @@ No language tag`;
 ```json
 // biome.json - Source: https://biomejs.dev/guides/getting-started/
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "tab",

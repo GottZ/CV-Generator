@@ -1,4 +1,4 @@
-import type { ParseError } from "../schema/index.ts";
+import type { ParseError } from '../schema/index.ts';
 
 /**
  * Matched section from markdown body.
@@ -24,25 +24,25 @@ interface SectionsResult {
 /** Known section types and their normalized names */
 const SECTION_MAPPINGS: Record<string, string> = {
 	// English
-	summary: "summary",
-	"professional summary": "summary",
-	objective: "summary",
-	"work experience": "experience",
-	experience: "experience",
-	employment: "experience",
-	education: "education",
-	skills: "skills",
-	"technical skills": "skills",
+	summary: 'summary',
+	'professional summary': 'summary',
+	objective: 'summary',
+	'work experience': 'experience',
+	experience: 'experience',
+	employment: 'experience',
+	education: 'education',
+	skills: 'skills',
+	'technical skills': 'skills',
 
 	// German
-	zusammenfassung: "summary",
-	profil: "summary",
-	berufserfahrung: "experience",
-	"beruflicher werdegang": "experience",
-	ausbildung: "education",
-	bildung: "education",
-	kenntnisse: "skills",
-	fachkenntnisse: "skills",
+	zusammenfassung: 'summary',
+	profil: 'summary',
+	berufserfahrung: 'experience',
+	'beruflicher werdegang': 'experience',
+	ausbildung: 'education',
+	bildung: 'education',
+	kenntnisse: 'skills',
+	fachkenntnisse: 'skills',
 };
 
 /**
@@ -57,7 +57,7 @@ export function extractSections(markdown: string): SectionsResult {
 	const sections: SectionMatch[] = [];
 
 	// Split into lines for line number tracking
-	const lines = markdown.split("\n");
+	const lines = markdown.split('\n');
 
 	// Match ## Header `lang` pattern
 	// Captures: header text (group 1), language code (group 2)
@@ -67,26 +67,26 @@ export function extractSections(markdown: string): SectionsResult {
 	let contentLines: string[] = [];
 
 	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i] ?? "";
+		const line = lines[i] ?? '';
 		const lineNum = i + 1; // 1-indexed
 
 		const match = line.match(sectionRegex);
 
 		if (match) {
 			// Save previous section if exists
-			if (currentSection && currentSection.header) {
-				currentSection.content = contentLines.join("\n").trim();
+			if (currentSection?.header) {
+				currentSection.content = contentLines.join('\n').trim();
 				sections.push(currentSection as SectionMatch);
 			}
 
-			const header = (match[1] ?? "").trim();
-			const language = (match[2] ?? "").toLowerCase();
+			const header = (match[1] ?? '').trim();
+			const language = (match[2] ?? '').toLowerCase();
 			const normalizedType = normalizeSection(header);
 
 			// Warn about unknown sections (DATA-10)
 			if (!normalizedType) {
 				warnings.push({
-					type: "warning",
+					type: 'warning',
 					line: lineNum,
 					message: `Unknown section type: "${header}"`,
 					suggestion: `Known sections: Summary, Work Experience, Education, Skills`,
@@ -96,7 +96,7 @@ export function extractSections(markdown: string): SectionsResult {
 
 			currentSection = {
 				header,
-				sectionType: normalizedType || "unknown",
+				sectionType: normalizedType || 'unknown',
 				language,
 				line: lineNum,
 			};
@@ -108,21 +108,21 @@ export function extractSections(markdown: string): SectionsResult {
 	}
 
 	// Don't forget last section
-	if (currentSection && currentSection.header) {
-		currentSection.content = contentLines.join("\n").trim();
+	if (currentSection?.header) {
+		currentSection.content = contentLines.join('\n').trim();
 		sections.push(currentSection as SectionMatch);
 	}
 
 	// Check for sections without language tags (lines starting with ## but no backtick)
 	const untaggedRegex = /^##\s+(.+?)(?:\s*)$/;
 	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i] ?? "";
-		if (line.match(untaggedRegex) && !line.includes("`")) {
+		const line = lines[i] ?? '';
+		if (line.match(untaggedRegex) && !line.includes('`')) {
 			warnings.push({
-				type: "warning",
+				type: 'warning',
 				line: i + 1,
 				message: `Section header missing language tag: "${line.trim()}"`,
-				suggestion: "Add language tag, e.g., ## Work Experience `en`",
+				suggestion: 'Add language tag, e.g., ## Work Experience `en`',
 				context: line,
 			});
 		}

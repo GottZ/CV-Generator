@@ -1,5 +1,5 @@
-import matter from "gray-matter";
-import type { Contact, Link, ParseError } from "../schema/index.ts";
+import matter from 'gray-matter';
+import type { Contact, Link, ParseError } from '../schema/index.ts';
 
 interface FrontmatterResult {
 	contact: Contact | null;
@@ -18,10 +18,10 @@ export function parseFrontmatter(markdown: string): FrontmatterResult {
 		const { data, content } = matter(markdown);
 
 		// Validate required field: name
-		if (!data.name || typeof data.name !== "string") {
+		if (!data.name || typeof data.name !== 'string') {
 			errors.push({
-				type: "error",
-				message: "Missing required field: name",
+				type: 'error',
+				message: 'Missing required field: name',
 				suggestion: 'Add "name: Your Name" to frontmatter',
 			});
 		}
@@ -41,11 +41,11 @@ export function parseFrontmatter(markdown: string): FrontmatterResult {
 		return { contact, content, errors };
 	} catch (err) {
 		errors.push({
-			type: "error",
-			message: `Failed to parse frontmatter: ${err instanceof Error ? err.message : "Unknown error"}`,
-			suggestion: "Check YAML syntax in frontmatter block",
+			type: 'error',
+			message: `Failed to parse frontmatter: ${err instanceof Error ? err.message : 'Unknown error'}`,
+			suggestion: 'Check YAML syntax in frontmatter block',
 		});
-		return { contact: null, content: "", errors };
+		return { contact: null, content: '', errors };
 	}
 }
 
@@ -59,11 +59,11 @@ function parseLinks(links: unknown): Link[] | undefined {
 	return links
 		.filter(
 			(link): link is Record<string, unknown> =>
-				typeof link === "object" && link !== null,
+				typeof link === 'object' && link !== null,
 		)
 		.map((link) => ({
-			type: String(link.type || "unknown"),
-			url: String(link.url || ""),
+			type: String(link.type || 'unknown'),
+			url: String(link.url || ''),
 			label: link.label ? String(link.label) : undefined,
 		}))
 		.filter((link) => link.url); // Filter out empty URLs

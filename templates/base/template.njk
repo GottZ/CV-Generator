@@ -96,5 +96,69 @@
       {% endif %}
     </main>
   </div>
+
+  {# Theme toggle button - hidden in print #}
+  <button class="theme-toggle" type="button" aria-label="Toggle color theme">
+    <span class="theme-icon" data-icon="system">&#x2699;</span>
+    <span class="theme-icon" data-icon="light">&#x2600;</span>
+    <span class="theme-icon" data-icon="dark">&#x263D;</span>
+  </button>
+
+  <script>
+    (function() {
+      const toggle = document.querySelector('.theme-toggle');
+      const html = document.documentElement;
+      const STORAGE_KEY = 'cv-theme';
+      const THEMES = ['system', 'light', 'dark'];
+
+      function getStoredTheme() {
+        try {
+          return localStorage.getItem(STORAGE_KEY);
+        } catch {
+          return null;
+        }
+      }
+
+      function setStoredTheme(theme) {
+        try {
+          if (theme === 'system') {
+            localStorage.removeItem(STORAGE_KEY);
+          } else {
+            localStorage.setItem(STORAGE_KEY, theme);
+          }
+        } catch {}
+      }
+
+      function applyTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        updateAriaLabel(theme);
+      }
+
+      function updateAriaLabel(theme) {
+        const labels = {
+          system: 'Current: system preference. Click to switch to light mode.',
+          light: 'Current: light mode. Click to switch to dark mode.',
+          dark: 'Current: dark mode. Click to switch to system preference.'
+        };
+        toggle.setAttribute('aria-label', labels[theme] || labels.system);
+      }
+
+      function cycleTheme() {
+        const current = html.getAttribute('data-theme') || 'system';
+        const currentIndex = THEMES.indexOf(current);
+        const nextIndex = (currentIndex + 1) % THEMES.length;
+        const nextTheme = THEMES[nextIndex];
+        applyTheme(nextTheme);
+        setStoredTheme(nextTheme);
+      }
+
+      // Initialize on load
+      const stored = getStoredTheme();
+      const initial = stored && THEMES.includes(stored) ? stored : 'system';
+      applyTheme(initial);
+
+      toggle.addEventListener('click', cycleTheme);
+    })();
+  </script>
 </body>
 </html>

@@ -40,9 +40,10 @@
   --page-margin: 20mm;
 }
 
-/* Dark mode support */
+/* Theme support via data-theme attribute */
+/* System preference - dark mode fallback when data-theme="system" or not set */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --color-heading: #f9fafb;
     --color-body: #e5e7eb;
     --color-accent: #60a5fa;
@@ -52,13 +53,47 @@
     --color-surface: #374151;
   }
 
-  body {
+  :root:not([data-theme="light"]) body,
+  body:has(:root:not([data-theme="light"])) {
     background: #111827;
   }
+}
 
-  .skill {
-    background: var(--color-surface);
-  }
+/* Explicit dark mode - overrides system preference */
+[data-theme="dark"] {
+  --color-heading: #f9fafb;
+  --color-body: #e5e7eb;
+  --color-accent: #60a5fa;
+  --color-muted: #9ca3af;
+  --color-border: #374151;
+  --color-background: #1f2937;
+  --color-surface: #374151;
+}
+
+[data-theme="dark"] body {
+  background: #111827;
+}
+
+[data-theme="dark"] .skill {
+  background: var(--color-surface);
+}
+
+/* Explicit light mode - overrides system preference */
+[data-theme="light"] {
+  --color-heading: #1a1a1a;
+  --color-body: #333333;
+  --color-accent: #2563eb;
+  --color-muted: #666666;
+  --color-border: #d1d5db;
+  --color-background: #ffffff;
+}
+
+[data-theme="light"] body {
+  background: #f3f4f6;
+}
+
+[data-theme="light"] .skill {
+  background: #f3f4f6;
 }
 
 body {
@@ -264,6 +299,55 @@ h3 {
   color: var(--color-body);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: var(--color-background);
+  color: var(--color-body);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  background: var(--color-border);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Show only the active theme icon */
+.theme-icon {
+  display: none;
+}
+
+/* Default to system icon when no data-theme set */
+[data-theme="system"] .theme-icon[data-icon="system"],
+:root:not([data-theme]) .theme-icon[data-icon="system"] {
+  display: inline;
+}
+
+[data-theme="light"] .theme-icon[data-icon="light"] {
+  display: inline;
+}
+
+[data-theme="dark"] .theme-icon[data-icon="dark"] {
+  display: inline;
+}
+
 /* Print styles for PDF generation */
 @page {
   size: A4 portrait;
@@ -293,5 +377,10 @@ h3 {
   /* Ensure links are visible when printed */
   a[href]::after {
     content: none; /* Don't show URL - ATS will parse the href */
+  }
+
+  /* Hide theme toggle in print */
+  .theme-toggle {
+    display: none !important;
   }
 }

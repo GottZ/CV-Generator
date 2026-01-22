@@ -129,6 +129,13 @@ Plans:
 4. Images in CV render correctly in PDF output
 5. Skills section demonstrates acronym pattern (full form with abbreviation)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Puppeteer PDF core (browser manager, PDF generator, ATS-safe print CSS)
+- [ ] 04-02-PLAN.md — PDF metadata and bookmarks (pdf-lib metadata, outline-pdf bookmarks)
+- [ ] 04-03-PLAN.md — Build command integration (PDF format support, retry logic, skip flags)
+
 ---
 
 ## Phase 5: DOCX Output
@@ -258,4 +265,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 3 complete)*
+*Last updated: 2026-01-22 (Phase 4 planned)*

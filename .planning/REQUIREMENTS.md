@@ -9,15 +9,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Output Formats
 
-- [ ] **OUT-01**: CLI generates PDF output via Puppeteer with ATS-optimized text layers
+- [x] **OUT-01**: CLI generates PDF output via Puppeteer with ATS-optimized text layers
 - [x] **OUT-02**: CLI generates HTML output with fully embedded CSS (self-contained single file)
 - [ ] **OUT-03**: CLI generates DOCX output with proper Word styles (Heading 1/2, Normal)
 - [x] **OUT-04**: Output files named `{name}_{template}.{format}` (e.g., `johndoe_modern.pdf`)
 - [x] **OUT-05**: Regeneration overwrites existing output files
 - [x] **OUT-06**: Output written to `/people/[name]/output/` directory
-- [ ] **OUT-07**: PDF and DOCX include configurable header/footer for page identification (e.g., "Name - Page X of Y")
+- [x] **OUT-07**: PDF and DOCX include configurable header/footer for page identification (e.g., "Name - Page X of Y")
 - [x] **OUT-08**: HTML output base64 encodes images for self-contained file
-- [ ] **OUT-09**: PDF output embeds images properly
+- [x] **OUT-09**: PDF output embeds images properly
 - [ ] **OUT-10**: DOCX output embeds images properly
 
 ### Template System
@@ -55,7 +55,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### ATS Optimization
 
-- [ ] **ATS-01**: PDF text layers are copy-paste verifiable (no garbled characters)
+- [x] **ATS-01**: PDF text layers are copy-paste verifiable (no garbled characters)
 - [x] **ATS-02**: All contact info in main body (not headers/footers)
 - [x] **ATS-03**: No tables used for layout (CSS/flexbox only)
 - [ ] **ATS-04**: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")

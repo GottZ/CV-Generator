@@ -12,12 +12,12 @@ import {
 	Document,
 	Footer,
 	Header,
-	HeadingLevel,
 	Packer,
 	PageNumber,
 	Paragraph,
 	TextRun,
 } from 'docx';
+import { buildDocumentContent } from './docx-sections.ts';
 
 /**
  * Options for DOCX generation.
@@ -29,6 +29,8 @@ export interface DocxOptions {
 	locale: string;
 	/** Absolute path for output .docx file */
 	outputPath: string;
+	/** Optional directory containing profile images */
+	imagesDir?: string;
 }
 
 /**
@@ -129,11 +131,14 @@ function createFooter(name: string, locale: string): Footer {
  * @returns Promise<DocxResult> - Generated DOCX info
  */
 export async function generateDocx(options: DocxOptions): Promise<DocxResult> {
-	const { cv, locale, outputPath } = options;
+	const { cv, locale, outputPath, imagesDir } = options;
 	const name = cv.contact.name;
 
 	// Create footer with native Word field codes
 	const footer = createFooter(name, locale);
+
+	// Build document content from CV data with section builders
+	const children = await buildDocumentContent(cv, locale, imagesDir);
 
 	// Create document with metadata properties
 	const doc = new Document({
@@ -156,13 +161,7 @@ export async function generateDocx(options: DocxOptions): Promise<DocxResult> {
 				footers: {
 					default: footer,
 				},
-				// Placeholder content - full section content added in Plan 02
-				children: [
-					new Paragraph({
-						text: name,
-						heading: HeadingLevel.HEADING_1,
-					}),
-				],
+				children,
 			},
 		],
 	});

@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 5 Plan 02 complete
+**Session:** Phase 5 complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 5 - DOCX Output (in progress)
+**Current Focus:** Phase 5 - DOCX Output (COMPLETE)
 
 ## Current Position
 
 **Phase:** 5 of 8 - DOCX Output
-**Plan:** 2 of 3 complete
-**Status:** In progress
-**Last activity:** 2026-01-22 - Completed 05-02-PLAN.md (Section content and images)
+**Plan:** 3 of 3 complete
+**Status:** Phase complete
+**Last activity:** 2026-01-22 - Completed 05-03-PLAN.md (Build command integration)
 
 **Progress:**
 ```
@@ -22,21 +22,21 @@ Phase 1: [##########] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
-Phase 5: [######....] 67% - DOCX Output (2/3 plans)
+Phase 5: [##########] 100% - DOCX Output (3/3 plans) COMPLETE
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 4/8 phases complete (14/~24 plans complete, ~58%)
+**Overall:** 5/8 phases complete (15/~24 plans complete, ~63%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 15 |
-| Plans Completed | 14 |
-| Requirements Delivered | 27/41 (Phase 1-4 complete) |
+| Plans Completed | 15 |
+| Requirements Delivered | 30/41 (Phase 1-5 complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -81,6 +81,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | docx-heading-levels | Use HeadingLevel.HEADING_1/2 for Navigation Pane support | 2026-01-22 |
 | docx-image-type-required | ImageRun requires explicit type (jpg/png/gif/bmp) from sharp metadata | 2026-01-22 |
 | docx-section-builders | Pure functions returning Paragraph[] for each CV section | 2026-01-22 |
+| docx-direct-from-cvdata | DOCX builds directly from CVData (no HTML intermediate) | 2026-01-22 |
+| commander-negated-options | Commander --no-* flags need explicit definition and manual check | 2026-01-22 |
 
 ### Technical Context
 
@@ -180,7 +182,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Plan Phase 5 with `/gsd:plan-phase 5`
 - [x] Execute 05-01-PLAN.md (DOCX generator core)
 - [x] Execute 05-02-PLAN.md (Section content and images)
-- [ ] Execute 05-03-PLAN.md (Build command integration)
+- [x] Execute 05-03-PLAN.md (Build command integration)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
 
@@ -205,6 +207,7 @@ None currently.
 - Packer.toBlob() is browser-only; use Packer.toBuffer() for Node/Bun
 - docx ImageRun requires explicit type property (jpg/png/gif/bmp) - map from sharp format
 - docx ImageRun without transformation dimensions creates corrupt files
+- Commander.js --no-* flags need explicit .option() definition and manual `options.flag === false` check
 
 ### Quick Tasks Completed
 
@@ -220,17 +223,19 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 05-03-PLAN.md (Build command integration for DOCX).
+**Immediate next step:** Plan Phase 6 (CLI Commands) with `/gsd:plan-phase 6`.
 
 **Context to remember:**
-- Phases 1-4 complete: monorepo, schema, parser, templates, HTML output, PDF output all working
-- Phase 5 Plans 01-02 complete: DOCX generation fully implemented with all CV sections
-- Build command: `cvgen build <name> <template>` generates HTML and PDF files (DOCX pending Plan 05-03)
+- Phases 1-5 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output all working
+- Build command: `cvgen build <name> <template>` generates HTML, PDF, and DOCX files
 - HTML files are self-contained with embedded CSS and base64 images
 - PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
-- DOCX generation complete: all CV sections render with proper Word styles
-- docx-generator.ts exports: generateDocx, DocxOptions, DocxResult
-- docx-sections.ts exports: buildDocumentContent, loadImageForDocx
+- DOCX files have Word Navigation Pane support, proper headings, and native page numbering
+
+**Known gaps for future work:**
+- DOCX CSS styling gap: Output doesn't reflect template CSS (alignment, colors, spacing)
+  - Recommended fix: Puppeteer-based layout extraction to match HTML/PDF styling
+- DOCX linebreak quirk: Linebreaks may not render as expected, needs investigation
 
 ### Files to Reference
 
@@ -253,8 +258,9 @@ None currently.
 - `/workspace/.planning/phases/04-pdf-output/04-03-SUMMARY.md` - Plan 04-03 completion
 - `/workspace/.planning/phases/05-docx-output/05-01-SUMMARY.md` - Plan 05-01 completion
 - `/workspace/.planning/phases/05-docx-output/05-02-SUMMARY.md` - Plan 05-02 completion
+- `/workspace/.planning/phases/05-docx-output/05-03-SUMMARY.md` - Plan 05-03 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 5 Plan 02 complete)*
+*Last updated: 2026-01-22 (Phase 5 complete)*

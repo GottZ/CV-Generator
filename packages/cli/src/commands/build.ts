@@ -2,6 +2,7 @@ import path from 'node:path';
 import type { CVData } from '@gottz/cv-core';
 import { parseCV } from '@gottz/cv-core';
 import { discoverTemplates, renderCV } from '@gottz/cv-templates';
+import { closeBrowser } from '../lib/browser-manager.ts';
 import {
 	type ConsoleResult,
 	createConsole,
@@ -12,6 +13,9 @@ import { createWatcher, parseWatchFilter } from '../lib/file-watcher.ts';
 import { templateNotFoundError } from '../lib/fuzzy-matcher.ts';
 import { embedImages } from '../lib/html-embedder.ts';
 import { type WriteResult, writeOutput } from '../lib/output-writer.ts';
+import { addPdfBookmarks, getDefaultSections } from '../lib/pdf-bookmarks.ts';
+import { generatePdf } from '../lib/pdf-generator.ts';
+import { setPdfMetadata } from '../lib/pdf-metadata.ts';
 
 export interface BuildOptions {
 	format?: string;
@@ -21,6 +25,8 @@ export interface BuildOptions {
 	sequential?: boolean;
 	quiet?: boolean;
 	json?: boolean;
+	htmlOnly?: boolean;
+	noPdf?: boolean;
 }
 
 // Exit codes per CONTEXT.md
@@ -163,32 +169,79 @@ async function runBuild(
 		throw err;
 	}
 
-	// 5. Determine formats to build (only html for now)
-	const formats = (options.format ?? 'html,pdf,docx')
+	// 5. Determine formats to build
+	let formats = (options.format ?? 'html,pdf,docx')
 		.split(',')
 		.map((f) => f.trim());
-	const supportedFormats = ['html']; // PDF and DOCX added in later phases
+	const supportedFormats = ['html', 'pdf'];
+
+	// Handle --html-only and --no-pdf flags
+	if (options.htmlOnly || options.noPdf) {
+		formats = formats.filter((f) => f !== 'pdf');
+	}
 
 	// 6. Build for each locale and format
-	for (const locale of localesToBuild) {
-		for (const format of formats) {
-			if (!supportedFormats.includes(format)) {
-				warnings.push(`Format "${format}" not yet supported, skipping`);
-				continue;
-			}
+	// Track HTML paths for PDF generation (PDF requires HTML first)
+	const htmlPaths: Map<string, string> = new Map();
 
-			if (format === 'html') {
-				const result = await buildHtml(
-					cv,
-					locale,
-					templateId,
-					personDir,
-					templatesDir,
-				);
-				results.push(result.writeResult);
-				warnings.push(...result.warnings);
+	try {
+		for (const locale of localesToBuild) {
+			for (const format of formats) {
+				if (!supportedFormats.includes(format)) {
+					warnings.push(`Format "${format}" not yet supported, skipping`);
+					continue;
+				}
+
+				if (format === 'html') {
+					const result = await buildHtml(
+						cv,
+						locale,
+						templateId,
+						personDir,
+						templatesDir,
+					);
+					results.push(result.writeResult);
+					warnings.push(...result.warnings);
+					// Store HTML path for PDF generation
+					htmlPaths.set(locale, result.writeResult.path);
+				}
+
+				if (format === 'pdf') {
+					// Ensure HTML exists (build if needed)
+					let htmlPath = htmlPaths.get(locale);
+					if (!htmlPath) {
+						const htmlResult = await buildHtml(
+							cv,
+							locale,
+							templateId,
+							personDir,
+							templatesDir,
+						);
+						htmlPath = htmlResult.writeResult.path;
+						// Don't add HTML to results if user only requested PDF
+						if (formats.includes('html')) {
+							results.push(htmlResult.writeResult);
+						}
+						warnings.push(...htmlResult.warnings);
+						htmlPaths.set(locale, htmlPath);
+					}
+
+					const pdfResult = await buildPdf(
+						cv,
+						locale,
+						templateId,
+						personDir,
+						htmlPath,
+						cons,
+					);
+					results.push(pdfResult.writeResult);
+					warnings.push(...pdfResult.warnings);
+				}
 			}
 		}
+	} finally {
+		// Always close browser to free resources (RESEARCH.md Pitfall 5)
+		await closeBrowser();
 	}
 
 	// 7. Output results
@@ -249,6 +302,139 @@ async function buildHtml(
 	const writeResult = await writeOutput(outputDir, filename, embedResult.html);
 
 	return { writeResult, warnings };
+}
+
+/**
+ * Retry configuration for PDF generation.
+ */
+interface RetryOptions {
+	maxRetries: number;
+	initialTimeoutMs: number;
+	backoffMultiplier: number;
+}
+
+/**
+ * Execute an operation with retry logic and exponential backoff.
+ *
+ * @param operation - Async function that takes timeout and returns result
+ * @param options - Retry configuration
+ * @param cons - Console for logging
+ * @returns Promise<T> - Result of successful operation
+ */
+async function withRetry<T>(
+	operation: (timeoutMs: number) => Promise<T>,
+	options: RetryOptions = {
+		maxRetries: 3,
+		initialTimeoutMs: 30000,
+		backoffMultiplier: 2,
+	},
+	cons: ConsoleResult,
+): Promise<T> {
+	let lastError: Error | null = null;
+	let timeoutMs = options.initialTimeoutMs;
+
+	for (let attempt = 1; attempt <= options.maxRetries; attempt++) {
+		try {
+			return await operation(timeoutMs);
+		} catch (error) {
+			lastError = error as Error;
+			cons.warn(
+				`PDF generation attempt ${attempt}/${options.maxRetries} failed: ${lastError.message}`,
+			);
+
+			if (attempt < options.maxRetries) {
+				timeoutMs *= options.backoffMultiplier;
+				cons.info(`Retrying with ${timeoutMs}ms timeout...`);
+			}
+		}
+	}
+
+	throw lastError ?? new Error('PDF generation failed after retries');
+}
+
+/**
+ * Build PDF output for a single locale.
+ *
+ * Generates PDF from HTML with metadata and bookmarks.
+ * Uses retry logic for reliability.
+ */
+async function buildPdf(
+	cv: CVData,
+	locale: string,
+	templateId: string,
+	personDir: string,
+	htmlPath: string,
+	cons: ConsoleResult,
+): Promise<{ writeResult: WriteResult; warnings: string[] }> {
+	const warnings: string[] = [];
+
+	// Determine output filename and path
+	const slug = cv.contact.slug?.trim() || path.basename(personDir);
+	const filename = `${slug}_${templateId}_${locale}.pdf`;
+	const outputPath = path.join(personDir, 'output', filename);
+
+	// Step 1: Generate initial PDF with retry logic
+	cons.info('Generating PDF...');
+
+	try {
+		const pdfResult = await withRetry(
+			(timeout) =>
+				generatePdf({
+					htmlPath,
+					outputPath,
+					name: cv.contact.name,
+					locale,
+					timeout,
+				}),
+			{ maxRetries: 3, initialTimeoutMs: 30000, backoffMultiplier: 2 },
+			cons,
+		);
+
+		// Read generated PDF buffer for post-processing
+		const pdfArrayBuffer = await Bun.file(pdfResult.path).arrayBuffer();
+		let pdfData: Buffer = Buffer.from(pdfArrayBuffer);
+
+		// Step 2: Add metadata
+		cons.info('Adding PDF metadata...');
+		pdfData = await setPdfMetadata(pdfData, {
+			title: `${cv.contact.name} - CV`,
+			author: cv.contact.name,
+			subject: 'Curriculum Vitae',
+		});
+
+		// Step 3: Add bookmarks
+		cons.info('Adding PDF bookmarks...');
+		const sections = getDefaultSections(locale);
+		pdfData = await addPdfBookmarks(pdfData, sections);
+
+		// Step 4: Write final processed PDF
+		await Bun.write(outputPath, pdfData);
+
+		// Check if file existed before (always false here since we just wrote it)
+		const overwritten = pdfResult.bytes > 0;
+
+		return {
+			writeResult: {
+				path: outputPath,
+				bytes: pdfData.length,
+				overwritten,
+			},
+			warnings,
+		};
+	} catch (error) {
+		// Clean up partial PDF on failure
+		try {
+			const partialFile = Bun.file(outputPath);
+			if (await partialFile.exists()) {
+				// Delete the file using fs/promises
+				const { unlink } = await import('node:fs/promises');
+				await unlink(outputPath);
+			}
+		} catch {
+			// Ignore cleanup errors
+		}
+		throw error;
+	}
 }
 
 /**

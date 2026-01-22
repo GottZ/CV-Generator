@@ -2,7 +2,7 @@
  * Tests for DOCX linebreak handling in section builders.
  *
  * Linebreak behavior in DOCX:
- * - Single \n: Creates line break within paragraph (TextRun with break: 1)
+ * - Single \n: Creates line break within paragraph (TextRun with w:br element)
  * - Double \n\n: Creates separate paragraphs
  * - Bullets: Content after bullet marker respects single newlines
  * - Windows \r\n: Normalized to \n for consistent handling
@@ -10,33 +10,56 @@
 
 import { describe, expect, it } from 'bun:test';
 import type { CVData } from '@gottz/cv-core';
-import type { Paragraph } from 'docx';
+import type { Paragraph, TextRun } from 'docx';
 import { buildDocumentContent, textWithBreaks } from '../docx-sections';
 
-/** Internal TextRun options structure for testing */
-interface TextRunOptions {
-	text?: string;
-	break?: number;
-	bold?: boolean;
+/** Internal element structure with rootKey for docx library */
+interface InternalElement {
+	rootKey: string;
+	root?: (string | InternalElement)[];
 }
 
 /**
- * Helper to count TextRun objects with break: 1 in paragraphs.
- * Inspects the internal children array of each Paragraph.
+ * Check if a TextRun has a break element (w:br).
+ * The docx library stores break as a Break element in the root array.
+ */
+function hasBreak(run: TextRun): boolean {
+	const internalRun = run as unknown as { root: InternalElement[] };
+	return internalRun.root?.some((el) => el.rootKey === 'w:br') ?? false;
+}
+
+/**
+ * Get the text content from a TextRun.
+ * Text is stored in a Text element (w:t) in the root array.
+ */
+function getText(run: TextRun): string | undefined {
+	const internalRun = run as unknown as { root: InternalElement[] };
+	const textEl = internalRun.root?.find((el) => el.rootKey === 'w:t');
+	if (textEl?.root) {
+		// Text content is the second item in the root array (first is attributes)
+		return textEl.root[1] as string;
+	}
+	return undefined;
+}
+
+/**
+ * Helper to count line breaks (w:br elements) in paragraphs.
+ * Inspects the internal root array of TextRun children.
  */
 function countLineBreaks(paragraphs: Paragraph[]): number {
 	let count = 0;
 	for (const p of paragraphs) {
-		// Access internal root/children structure
-		const root = (p as unknown as { root: unknown[] }).root;
-		if (!root) continue;
+		const internalP = p as unknown as { root: InternalElement[] };
+		if (!internalP.root) continue;
 
-		for (const child of root) {
-			// TextRun has options with break property
-			const options = (child as unknown as { options?: TextRunOptions })
-				.options;
-			if (options?.break === 1) {
-				count++;
+		for (const child of internalP.root) {
+			// TextRun elements have root arrays
+			if (child.rootKey === 'w:r' && child.root) {
+				// Check for break element in the TextRun's root
+				const hasBreakEl = child.root.some(
+					(el) => typeof el === 'object' && el.rootKey === 'w:br',
+				);
+				if (hasBreakEl) count++;
 			}
 		}
 	}
@@ -49,15 +72,21 @@ function countLineBreaks(paragraphs: Paragraph[]): number {
 function extractText(paragraphs: Paragraph[]): string[] {
 	const texts: string[] = [];
 	for (const p of paragraphs) {
-		const root = (p as unknown as { root: unknown[] }).root;
-		if (!root) continue;
+		const internalP = p as unknown as { root: InternalElement[] };
+		if (!internalP.root) continue;
 
 		let paragraphText = '';
-		for (const child of root) {
-			const options = (child as unknown as { options?: TextRunOptions })
-				.options;
-			if (options?.text) {
-				paragraphText += options.text;
+		for (const child of internalP.root) {
+			if (child.rootKey === 'w:r' && child.root) {
+				// Find text element in TextRun
+				for (const el of child.root) {
+					if (typeof el === 'object' && el.rootKey === 'w:t' && el.root) {
+						const textContent = el.root[1];
+						if (typeof textContent === 'string') {
+							paragraphText += textContent;
+						}
+					}
+				}
 			}
 		}
 		if (paragraphText) {
@@ -72,8 +101,7 @@ describe('DOCX linebreak handling', () => {
 		it('returns single TextRun for text without newlines', () => {
 			const runs = textWithBreaks('Hello world');
 			expect(runs).toHaveLength(1);
-			const first = runs[0] as unknown as { options: TextRunOptions };
-			expect(first.options.text).toBe('Hello world');
+			expect(getText(runs[0]!)).toBe('Hello world');
 		});
 
 		it('creates line break for single newline', () => {
@@ -81,14 +109,12 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(2);
 
 			// First line - no break
-			const first = runs[0] as unknown as { options: TextRunOptions };
-			expect(first.options.text).toBe('Line one');
-			expect(first.options.break).toBeUndefined();
+			expect(getText(runs[0]!)).toBe('Line one');
+			expect(hasBreak(runs[0]!)).toBe(false);
 
-			// Second line - has break
-			const second = runs[1] as unknown as { options: TextRunOptions };
-			expect(second.options.text).toBe('Line two');
-			expect(second.options.break).toBe(1);
+			// Second line - has break (w:br element)
+			expect(getText(runs[1]!)).toBe('Line two');
+			expect(hasBreak(runs[1]!)).toBe(true);
 		});
 
 		it('handles multiple single newlines', () => {
@@ -96,10 +122,9 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(3);
 
 			// Lines 2 and 3 should have breaks
-			const line2 = runs[1] as unknown as { options: TextRunOptions };
-			const line3 = runs[2] as unknown as { options: TextRunOptions };
-			expect(line2.options.break).toBe(1);
-			expect(line3.options.break).toBe(1);
+			expect(hasBreak(runs[0]!)).toBe(false);
+			expect(hasBreak(runs[1]!)).toBe(true);
+			expect(hasBreak(runs[2]!)).toBe(true);
 		});
 
 		it('skips empty lines (no empty TextRuns)', () => {
@@ -112,33 +137,34 @@ describe('DOCX linebreak handling', () => {
 			const runs = textWithBreaks('Bold line\nAnother bold', { bold: true });
 			expect(runs).toHaveLength(2);
 
+			// Check that bold formatting is applied
+			// Bold is stored in w:rPr > w:b element
 			for (const run of runs) {
-				const options = (run as unknown as { options: { bold: boolean } })
-					.options;
-				expect(options.bold).toBe(true);
+				const internalRun = run as unknown as { root: InternalElement[] };
+				const rPr = internalRun.root?.find((el) => el.rootKey === 'w:rPr');
+				const hasBold = rPr?.root?.some(
+					(el) => typeof el === 'object' && el.rootKey === 'w:b',
+				);
+				expect(hasBold).toBe(true);
 			}
 		});
 
 		it('normalizes Windows newlines (\\r\\n)', () => {
 			const runs = textWithBreaks('Windows\r\nline breaks');
 			expect(runs).toHaveLength(2);
-
-			const second = runs[1] as unknown as { options: TextRunOptions };
-			expect(second.options.break).toBe(1);
+			expect(hasBreak(runs[1]!)).toBe(true);
 		});
 
 		it('handles trailing newlines without creating empty TextRuns', () => {
 			const runs = textWithBreaks('Content\n');
 			expect(runs).toHaveLength(1);
-			const first = runs[0] as unknown as { options: TextRunOptions };
-			expect(first.options.text).toBe('Content');
+			expect(getText(runs[0]!)).toBe('Content');
 		});
 
 		it('handles leading newlines', () => {
 			const runs = textWithBreaks('\nContent');
 			expect(runs).toHaveLength(1);
-			const first = runs[0] as unknown as { options: TextRunOptions };
-			expect(first.options.break).toBe(1);
+			expect(hasBreak(runs[0]!)).toBe(true);
 		});
 	});
 
@@ -214,15 +240,10 @@ describe('DOCX linebreak handling', () => {
 
 			const paragraphs = await buildDocumentContent(cv, 'en');
 
-			// Find bullet paragraph (after Experience heading, company line, date line)
+			// Find bullet paragraph by checking text content contains bullet character
 			const bulletParagraphs = paragraphs.filter((p) => {
-				const root = (p as unknown as { root: unknown[] }).root;
-				if (!root || root.length === 0) return false;
-
-				const firstChild = root[0] as unknown as {
-					options?: { text?: string };
-				};
-				return firstChild.options?.text?.startsWith('\u2022');
+				const texts = extractText([p]);
+				return texts.some((t) => t.startsWith('\u2022'));
 			});
 
 			expect(bulletParagraphs.length).toBe(1);
@@ -251,13 +272,8 @@ describe('DOCX linebreak handling', () => {
 			const paragraphs = await buildDocumentContent(cv, 'en');
 
 			const bulletParagraphs = paragraphs.filter((p) => {
-				const root = (p as unknown as { root: unknown[] }).root;
-				if (!root || root.length === 0) return false;
-
-				const firstChild = root[0] as unknown as {
-					options?: { text?: string };
-				};
-				return firstChild.options?.text?.startsWith('\u2022');
+				const texts = extractText([p]);
+				return texts.some((t) => t.startsWith('\u2022'));
 			});
 
 			// Should have 2 line breaks (for 3 lines)
@@ -379,7 +395,7 @@ describe('DOCX linebreak handling', () => {
 
 			const paragraphs = await buildDocumentContent(cv, 'en');
 
-			// Find notes paragraph
+			// Find notes paragraph by content
 			const notesParagraphs = paragraphs.filter((p) => {
 				const texts = extractText([p]);
 				return texts.some((t) => t.includes('Note line'));

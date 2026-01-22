@@ -1,0 +1,19 @@
+{
+	"name": "@gottz/cv-templates",
+	"version": "0.1.0",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"test": "bun test"
+	},
+	"dependencies": {
+		"@gottz/cv-core": "workspace:*",
+		"dayjs": "^1.11.13",
+		"nunjucks": "^3.2.4"
+	},
+	"devDependencies": {
+		"@types/nunjucks": "^3.2.6"
+	}
+}

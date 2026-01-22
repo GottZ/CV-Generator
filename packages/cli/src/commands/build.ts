@@ -9,6 +9,7 @@ import {
 	type JsonOutput,
 	outputJson,
 } from '../lib/console.ts';
+import { generateDocx } from '../lib/docx-generator.ts';
 import { createWatcher, parseWatchFilter } from '../lib/file-watcher.ts';
 import { templateNotFoundError } from '../lib/fuzzy-matcher.ts';
 import { embedImages } from '../lib/html-embedder.ts';
@@ -173,7 +174,7 @@ async function runBuild(
 	let formats = (options.format ?? 'html,pdf,docx')
 		.split(',')
 		.map((f) => f.trim());
-	const supportedFormats = ['html', 'pdf'];
+	const supportedFormats = ['html', 'pdf', 'docx'];
 
 	// Handle --html-only and --no-pdf flags
 	if (options.htmlOnly || options.noPdf) {
@@ -236,6 +237,18 @@ async function runBuild(
 					);
 					results.push(pdfResult.writeResult);
 					warnings.push(...pdfResult.warnings);
+				}
+
+				if (format === 'docx') {
+					const docxResult = await buildDocx(
+						cv,
+						locale,
+						templateId,
+						personDir,
+						cons,
+					);
+					results.push(docxResult.writeResult);
+					warnings.push(...docxResult.warnings);
 				}
 			}
 		}
@@ -435,6 +448,45 @@ async function buildPdf(
 		}
 		throw error;
 	}
+}
+
+/**
+ * Build DOCX output for a single locale.
+ *
+ * Generates DOCX directly from CV data (no HTML intermediate).
+ * Simpler than PDF - no browser, no retry logic needed.
+ */
+async function buildDocx(
+	cv: CVData,
+	locale: string,
+	templateId: string,
+	personDir: string,
+	cons: ConsoleResult,
+): Promise<{ writeResult: WriteResult; warnings: string[] }> {
+	const warnings: string[] = [];
+
+	const slug = cv.contact.slug?.trim() || path.basename(personDir);
+	const filename = `${slug}_${templateId}_${locale}.docx`;
+	const outputPath = path.join(personDir, 'output', filename);
+	const imagesDir = path.join(personDir, 'images');
+
+	cons.info('Generating DOCX...');
+
+	const result = await generateDocx({
+		cv,
+		locale,
+		outputPath,
+		imagesDir,
+	});
+
+	return {
+		writeResult: {
+			path: result.path,
+			bytes: result.bytes,
+			overwritten: false, // Could check file existence before
+		},
+		warnings,
+	};
 }
 
 /**

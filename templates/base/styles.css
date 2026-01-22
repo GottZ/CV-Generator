@@ -1,0 +1,288 @@
+/* CV Generator - Base Template Styles
+ * ATS-compliant: single-column, standard fonts, semantic structure
+ * TMPL-01, TMPL-03, ATS-03
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Typography - standard fonts only (TMPL-03) */
+  --font-heading: Arial, Helvetica, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-size-name: 24pt;
+  --font-size-section: 14pt;
+  --font-size-subsection: 12pt;
+  --font-size-body: 11pt;
+  --font-size-small: 10pt;
+
+  /* Colors (semantic names) */
+  --color-heading: #1a1a1a;
+  --color-body: #333333;
+  --color-accent: #2563eb;
+  --color-muted: #666666;
+  --color-border: #d1d5db;
+  --color-background: #ffffff;
+
+  /* Spacing scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Page dimensions (A4) */
+  --page-width: 210mm;
+  --page-height: 297mm;
+  --page-margin: 20mm;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-heading: #f0f0f0;
+    --color-body: #e0e0e0;
+    --color-accent: #60a5fa;
+    --color-muted: #a0a0a0;
+    --color-border: #4b5563;
+    --color-background: #1f2937;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-body);
+  line-height: 1.5;
+  background: #f3f4f6;
+}
+
+/* Page container - A4 dimensions for preview */
+.cv-page {
+  width: var(--page-width);
+  min-height: var(--page-height);
+  padding: var(--page-margin);
+  background: var(--color-background);
+  margin: var(--spacing-lg) auto;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact header - in body, not <header> element (ATS-02) */
+.contact {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* Name as h1 (ATS-05) */
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-name);
+  color: var(--color-heading);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  color: var(--color-muted);
+  font-size: var(--font-size-body);
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item:not(:last-child)::after {
+  content: '|';
+  margin-left: var(--spacing-sm);
+  color: var(--color-border);
+}
+
+.contact-links {
+  margin-top: var(--spacing-xs);
+}
+
+.contact-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-right: var(--spacing-md);
+  font-size: var(--font-size-body);
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Single column layout (TMPL-01, ATS-03) */
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section headers as h2 (ATS-05) */
+.section {
+  margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-section);
+  color: var(--color-heading);
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Entry components (experience, education) */
+.entry {
+  margin-bottom: var(--spacing-md);
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+h3 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-subsection);
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.entry-title {
+  flex: 1;
+}
+
+.date-range {
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+  white-space: nowrap;
+}
+
+.entry-institution {
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.entry-location {
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--spacing-xs);
+}
+
+.entry-honors {
+  font-style: italic;
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+}
+
+.entry-notes {
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+  margin-top: var(--spacing-xs);
+}
+
+/* CSS bullet list (not ul/li - per CONTEXT.md) */
+.bullet-list {
+  margin-top: var(--spacing-sm);
+}
+
+.bullet-item {
+  padding-left: var(--spacing-md);
+  position: relative;
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.4;
+}
+
+.bullet-item::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--color-body);
+}
+
+.bullet-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Summary section */
+.summary-text {
+  line-height: 1.6;
+}
+
+/* Skills section */
+.skill-category {
+  margin-bottom: var(--spacing-md);
+}
+
+.skill-category:last-child {
+  margin-bottom: 0;
+}
+
+.skill-category-name {
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-heading);
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.skill {
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-small);
+  color: var(--color-body);
+}
+
+/* Print styles for PDF generation */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .cv-page {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .section {
+    page-break-inside: avoid;
+  }
+
+  .entry {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure links are visible when printed */
+  a[href]::after {
+    content: none; /* Don't show URL - ATS will parse the href */
+  }
+}

@@ -152,6 +152,13 @@ Plans:
 3. Navigation Pane in Word shows document structure from headings
 4. Images in CV render correctly in DOCX output
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — DOCX generator core (docx library, footer with Word field codes, document metadata)
+- [ ] 05-02-PLAN.md — Section content and images (all CV sections, HeadingLevel styles, ImageRun embedding)
+- [ ] 05-03-PLAN.md — Build command integration (DOCX format support, --no-docx flag)
+
 ---
 
 ## Phase 6: CLI Commands
@@ -265,4 +272,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 4 complete)*
+*Last updated: 2026-01-22 (Phase 5 planned)*

@@ -15,7 +15,7 @@ Each phase delivers a verifiable capability. Phase dependencies ensure that foun
 
 ## Phase 1: Foundation + Data Schema
 
-**Goal:** Establish project structure and define the core data model that all other components depend on.
+**Goal:** Establish Bun monorepo with TypeScript, define CVData schema, and implement markdown parser with multi-language support.
 
 **Dependencies:** None (first phase)
 
@@ -31,11 +31,18 @@ Each phase delivers a verifiable capability. Phase dependencies ensure that foun
 - REPO-03: .gitignore protects `/people/` directory from commits
 
 **Success Criteria:**
-1. TypeScript project compiles and runs with `npm start`
+1. TypeScript project compiles and runs with `bun run typecheck`
 2. CVData interface validates sample markdown with all basic sections (contact, summary, work, education, skills)
 3. Parser extracts structured data from markdown frontmatter and body
 4. Missing sections in input produce no errors and no empty sections in output
 5. LICENSE and .gitignore files exist and protect personal data
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffolding (monorepo, TypeScript, Biome, LICENSE, .gitignore)
+- [ ] 01-02-PLAN.md — CVData schema (TypeScript interfaces for all sections)
+- [ ] 01-03-PLAN.md — Markdown parser (frontmatter + section extraction with language tags)
 
 ---
 
@@ -193,7 +200,7 @@ Each phase delivers a verifiable capability. Phase dependencies ensure that foun
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Foundation + Data Schema | 9 | Pending |
+| 1 | Foundation + Data Schema | 9 | Planned |
 | 2 | Template Engine | 7 | Pending |
 | 3 | HTML Output | 8 | Pending |
 | 4 | PDF Output | 5 | Pending |

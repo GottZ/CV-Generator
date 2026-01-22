@@ -14,7 +14,7 @@
 **Phase:** 3 of 8 - HTML Output
 **Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-22 - Completed quick task 004 (theme toggle)
+**Last activity:** 2026-01-22 - Completed quick task 005 (system dark mode CSS fix)
 
 **Progress:**
 ```
@@ -170,6 +170,7 @@ None currently.
 | 002 | set up pre-commit hook for Biome linting | 2026-01-22 | (local) | [002-ensure-linting-is-done-appropriately-pri](./quick/002-ensure-linting-is-done-appropriately-pri/) |
 | 003 | fix dark theme background and clean up playwright dependency | 2026-01-22 | 2eeec67 | [003-fix-dark-theme-background-and-clean-up-p](./quick/003-fix-dark-theme-background-and-clean-up-p/) |
 | 004 | add light/dark/system theme toggle to HTML output | 2026-01-22 | 3d8641a | [004-add-light-dark-system-color-toggle-to-ht](./quick/004-add-light-dark-system-color-toggle-to-ht/) |
+| 005 | fix system dark mode CSS differences from explicit dark mode | 2026-01-22 | bc5d0e9 | [005-fix-system-dark-mode-css-differences-fro](./quick/005-fix-system-dark-mode-css-differences-fro/) |
 
 ## Session Continuity
 
@@ -204,4 +205,4 @@ None currently.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (quick task 004 complete)*
+*Last updated: 2026-01-22 (quick task 005 complete)*

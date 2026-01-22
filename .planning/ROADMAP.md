@@ -68,6 +68,13 @@ Plans:
 4. Contact information appears in document body, not headers/footers
 5. Output HTML uses h1 for name, h2 for section headers
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Package scaffolding (@gottz/cv-templates, types, i18n)
+- [ ] 02-02-PLAN.md — Base template files (template.njk, styles.css, config.json)
+- [ ] 02-03-PLAN.md — Engine core (Nunjucks environment, filters, renderCV function)
+
 ---
 
 ## Phase 3: HTML Output
@@ -200,8 +207,8 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Foundation + Data Schema | 9 | ✓ Complete |
-| 2 | Template Engine | 7 | Pending |
+| 1 | Foundation + Data Schema | 9 | Complete |
+| 2 | Template Engine | 7 | Planned |
 | 3 | HTML Output | 8 | Pending |
 | 4 | PDF Output | 5 | Pending |
 | 5 | DOCX Output | 2 | Pending |
@@ -244,4 +251,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 1 complete)*
+*Last updated: 2026-01-22 (Phase 2 planned)*

@@ -1,25 +1,25 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-22
-**Session:** Phase 2 execution
+**Session:** Phase 2 complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 2 - Template Engine (in progress)
+**Current Focus:** Phase 2 - Template Engine (COMPLETE)
 
 ## Current Position
 
-**Phase:** 2 of 8 - Template Engine (IN PROGRESS)
-**Plan:** 2 of 3 complete (02-01-PLAN.md, 02-02-PLAN.md done)
-**Status:** In progress
-**Last activity:** 2026-01-22 - Completed 02-01-PLAN.md (package scaffold and types)
+**Phase:** 2 of 8 - Template Engine (COMPLETE)
+**Plan:** 3 of 3 complete
+**Status:** Phase complete
+**Last activity:** 2026-01-22 - Completed 02-03-PLAN.md (template rendering)
 
 **Progress:**
 ```
 Phase 1: [██████████] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
-Phase 2: [██████....] 67% - Template Engine (2/3 plans)
+Phase 2: [██████████] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [..........] 0% - HTML Output
 Phase 4: [..........] 0% - PDF Output
 Phase 5: [..........] 0% - DOCX Output
@@ -28,15 +28,15 @@ Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 1/8 phases complete (5/~24 plans complete, ~21%)
+**Overall:** 2/8 phases complete (6/~24 plans complete, ~25%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 6 |
-| Plans Completed | 5 |
-| Requirements Delivered | 9/41 (DATA-01 through DATA-05, DATA-09, DATA-10, REPO-02, REPO-03) |
+| Plans Completed | 6 |
+| Requirements Delivered | 11/41 (DATA-*, REPO-02, REPO-03, TMPL-01, i18n-01, i18n-02) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -61,6 +61,10 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | Contact in body | Not HTML header/footer per ATS-02 requirement | 2026-01-22 |
 | i18n-fallback-chain | Locale fallback to English, then to section key for graceful degradation | 2026-01-22 |
 | section-keys | Lowercase canonical keys (summary, experience, education, skills) consistent with parser | 2026-01-22 |
+| marked-for-markdown | Use marked library for markdown rendering in filters | 2026-01-22 |
+| safestring-bypass | Return SafeString from md filters to bypass autoescape | 2026-01-22 |
+| locale-context-flattening | Flatten Localized<T> to T in template context for requested locale | 2026-01-22 |
+| bun-types-global | Add @types/bun to root for node: protocol support | 2026-01-22 |
 
 ### Technical Context
 
@@ -90,6 +94,12 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - DiscoveredTemplate: Resolved template with paths
 - RenderOptions: Rendering parameters (templateId, locale)
 - RenderResult: Output (html, locale, templateId)
+
+**Template Engine (implemented):**
+- createTemplateEnvironment(): Configured Nunjucks with FileSystemLoader
+- discoverTemplates(): Finds templates in /templates/ directory
+- renderCV(): Main entry point for CV-to-HTML rendering
+- Custom filters: formatDate, md, mdBlock, sectionHeader
 
 **i18n (implemented):**
 - getSectionHeader(section, locale): Localized section headers
@@ -125,7 +135,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Plan Phase 2 with `/gsd:plan-phase 2`
 - [x] Execute 02-01-PLAN.md (package scaffold and types)
 - [x] Execute 02-02-PLAN.md (base template files)
-- [ ] Execute 02-03-PLAN.md (template rendering)
+- [x] Execute 02-03-PLAN.md (template rendering)
+- [ ] Plan Phase 3 with `/gsd:plan-phase 3`
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
 
@@ -141,6 +152,8 @@ None currently.
 - Biome organizeImports rule reorders exports alphabetically, scrambling semantic comments
 - TypeScript strict mode requires nullish coalescing for array access and regex match groups
 - nunjucks requires @types/nunjucks for TypeScript support
+- marked.parseInline() avoids <p> wrapping for inline markdown
+- @types/bun includes Node.js types for Bun runtime
 
 ### Quick Tasks Completed
 
@@ -153,16 +166,15 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 02-03-PLAN.md (template rendering) with `/gsd:execute-phase`.
+**Immediate next step:** Plan Phase 3 (HTML Output) with `/gsd:plan-phase 3`.
 
 **Context to remember:**
 - Phase 1 complete: monorepo, schema, parser all working
-- Plan 02-01 complete: @gottz/cv-templates package with types and i18n
-- Plan 02-02 complete: base template files created
-- Base template expects custom Nunjucks filters: sectionHeader, formatDate, md
-- Templates directory structure established at /templates/base/
-- All exports available from @gottz/cv-core and @gottz/cv-templates
-- getSectionHeader(section, locale) returns localized headers
+- Phase 2 complete: templates package with engine, filters, renderCV
+- renderCV(cv, options, templatesDir) produces HTML from CVData
+- Custom filters available: formatDate, md, mdBlock, sectionHeader
+- Base template tested and working
+- Ready for HTML file output (Phase 3) and PDF generation (Phase 4)
 
 ### Files to Reference
 
@@ -175,8 +187,9 @@ None currently.
 - `/workspace/.planning/phases/01-foundation-data-schema/01-03-SUMMARY.md` - Plan 01-03 completion
 - `/workspace/.planning/phases/02-template-engine/02-01-SUMMARY.md` - Plan 02-01 completion
 - `/workspace/.planning/phases/02-template-engine/02-02-SUMMARY.md` - Plan 02-02 completion
+- `/workspace/.planning/phases/02-template-engine/02-03-SUMMARY.md` - Plan 02-03 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (02-01-PLAN.md complete)*
+*Last updated: 2026-01-22 (02-03-PLAN.md complete, Phase 2 complete)*

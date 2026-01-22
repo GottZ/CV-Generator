@@ -1,0 +1,262 @@
+import type {
+	CVData,
+	Education,
+	Localized,
+	ParseError,
+	ParseResult,
+	SkillCategory,
+	WorkExperience,
+} from '../schema/index.ts';
+import { parseFrontmatter } from './frontmatter.ts';
+import { extractSections, type SectionMatch } from './sections.ts';
+
+/**
+ * Parse a complete CV markdown file into structured CVData.
+ *
+ * Per CONTEXT.md:
+ * - Missing sections are skipped silently (DATA-09)
+ * - Unknown sections trigger warning but parsing continues (DATA-10)
+ * - All errors collected before returning (not fail-fast)
+ */
+export function parseCV(markdown: string): ParseResult<CVData> {
+	const errors: ParseError[] = [];
+	const warnings: ParseError[] = [];
+
+	// Step 1: Extract frontmatter (contact info)
+	const frontmatterResult = parseFrontmatter(markdown);
+	errors.push(...frontmatterResult.errors);
+
+	// Step 2: Extract sections with language tags
+	const sectionsResult = extractSections(frontmatterResult.content);
+	warnings.push(...sectionsResult.warnings);
+
+	// Step 3: Group sections by type and language
+	const summary = buildLocalizedSection<string>(
+		sectionsResult.sections,
+		'summary',
+		(content) => content.trim(),
+	);
+
+	const experience = buildLocalizedSection<WorkExperience[]>(
+		sectionsResult.sections,
+		'experience',
+		parseExperienceEntries,
+	);
+
+	const education = buildLocalizedSection<Education[]>(
+		sectionsResult.sections,
+		'education',
+		parseEducationEntries,
+	);
+
+	const skills = buildLocalizedSection<SkillCategory[]>(
+		sectionsResult.sections,
+		'skills',
+		parseSkillCategories,
+	);
+
+	// Build CVData if no errors (warnings are OK)
+	const data: CVData | null =
+		errors.length === 0 && frontmatterResult.contact
+			? {
+					contact: frontmatterResult.contact,
+					...(Object.keys(summary).length > 0 && { summary }),
+					...(Object.keys(experience).length > 0 && { experience }),
+					...(Object.keys(education).length > 0 && { education }),
+					...(Object.keys(skills).length > 0 && { skills }),
+				}
+			: null;
+
+	return { data, errors, warnings };
+}
+
+/**
+ * Build a localized section from matched sections.
+ */
+function buildLocalizedSection<T>(
+	sections: SectionMatch[],
+	sectionType: string,
+	parser: (content: string) => T,
+): Localized<T> {
+	const result: Localized<T> = {};
+
+	for (const section of sections) {
+		if (section.sectionType === sectionType && section.content) {
+			result[section.language] = parser(section.content);
+		}
+	}
+
+	return result;
+}
+
+/**
+ * Parse work experience entries separated by ---.
+ */
+function parseExperienceEntries(content: string): WorkExperience[] {
+	// Split by --- delimiter (entry separator per CONTEXT.md)
+	const entries = content.split(/^---$/m).filter((e) => e.trim());
+
+	return entries.map((entry) => {
+		const lines = entry.trim().split('\n');
+		const experience: WorkExperience = {
+			company: '',
+			role: '',
+			startDate: '',
+			endDate: '',
+			bullets: [],
+		};
+
+		for (const line of lines) {
+			const trimmed = line.trim();
+
+			// ### Role at Company
+			if (trimmed.startsWith('### ')) {
+				const headerMatch = trimmed.match(/^###\s+(.+?)\s+at\s+(.+)$/i);
+				if (headerMatch) {
+					experience.role = (headerMatch[1] ?? '').trim();
+					experience.company = (headerMatch[2] ?? '').trim();
+				} else {
+					// Fallback: use entire header as role
+					experience.role = trimmed.slice(4).trim();
+				}
+			}
+			// *dates | location* format
+			else if (trimmed.startsWith('*') && trimmed.endsWith('*')) {
+				const metaContent = trimmed.slice(1, -1);
+				const parts = metaContent.split('|').map((p) => p.trim());
+
+				if (parts[0]) {
+					const dateMatch = parts[0].match(
+						/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/,
+					);
+					if (dateMatch) {
+						experience.startDate = dateMatch[1] ?? '';
+						experience.endDate = (dateMatch[2] ?? '').trim();
+					}
+				}
+				if (parts[1]) {
+					experience.location = parts[1];
+				}
+			}
+			// - bullet point
+			else if (trimmed.startsWith('- ')) {
+				experience.bullets.push(trimmed.slice(2));
+			}
+		}
+
+		return experience;
+	});
+}
+
+/**
+ * Parse education entries separated by ---.
+ */
+function parseEducationEntries(content: string): Education[] {
+	const entries = content.split(/^---$/m).filter((e) => e.trim());
+
+	return entries.map((entry) => {
+		const lines = entry.trim().split('\n');
+		const education: Education = {
+			institution: '',
+			degree: '',
+			startDate: '',
+			endDate: '',
+		};
+
+		for (const line of lines) {
+			const trimmed = line.trim();
+
+			// ### Degree at Institution
+			if (trimmed.startsWith('### ')) {
+				const headerMatch = trimmed.match(/^###\s+(.+?)\s+at\s+(.+)$/i);
+				if (headerMatch) {
+					education.degree = (headerMatch[1] ?? '').trim();
+					education.institution = (headerMatch[2] ?? '').trim();
+				} else {
+					education.degree = trimmed.slice(4).trim();
+				}
+			}
+			// *dates | location* or *field*
+			else if (trimmed.startsWith('*') && trimmed.endsWith('*')) {
+				const metaContent = trimmed.slice(1, -1);
+
+				// Check if it's a date line or field line
+				if (metaContent.includes('-') && /\d{4}/.test(metaContent)) {
+					const parts = metaContent.split('|').map((p) => p.trim());
+					if (parts[0]) {
+						const dateMatch = parts[0].match(
+							/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/,
+						);
+						if (dateMatch) {
+							education.startDate = dateMatch[1] ?? '';
+							education.endDate = (dateMatch[2] ?? '').trim();
+						}
+					}
+					if (parts[1]) {
+						education.location = parts[1];
+					}
+				} else {
+					// Assume it's the field of study
+					education.field = metaContent;
+				}
+			}
+			// Honors/notes as regular text
+			else if (trimmed && !trimmed.startsWith('#')) {
+				if (!education.notes) {
+					education.notes = trimmed;
+				} else {
+					education.notes += `\n${trimmed}`;
+				}
+			}
+		}
+
+		return education;
+	});
+}
+
+/**
+ * Parse skills into categories.
+ * Expected format:
+ * ### Category Name
+ * - Skill 1
+ * - Skill 2 (level)
+ */
+function parseSkillCategories(content: string): SkillCategory[] {
+	const categories: SkillCategory[] = [];
+	let currentCategory: SkillCategory | null = null;
+
+	for (const line of content.split('\n')) {
+		const trimmed = line.trim();
+
+		// ### Category Name
+		if (trimmed.startsWith('### ')) {
+			if (currentCategory) {
+				categories.push(currentCategory);
+			}
+			currentCategory = {
+				name: trimmed.slice(4).trim(),
+				skills: [],
+			};
+		}
+		// - Skill (optional level)
+		else if (trimmed.startsWith('- ') && currentCategory) {
+			const skillText = trimmed.slice(2);
+			// Check for level in parentheses at end
+			const levelMatch = skillText.match(/^(.+?)\s*\(([^)]+)\)$/);
+			if (levelMatch) {
+				currentCategory.skills.push({
+					name: (levelMatch[1] ?? '').trim(),
+					level: (levelMatch[2] ?? '').trim(),
+				});
+			} else {
+				currentCategory.skills.push({ name: skillText });
+			}
+		}
+	}
+
+	if (currentCategory) {
+		categories.push(currentCategory);
+	}
+
+	return categories;
+}

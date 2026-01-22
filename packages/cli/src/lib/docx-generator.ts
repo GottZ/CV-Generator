@@ -6,6 +6,7 @@
  * for Navigation Pane support.
  */
 
+import path from 'node:path';
 import type { CVData } from '@gottz/cv-core';
 import {
 	AlignmentType,
@@ -18,6 +19,10 @@ import {
 	TextRun,
 } from 'docx';
 import { buildDocumentContent } from './docx-sections.ts';
+import {
+	DEFAULT_DOCX_STYLES,
+	extractStylesFromCss,
+} from './docx-style-extractor.ts';
 
 /**
  * Options for DOCX generation.
@@ -31,6 +36,8 @@ export interface DocxOptions {
 	outputPath: string;
 	/** Optional directory containing profile images */
 	imagesDir?: string;
+	/** Optional path to template directory containing styles.css */
+	templatePath?: string;
 }
 
 /**
@@ -131,14 +138,25 @@ function createFooter(name: string, locale: string): Footer {
  * @returns Promise<DocxResult> - Generated DOCX info
  */
 export async function generateDocx(options: DocxOptions): Promise<DocxResult> {
-	const { cv, locale, outputPath, imagesDir } = options;
+	const { cv, locale, outputPath, imagesDir, templatePath } = options;
 	const name = cv.contact.name;
 
 	// Create footer with native Word field codes
 	const footer = createFooter(name, locale);
 
+	// Load CSS styles from template if available
+	const cssPath = templatePath ? path.join(templatePath, 'styles.css') : null;
+	let styles = DEFAULT_DOCX_STYLES;
+	if (cssPath) {
+		const cssFile = Bun.file(cssPath);
+		if (await cssFile.exists()) {
+			const cssContent = await cssFile.text();
+			styles = extractStylesFromCss(cssContent);
+		}
+	}
+
 	// Build document content from CV data with section builders
-	const children = await buildDocumentContent(cv, locale, imagesDir);
+	const children = await buildDocumentContent(cv, locale, imagesDir, styles);
 
 	// Create document with metadata properties
 	const doc = new Document({

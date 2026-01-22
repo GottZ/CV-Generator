@@ -256,6 +256,7 @@ async function runBuild(
 						locale,
 						templateId,
 						personDir,
+						templatesDir,
 						cons,
 					);
 					results.push(docxResult.writeResult);
@@ -472,6 +473,7 @@ async function buildDocx(
 	locale: string,
 	templateId: string,
 	personDir: string,
+	templatesDir: string,
 	cons: ConsoleResult,
 ): Promise<{ writeResult: WriteResult; warnings: string[] }> {
 	const warnings: string[] = [];
@@ -480,6 +482,7 @@ async function buildDocx(
 	const filename = `${slug}_${templateId}_${locale}.docx`;
 	const outputPath = path.join(personDir, 'output', filename);
 	const imagesDir = path.join(personDir, 'images');
+	const templatePath = path.join(templatesDir, templateId);
 
 	cons.info('Generating DOCX...');
 
@@ -488,6 +491,7 @@ async function buildDocx(
 		locale,
 		outputPath,
 		imagesDir,
+		templatePath,
 	});
 
 	return {

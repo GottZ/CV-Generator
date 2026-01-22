@@ -40,9 +40,9 @@ Each phase delivers a verifiable capability. Phase dependencies ensure that foun
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffolding (monorepo, TypeScript, Biome, LICENSE, .gitignore)
-- [ ] 01-02-PLAN.md — CVData schema (TypeScript interfaces for all sections)
-- [ ] 01-03-PLAN.md — Markdown parser (frontmatter + section extraction with language tags)
+- [x] 01-01-PLAN.md — Project scaffolding (monorepo, TypeScript, Biome, LICENSE, .gitignore)
+- [x] 01-02-PLAN.md — CVData schema (TypeScript interfaces for all sections)
+- [x] 01-03-PLAN.md — Markdown parser (frontmatter + section extraction with language tags)
 
 ---
 
@@ -200,7 +200,7 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Foundation + Data Schema | 9 | Planned |
+| 1 | Foundation + Data Schema | 9 | ✓ Complete |
 | 2 | Template Engine | 7 | Pending |
 | 3 | HTML Output | 8 | Pending |
 | 4 | PDF Output | 5 | Pending |
@@ -244,4 +244,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22*
+*Last updated: 2026-01-22 (Phase 1 complete)*

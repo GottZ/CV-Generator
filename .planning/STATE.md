@@ -36,7 +36,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 |--------|-------|
 | Plans Created | 3 |
 | Plans Completed | 3 |
-| Requirements Delivered | 8/41 (DATA-01 through DATA-05, DATA-09, DATA-10, INTL-01) |
+| Requirements Delivered | 9/41 (DATA-01 through DATA-05, DATA-09, DATA-10, REPO-02, REPO-03) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 

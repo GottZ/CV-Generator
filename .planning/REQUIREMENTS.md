@@ -31,16 +31,16 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CV Data Schema
 
-- [ ] **DATA-01**: Schema supports contact information (name, email, phone, location, links)
-- [ ] **DATA-02**: Schema supports professional summary section
-- [ ] **DATA-03**: Schema supports work experience (company, role, dates, location, bullets)
-- [ ] **DATA-04**: Schema supports education (institution, degree, field, dates, honors)
-- [ ] **DATA-05**: Schema supports skills list with categories (languages, frameworks, databases, cloud, tools)
+- [x] **DATA-01**: Schema supports contact information (name, email, phone, location, links)
+- [x] **DATA-02**: Schema supports professional summary section
+- [x] **DATA-03**: Schema supports work experience (company, role, dates, location, bullets)
+- [x] **DATA-04**: Schema supports education (institution, degree, field, dates, honors)
+- [x] **DATA-05**: Schema supports skills list with categories (languages, frameworks, databases, cloud, tools)
 - [ ] **DATA-06**: Schema supports projects section (name, description, tech stack, GitHub link, outcome)
 - [ ] **DATA-07**: Schema supports certifications (name, issuer, date, expiry date)
 - [ ] **DATA-08**: Schema supports tech stack per job position
-- [ ] **DATA-09**: Missing sections are skipped silently (no empty sections, no errors)
-- [ ] **DATA-10**: Unknown sections trigger warning but generation continues without them
+- [x] **DATA-09**: Missing sections are skipped silently (no empty sections, no errors)
+- [x] **DATA-10**: Unknown sections trigger warning but generation continues without them
 - [ ] **DATA-11**: Images stored in `/people/[name]/images/` directory
 - [ ] **DATA-12**: Standard markdown image syntax supported (`![alt](./images/file.png)`)
 
@@ -65,8 +65,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Repository
 
 - [ ] **REPO-01**: README.md with installation and getting started guide
-- [ ] **REPO-02**: MIT LICENSE (2026 Jan-Stefan Janetzky (GottZ) https://contact.GottZ.de)
-- [ ] **REPO-03**: .gitignore protects `/people/` directory from commits
+- [x] **REPO-02**: MIT LICENSE (2026 Jan-Stefan Janetzky (GottZ) https://contact.GottZ.de)
+- [x] **REPO-03**: .gitignore protects `/people/` directory from commits
 
 ## v2 Requirements
 
@@ -122,16 +122,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TMPL-04 | Phase 8 | Pending |
 | TMPL-05 | Phase 8 | Pending |
 | TMPL-06 | Phase 2 | Pending |
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
-| DATA-04 | Phase 1 | Pending |
-| DATA-05 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| DATA-03 | Phase 1 | Complete |
+| DATA-04 | Phase 1 | Complete |
+| DATA-05 | Phase 1 | Complete |
 | DATA-06 | Phase 7 | Pending |
 | DATA-07 | Phase 7 | Pending |
 | DATA-08 | Phase 7 | Pending |
-| DATA-09 | Phase 1 | Pending |
-| DATA-10 | Phase 1 | Pending |
+| DATA-09 | Phase 1 | Complete |
+| DATA-10 | Phase 1 | Complete |
 | DATA-11 | Phase 3 | Pending |
 | DATA-12 | Phase 3 | Pending |
 | CLI-01 | Phase 6 | Pending |
@@ -147,8 +147,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ATS-05 | Phase 2 | Pending |
 | ATS-06 | Phase 3 | Pending |
 | REPO-01 | Phase 8 | Pending |
-| REPO-02 | Phase 1 | Pending |
-| REPO-03 | Phase 1 | Pending |
+| REPO-02 | Phase 1 | Complete |
+| REPO-03 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 41 total
@@ -169,4 +169,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 after roadmap creation*
+*Last updated: 2026-01-22 (Phase 1 complete: 9 requirements delivered)*

@@ -120,14 +120,12 @@ Plans:
 - OUT-07: PDF and DOCX include configurable header/footer for page identification (e.g., "Name - Page X of Y")
 - OUT-09: PDF output embeds images properly
 - ATS-01: PDF text layers are copy-paste verifiable (no garbled characters)
-- ATS-04: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
 
 **Success Criteria:**
 1. User can generate PDF that opens in any PDF reader
 2. Copy-pasting text from PDF produces correct characters (no garbled text)
-3. PDF includes page header/footer with name and page numbers
+3. PDF includes configurable header/footer with name and page numbers
 4. Images in CV render correctly in PDF output
-5. Skills section demonstrates acronym pattern (full form with abbreviation)
 
 **Plans:** 3 plans
 
@@ -189,12 +187,14 @@ Plans:
 - DATA-06: Schema supports projects section (name, description, tech stack, GitHub link, outcome)
 - DATA-07: Schema supports certifications (name, issuer, date, expiry date)
 - DATA-08: Schema supports tech stack per job position
+- ATS-04: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
 
 **Success Criteria:**
 1. User can add projects section with tech stack and links that renders in all formats
 2. User can add certifications with expiry dates that render in all formats
 3. User can specify technologies used per job position
-4. All new sections are optional (existing CVs without them still work)
+4. Skills section supports acronym pattern (e.g., "Kubernetes (K8s)")
+5. All new sections are optional (existing CVs without them still work)
 
 ---
 
@@ -224,10 +224,10 @@ Plans:
 | 1 | Foundation + Data Schema | 9 | Complete |
 | 2 | Template Engine | 7 | Complete |
 | 3 | HTML Output | 8 | Complete |
-| 4 | PDF Output | 5 | Pending |
+| 4 | PDF Output | 4 | Pending |
 | 5 | DOCX Output | 2 | Pending |
 | 6 | CLI Commands | 6 | Pending |
-| 7 | IT Professional Features | 3 | Pending |
+| 7 | IT Professional Features | 4 | Pending |
 | 8 | Multi-Template + Polish | 3 | Pending |
 
 **Total:** 43 requirement mappings (some requirements support multiple phases through shared infrastructure)

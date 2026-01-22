@@ -8,5 +8,8 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
     "test": "bun test"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }

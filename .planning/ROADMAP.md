@@ -158,8 +158,8 @@ Plans:
 - [x] 05-01-PLAN.md — DOCX generator core (docx library, footer with Word field codes, document metadata)
 - [x] 05-02-PLAN.md — Section content and images (all CV sections, HeadingLevel styles, ImageRun embedding)
 - [x] 05-03-PLAN.md — Build command integration (DOCX format support, --no-docx flag)
-- [ ] 05-04-PLAN.md — [GAP] CSS style extraction for visual parity (extract template styles, apply to DOCX)
-- [ ] 05-05-PLAN.md — [GAP] Linebreak handling investigation (test suite, TextRun breaks, edge cases)
+- [x] 05-04-PLAN.md — [GAP] CSS style extraction for visual parity (extract template styles, apply to DOCX)
+- [x] 05-05-PLAN.md — [GAP] Linebreak handling investigation (test suite, TextRun breaks, edge cases)
 
 ---
 
@@ -234,7 +234,7 @@ Plans:
 | 2 | Template Engine | 7 | Complete |
 | 3 | HTML Output | 8 | Complete |
 | 4 | PDF Output | 4 | Complete |
-| 5 | DOCX Output | 2 | Gap Closure (3/5 plans) |
+| 5 | DOCX Output | 2 | Complete |
 | 6 | CLI Commands | 6 | Pending |
 | 7 | IT Professional Features | 4 | Pending |
 | 8 | Multi-Template + Polish | 3 | Pending |
@@ -274,4 +274,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 5 gap closure plans added)*
+*Last updated: 2026-01-22 (Phase 5 complete with gap closure)*

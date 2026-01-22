@@ -12,31 +12,31 @@
 ## Current Position
 
 **Phase:** 4 of 8 - PDF Output
-**Plan:** 2 of 3 complete
-**Status:** In progress
-**Last activity:** 2026-01-22 - Completed 04-02-PLAN.md (PDF metadata and bookmarks)
+**Plan:** 3 of 3 complete
+**Status:** Phase complete
+**Last activity:** 2026-01-22 - Completed 04-03-PLAN.md (Build command integration)
 
 **Progress:**
 ```
 Phase 1: [██████████] 100% - Foundation + Data Schema (3/3 plans) COMPLETE
 Phase 2: [██████████] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [██████████] 100% - HTML Output (3/3 plans) COMPLETE
-Phase 4: [██████....] 67% - PDF Output (2/3 plans)
+Phase 4: [██████████] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [..........] 0% - DOCX Output
 Phase 6: [..........] 0% - CLI Commands
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 3/8 phases complete (11/~24 plans complete, ~46%)
+**Overall:** 4/8 phases complete (12/~24 plans complete, ~50%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 12 |
-| Plans Completed | 11 |
-| Requirements Delivered | 24/41 (Phase 1-3 complete, Phase 4 in progress) |
+| Plans Completed | 12 |
+| Requirements Delivered | 27/41 (Phase 1-4 complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -194,16 +194,17 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 04-03-PLAN.md (integrate PDF into build command).
+**Immediate next step:** Plan Phase 5 (DOCX Output) or Phase 6 (CLI Commands).
 
 **Context to remember:**
-- Phases 1-3 complete: monorepo, schema, parser, templates, HTML output all working
-- Build command: `cvgen build <name> <template>` generates HTML files
+- Phases 1-4 complete: monorepo, schema, parser, templates, HTML output, PDF output all working
+- Build command: `cvgen build <name> <template>` generates HTML and PDF files
 - HTML files are self-contained with embedded CSS and base64 images
+- PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
+- --html-only and --no-pdf flags allow skipping PDF generation
+- Retry logic with exponential backoff (3 attempts: 30s -> 60s -> 120s)
 - Watch mode with debounced rebuilds functional
 - JSON output mode for CI integration
-- PDF modules complete: browser-manager, pdf-generator, pdf-metadata, pdf-bookmarks
-- Next: Integrate PDF generation into build command with buildPdf function
 
 ### Files to Reference
 
@@ -223,8 +224,9 @@ None currently.
 - `/workspace/.planning/phases/03-html-output/03-VERIFICATION.md` - Phase 3 verification
 - `/workspace/.planning/phases/04-pdf-output/04-01-SUMMARY.md` - Plan 04-01 completion
 - `/workspace/.planning/phases/04-pdf-output/04-02-SUMMARY.md` - Plan 04-02 completion
+- `/workspace/.planning/phases/04-pdf-output/04-03-SUMMARY.md` - Plan 04-03 completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Plan 04-02 complete)*
+*Last updated: 2026-01-22 (Phase 4 complete)*

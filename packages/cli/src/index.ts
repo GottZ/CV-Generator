@@ -32,8 +32,9 @@ program
 	.option('--sequential', 'Build formats sequentially (default)')
 	.option('--quiet', 'Suppress non-error output')
 	.option('--json', 'Output results as JSON')
-	.option('--html-only', 'Generate HTML only (skip PDF)')
+	.option('--html-only', 'Generate HTML only (skip PDF and DOCX)')
 	.option('--no-pdf', 'Skip PDF generation')
+	.option('--no-docx', 'Skip DOCX generation')
 	.action(buildAction);
 
 // Parse and run

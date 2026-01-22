@@ -28,6 +28,7 @@ export interface BuildOptions {
 	json?: boolean;
 	htmlOnly?: boolean;
 	noPdf?: boolean;
+	noDocx?: boolean;
 }
 
 // Exit codes per CONTEXT.md
@@ -176,9 +177,16 @@ async function runBuild(
 		.map((f) => f.trim());
 	const supportedFormats = ['html', 'pdf', 'docx'];
 
-	// Handle --html-only and --no-pdf flags
-	if (options.htmlOnly || options.noPdf) {
-		formats = formats.filter((f) => f !== 'pdf');
+	// Handle --html-only, --no-pdf, --no-docx flags
+	if (options.htmlOnly) {
+		formats = formats.filter((f) => f === 'html');
+	} else {
+		if (options.noPdf) {
+			formats = formats.filter((f) => f !== 'pdf');
+		}
+		if (options.noDocx) {
+			formats = formats.filter((f) => f !== 'docx');
+		}
 	}
 
 	// 6. Build for each locale and format

@@ -105,6 +105,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | certifications-not-localized | Certifications are NOT localized (cert names are universal) | 2026-01-23 |
 | project-sorting | Sort in parser: highlighted first, then by startDate descending | 2026-01-23 |
 | links-subsection | Use #### Links subsection with type: url format | 2026-01-23 |
+| formatLinkUrl-export | Export formatLinkUrl for reuse in DOCX generator | 2026-01-23 |
 
 ### Technical Context
 

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 09 Plan 02 Execution
+**Session:** Phase 09 Plan 03 Execution
 
 ## Project Reference
 
@@ -14,16 +14,17 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 ## Current Position
 
 **Phase:** 9 - Test Infrastructure Foundation (COMPLETE)
-**Plan:** 2 of 2 complete
-**Status:** Phase 9 complete, ready for Phase 10
-**Last activity:** 2026-01-23 - Completed 09-02-PLAN.md (Test Utilities and Fixtures)
+**Plan:** 3 of 3 complete
+**Status:** Phase 9 fully complete, ready for Phase 10
+**Last activity:** 2026-01-23 - Completed 09-03-PLAN.md (Baseline Snapshots)
 
 **Progress:**
 ```
 v1.1 Improved PDF Creation [█-----] 20%
-├── Phase 9:  Test Infrastructure Foundation [██] TEST-06, TEST-07 COMPLETE
+├── Phase 9:  Test Infrastructure Foundation [███] TEST-06, TEST-07 COMPLETE
 │   ├── 09-01: Docker CI Infrastructure [x]
-│   └── 09-02: Test Utilities and Fixtures [x]
+│   ├── 09-02: Test Utilities and Fixtures [x]
+│   └── 09-03: Baseline Snapshots [x]
 ├── Phase 10: Print CSS Consolidation        [ ] PRINT-02, PRINT-03, PRINT-04
 ├── Phase 11: CSS Pagination Improvements    [ ] PAG-01 to PAG-07
 ├── Phase 12: Print Parity Verification      [ ] PRINT-01, PRINT-05
@@ -36,11 +37,11 @@ v1.1 Improved PDF Creation [█-----] 20%
 |--------|-------|
 | Phases | 5 |
 | Requirements (v1.1) | 20 |
-| Plans Created | 2 |
-| Plans Completed | 2 |
+| Plans Created | 3 |
+| Plans Completed | 3 |
 | Requirements Delivered | 2/20 |
-| Blockers Encountered | 0 |
-| Blockers Resolved | 0 |
+| Blockers Encountered | 3 |
+| Blockers Resolved | 3 |
 
 ## Accumulated Context
 
@@ -71,6 +72,12 @@ Phase 09-02 decisions:
 - pdf-lib added to root devDependencies for test helper module resolution
 - Use CLI subprocess for CV generation to leverage all production features
 
+Phase 09-03 decisions:
+- Use HTML with print media emulation instead of direct PDF rendering
+- Add npm to Docker for npx playwright (bunx has compatibility issues in Docker)
+- Test helpers must use Node.js APIs (not Bun) for Playwright runtime compatibility
+- Viewport set to A4 (794x1123px) for consistent visual snapshots
+
 ### Research Insights
 
 From `.planning/research/SUMMARY.md`:
@@ -85,7 +92,7 @@ None.
 
 ### Blockers
 
-None.
+None (3 encountered and resolved during 09-03 execution).
 
 ## Session Continuity
 
@@ -102,8 +109,9 @@ None.
 - `/workspace/.planning/research/SUMMARY.md` - Research findings
 - `/workspace/.planning/phases/09-test-infrastructure-foundation/09-01-SUMMARY.md` - Docker CI completion
 - `/workspace/.planning/phases/09-test-infrastructure-foundation/09-02-SUMMARY.md` - Test utilities completion
+- `/workspace/.planning/phases/09-test-infrastructure-foundation/09-03-SUMMARY.md` - Baseline snapshots completion
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 09 complete)*
+*Last updated: 2026-01-23 (Phase 09-03 complete)*

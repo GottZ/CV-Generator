@@ -1,0 +1,33 @@
+# Docker test environment for CV Generator
+# Provides consistent PDF rendering across local and CI environments
+
+FROM oven/bun:latest
+
+# Install Chromium and font packages for consistent PDF rendering
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    chromium \
+    fonts-liberation \
+    fonts-freefont-ttf \
+    fonts-noto-cjk \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure Puppeteer to use system Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+WORKDIR /app
+
+# Copy package files first for layer caching
+COPY package.json bun.lock ./
+COPY packages/cli/package.json packages/cli/
+COPY packages/core/package.json packages/core/
+COPY packages/templates/package.json packages/templates/
+
+# Install dependencies with frozen lockfile
+RUN bun install --frozen-lockfile
+
+# Copy the rest of the project
+COPY . .
+
+# Default command: run tests
+CMD ["bun", "test"]

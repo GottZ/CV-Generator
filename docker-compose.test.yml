@@ -1,0 +1,16 @@
+# Docker Compose configuration for running tests locally
+# Mirrors CI environment for consistent results
+
+services:
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    init: true
+    cap_add:
+      - SYS_ADMIN
+    # Uncomment for local development with live code changes:
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    network_mode: host

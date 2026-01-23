@@ -180,6 +180,12 @@ Echtzeit-Metrik-Visualisierungs-Dashboard fur Kubernetes-Cluster mit benutzerdef
 - Python (Proficient)
 - Rust (Intermediate)
 
+### Frameworks & Libraries
+- React (Expert)
+- Node.js (Expert)
+- gRPC (Proficient)
+- Apache Spark (Proficient)
+
 ### Cloud & Infrastructure
 - AWS (Certified)
 - Kubernetes (K8s)
@@ -205,6 +211,12 @@ Echtzeit-Metrik-Visualisierungs-Dashboard fur Kubernetes-Cluster mit benutzerdef
 - Go (Experte)
 - Python (Fortgeschritten)
 - Rust (Grundkenntnisse)
+
+### Frameworks & Bibliotheken
+- React (Experte)
+- Node.js (Experte)
+- gRPC (Fortgeschritten)
+- Apache Spark (Fortgeschritten)
 
 ### Cloud & Infrastruktur
 - AWS (Zertifiziert)

@@ -68,32 +68,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PAG-01 | TBD | Pending |
-| PAG-02 | TBD | Pending |
-| PAG-03 | TBD | Pending |
-| PAG-04 | TBD | Pending |
-| PAG-05 | TBD | Pending |
-| PAG-06 | TBD | Pending |
-| PAG-07 | TBD | Pending |
-| PRINT-01 | TBD | Pending |
-| PRINT-02 | TBD | Pending |
-| PRINT-03 | TBD | Pending |
-| PRINT-04 | TBD | Pending |
-| PRINT-05 | TBD | Pending |
-| TEST-01 | TBD | Pending |
-| TEST-02 | TBD | Pending |
-| TEST-03 | TBD | Pending |
-| TEST-04 | TBD | Pending |
-| TEST-05 | TBD | Pending |
-| TEST-06 | TBD | Pending |
-| TEST-07 | TBD | Pending |
-| TEST-08 | TBD | Pending |
+| PAG-01 | Phase 11 | Pending |
+| PAG-02 | Phase 11 | Pending |
+| PAG-03 | Phase 11 | Pending |
+| PAG-04 | Phase 11 | Pending |
+| PAG-05 | Phase 11 | Pending |
+| PAG-06 | Phase 11 | Pending |
+| PAG-07 | Phase 11 | Pending |
+| PRINT-01 | Phase 12 | Pending |
+| PRINT-02 | Phase 10 | Pending |
+| PRINT-03 | Phase 10 | Pending |
+| PRINT-04 | Phase 10 | Pending |
+| PRINT-05 | Phase 12 | Pending |
+| TEST-01 | Phase 13 | Pending |
+| TEST-02 | Phase 13 | Pending |
+| TEST-03 | Phase 13 | Pending |
+| TEST-04 | Phase 13 | Pending |
+| TEST-05 | Phase 13 | Pending |
+| TEST-06 | Phase 9 | Pending |
+| TEST-07 | Phase 9 | Pending |
+| TEST-08 | Phase 13 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 20 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 20
+- Mapped to phases: 20
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-23 after initial definition*
+*Last updated: 2026-01-23 (roadmap traceability added)*

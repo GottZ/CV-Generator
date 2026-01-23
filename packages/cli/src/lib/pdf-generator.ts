@@ -62,6 +62,7 @@ export interface PdfResult {
 /**
  * ATS-safe print CSS to inject before PDF generation.
  * Disables ligatures to ensure text extraction works correctly.
+ * Provides improved pagination rules to prevent empty pages and excessive gaps.
  */
 const ATS_PRINT_CSS = `
 @media print {
@@ -76,14 +77,37 @@ const ATS_PRINT_CSS = `
 		color-scheme: light !important;
 	}
 
-	/* Page break control - keep entries intact */
+	/* Improved pagination - sections can span pages */
+	.section {
+		break-inside: auto;
+		page-break-inside: auto;
+		orphans: 3;
+		widows: 3;
+	}
+
+	/* Section headers stay with content */
+	.section h2 {
+		break-after: avoid;
+		page-break-after: avoid;
+	}
+
+	/* Entries stay intact when reasonable */
 	.entry {
 		break-inside: avoid;
 		page-break-inside: avoid;
 	}
 
-	.section {
+	/* Bullet items stay intact */
+	.bullet-item {
 		break-inside: avoid;
+		page-break-inside: avoid;
+	}
+
+	/* Contact stays together */
+	.contact {
+		break-inside: avoid;
+		page-break-inside: avoid;
+		break-after: avoid;
 	}
 
 	/* Remove interactive elements */

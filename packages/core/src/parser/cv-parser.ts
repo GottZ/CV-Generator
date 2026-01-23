@@ -245,12 +245,50 @@ function parseEducationEntries(content: string): Education[] {
 	});
 }
 
+/** Known proficiency levels (not acronyms) */
+const PROFICIENCY_LEVELS = new Set([
+	// English levels
+	'expert',
+	'proficient',
+	'familiar',
+	'advanced',
+	'beginner',
+	'intermediate',
+	// German levels
+	'experte',
+	'fortgeschritten',
+	'grundkenntnisse',
+	'anfänger',
+	// Role annotations (not levels but also not acronyms)
+	'lead',
+	'supporting',
+]);
+
+/**
+ * Check if parenthetical content is an acronym (not a proficiency level).
+ * Acronyms: 2-5 uppercase letters, or alphanumeric patterns like K8s, S3, EC2.
+ *
+ * @param text - The text inside parentheses
+ * @returns true if text appears to be an acronym
+ */
+function isAcronym(text: string): boolean {
+	const lower = text.toLowerCase();
+	if (PROFICIENCY_LEVELS.has(lower)) {
+		return false;
+	}
+
+	// Acronyms: all caps 2-5 chars (e.g., AWS, GCP, K8S)
+	// or K8s/S3/EC2 patterns (letter + digit + optional letter)
+	return /^[A-Z0-9]{2,5}$/.test(text) || /^[A-Z][0-9][a-z]?$/.test(text);
+}
+
 /**
  * Parse skills into categories.
  * Expected format:
  * ### Category Name
  * - Skill 1
  * - Skill 2 (level)
+ * - Skill 3 (acronym) -> keeps full name
  */
 function parseSkillCategories(content: string): SkillCategory[] {
 	const categories: SkillCategory[] = [];
@@ -269,16 +307,22 @@ function parseSkillCategories(content: string): SkillCategory[] {
 				skills: [],
 			};
 		}
-		// - Skill (optional level)
+		// - Skill (optional level or acronym)
 		else if (trimmed.startsWith('- ') && currentCategory) {
 			const skillText = trimmed.slice(2);
-			// Check for level in parentheses at end
+			// Check for parentheses at end
 			const levelMatch = skillText.match(/^(.+?)\s*\(([^)]+)\)$/);
 			if (levelMatch) {
-				currentCategory.skills.push({
-					name: (levelMatch[1] ?? '').trim(),
-					level: (levelMatch[2] ?? '').trim(),
-				});
+				const base = (levelMatch[1] ?? '').trim();
+				const paren = (levelMatch[2] ?? '').trim();
+
+				if (isAcronym(paren)) {
+					// Keep full format: "Kubernetes (K8s)" -> name: "Kubernetes (K8s)", no level
+					currentCategory.skills.push({ name: skillText });
+				} else {
+					// Proficiency level: "TypeScript (expert)" -> name: "TypeScript", level: "expert"
+					currentCategory.skills.push({ name: base, level: paren });
+				}
 			} else {
 				currentCategory.skills.push({ name: skillText });
 			}

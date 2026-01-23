@@ -32,8 +32,8 @@ Requirements for improved PDF pagination, HTML print parity, and automated testi
 - [ ] **TEST-03**: Structural tests verify page count expectations
 - [ ] **TEST-04**: Structural tests verify PDF metadata presence
 - [ ] **TEST-05**: Structural tests verify file size sanity (not empty, not bloated)
-- [ ] **TEST-06**: Tests run in CI with consistent environment (Docker)
-- [ ] **TEST-07**: Baseline snapshots exist for all 3 templates
+- [x] **TEST-06**: Tests run in CI with consistent environment (Docker)
+- [x] **TEST-07**: Baseline snapshots exist for all 3 templates
 - [ ] **TEST-08**: Tests catch Puppeteer dependency update regressions
 
 ## Future Requirements
@@ -85,8 +85,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TEST-03 | Phase 13 | Pending |
 | TEST-04 | Phase 13 | Pending |
 | TEST-05 | Phase 13 | Pending |
-| TEST-06 | Phase 9 | Pending |
-| TEST-07 | Phase 9 | Pending |
+| TEST-06 | Phase 9 | Complete |
+| TEST-07 | Phase 9 | Complete |
 | TEST-08 | Phase 13 | Pending |
 
 **Coverage:**

@@ -1,14 +1,23 @@
 import type {
+	Certification,
 	CVData,
 	Education,
 	Localized,
 	ParseError,
 	ParseResult,
+	Project,
+	ProjectLink,
 	SkillCategory,
 	WorkExperience,
 } from '../schema/index.ts';
 import { parseFrontmatter } from './frontmatter.ts';
 import { extractSections, type SectionMatch } from './sections.ts';
+
+/** Type for certification parser context including warnings */
+interface CertificationParseContext {
+	warnings: ParseError[];
+	startLine: number;
+}
 
 /**
  * Parse a complete CV markdown file into structured CVData.
@@ -55,6 +64,27 @@ export function parseCV(markdown: string): ParseResult<CVData> {
 		parseSkillCategories,
 	);
 
+	const projects = buildLocalizedSection<Project[]>(
+		sectionsResult.sections,
+		'projects',
+		parseProjectEntries,
+	);
+
+	// Certifications are NOT localized (cert names are universal)
+	// Parse all certification sections and collect warnings
+	const certifications: Certification[] = [];
+	for (const section of sectionsResult.sections) {
+		if (section.sectionType === 'certifications' && section.content) {
+			const context: CertificationParseContext = {
+				warnings,
+				startLine: section.line,
+			};
+			certifications.push(
+				...parseCertificationEntries(section.content, context),
+			);
+		}
+	}
+
 	// Step 4: Validate tech-to-skills consistency
 	validateTechToSkills(experience, skills, warnings);
 
@@ -67,6 +97,8 @@ export function parseCV(markdown: string): ParseResult<CVData> {
 					...(Object.keys(experience).length > 0 && { experience }),
 					...(Object.keys(education).length > 0 && { education }),
 					...(Object.keys(skills).length > 0 && { skills }),
+					...(Object.keys(projects).length > 0 && { projects }),
+					...(certifications.length > 0 && { certifications }),
 				}
 			: null;
 
@@ -94,6 +126,9 @@ function buildLocalizedSection<T>(
 
 /** Regex for tech stack header detection (case-insensitive) */
 const TECH_STACK_HEADER = /^####\s+(technologies|tech stack)\s*$/i;
+
+/** Regex for links header detection (case-insensitive) */
+const LINKS_HEADER = /^####\s+links\s*$/i;
 
 /**
  * Parse work experience entries separated by ---.
@@ -337,6 +372,296 @@ function parseSkillCategories(content: string): SkillCategory[] {
 	}
 
 	return categories;
+}
+
+/**
+ * Parse project entries separated by ---.
+ * Supports optional #### Technologies, #### Tech Stack, and #### Links subsections.
+ *
+ * Expected markdown format:
+ * ### Project Name
+ * *2023-01 - present | Lead Developer | open-source*
+ *
+ * Project description here.
+ *
+ * #### Technologies
+ * - React
+ * - TypeScript
+ *
+ * #### Links
+ * - github: https://github.com/user/repo
+ * - demo: https://example.com
+ *
+ * **Outcome:** Result achieved
+ */
+function parseProjectEntries(content: string): Project[] {
+	const entries = content.split(/^---$/m).filter((e) => e.trim());
+
+	const projects = entries.map((entry) => {
+		const lines = entry.trim().split('\n');
+		const project: Project = { name: '' };
+
+		// Track which subsection we're in
+		let inTechStack = false;
+		let inLinks = false;
+		const techStack: string[] = [];
+		const links: ProjectLink[] = [];
+		const descriptionLines: string[] = [];
+
+		for (const line of lines) {
+			const trimmed = line.trim();
+
+			// Check for tech stack header
+			if (TECH_STACK_HEADER.test(trimmed)) {
+				inTechStack = true;
+				inLinks = false;
+				continue;
+			}
+
+			// Check for links header
+			if (LINKS_HEADER.test(trimmed)) {
+				inLinks = true;
+				inTechStack = false;
+				continue;
+			}
+
+			// Exit subsection on new header
+			if (trimmed.startsWith('####')) {
+				inTechStack = false;
+				inLinks = false;
+				continue;
+			}
+
+			// Parse subsection content
+			if (inTechStack) {
+				if (trimmed.startsWith('- ')) {
+					techStack.push(trimmed.slice(2).trim());
+				}
+				continue;
+			}
+
+			if (inLinks) {
+				if (trimmed.startsWith('- ')) {
+					const linkContent = trimmed.slice(2).trim();
+					const link = parseLinkLine(linkContent);
+					if (link) {
+						links.push(link);
+					}
+				}
+				continue;
+			}
+
+			// ### Project Name
+			if (trimmed.startsWith('### ')) {
+				project.name = trimmed.slice(4).trim();
+			}
+			// *dates | role | type | highlight* format
+			else if (trimmed.startsWith('*') && trimmed.endsWith('*')) {
+				const metaContent = trimmed.slice(1, -1);
+				parseProjectMeta(metaContent, project);
+			}
+			// **Outcome:** text
+			else if (trimmed.startsWith('**Outcome:**')) {
+				project.outcome = trimmed.slice(12).trim();
+			}
+			// Regular text is description (collect until subsection)
+			else if (trimmed && !trimmed.startsWith('#')) {
+				descriptionLines.push(trimmed);
+			}
+		}
+
+		// Set collected fields
+		if (techStack.length > 0) {
+			project.techStack = techStack;
+		}
+		if (links.length > 0) {
+			project.links = links;
+		}
+		if (descriptionLines.length > 0) {
+			project.description = descriptionLines.join('\n');
+		}
+
+		return project;
+	});
+
+	// Sort: highlighted first, then by startDate descending (newest first)
+	return projects.sort((a, b) => {
+		// Highlighted projects come first
+		if (a.highlight && !b.highlight) return -1;
+		if (!a.highlight && b.highlight) return 1;
+
+		// Then sort by startDate (newest first)
+		if (a.startDate && b.startDate) {
+			return b.startDate.localeCompare(a.startDate);
+		}
+		// Projects with dates come before those without
+		if (a.startDate && !b.startDate) return -1;
+		if (!a.startDate && b.startDate) return 1;
+
+		// Maintain original order if no dates
+		return 0;
+	});
+}
+
+/**
+ * Parse a link line in format: "type: url" or just "url"
+ */
+function parseLinkLine(content: string): ProjectLink | null {
+	// Format: "type: url" (e.g., "github: https://github.com/user/repo")
+	const typedMatch = content.match(/^(\w+):\s*(.+)$/);
+	if (typedMatch) {
+		const type = (typedMatch[1] ?? '').toLowerCase();
+		const url = (typedMatch[2] ?? '').trim();
+		if (url) {
+			return { url, type };
+		}
+	}
+
+	// Format: just URL
+	if (content.startsWith('http://') || content.startsWith('https://')) {
+		return { url: content };
+	}
+
+	return null;
+}
+
+/**
+ * Parse project meta line: *dates | role | type | highlight*
+ * Parts are pipe-separated, order-independent by content detection.
+ */
+function parseProjectMeta(meta: string, project: Project): void {
+	const parts = meta.split('|').map((p) => p.trim());
+
+	for (const part of parts) {
+		// Check for "highlight" flag
+		if (part.toLowerCase() === 'highlight') {
+			project.highlight = true;
+			continue;
+		}
+
+		// Check for project type
+		const projectTypes = [
+			'personal',
+			'professional',
+			'open-source',
+			'freelance',
+		];
+		if (projectTypes.includes(part.toLowerCase())) {
+			project.type = part.toLowerCase() as Project['type'];
+			continue;
+		}
+
+		// Check for date range (YYYY-MM - YYYY-MM or YYYY-MM - present)
+		const dateMatch = part.match(/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/);
+		if (dateMatch) {
+			project.startDate = dateMatch[1] ?? '';
+			project.endDate = (dateMatch[2] ?? '').trim();
+			continue;
+		}
+
+		// Anything else is likely the role
+		if (part && !project.role) {
+			project.role = part;
+		}
+	}
+}
+
+/**
+ * Parse certification entries separated by ---.
+ * Adds warnings for expired certifications.
+ *
+ * Expected markdown format:
+ * ### AWS Solutions Architect - Associate
+ * *Amazon Web Services | 2023-05 | expires 2026-05*
+ *
+ * Credential ID: ABC123
+ * https://verify.aws.com/ABC123
+ */
+function parseCertificationEntries(
+	content: string,
+	context: CertificationParseContext,
+): Certification[] {
+	const entries = content.split(/^---$/m).filter((e) => e.trim());
+	let lineOffset = 0;
+
+	return entries.map((entry) => {
+		const lines = entry.trim().split('\n');
+		const cert: Certification = { name: '', issuer: '', date: '' };
+		const entryStartLine = context.startLine + lineOffset;
+
+		for (const line of lines) {
+			const trimmed = line.trim();
+			lineOffset++;
+
+			// ### Certification Name
+			if (trimmed.startsWith('### ')) {
+				cert.name = trimmed.slice(4).trim();
+			}
+			// *issuer | date | expires expiryDate* format
+			else if (trimmed.startsWith('*') && trimmed.endsWith('*')) {
+				const metaContent = trimmed.slice(1, -1);
+				parseCertificationMeta(metaContent, cert);
+			}
+			// Credential ID: XXX
+			else if (trimmed.toLowerCase().startsWith('credential id:')) {
+				cert.credentialId = trimmed.slice(14).trim();
+			}
+			// Standalone URL is verification URL
+			else if (
+				trimmed.startsWith('http://') ||
+				trimmed.startsWith('https://')
+			) {
+				cert.verificationUrl = trimmed;
+			}
+		}
+
+		// Add separator lines to offset
+		lineOffset++;
+
+		// Check for expired certification
+		if (cert.expiryDate) {
+			const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+			// Compare dates (handles both YYYY-MM and YYYY-MM-DD formats)
+			if (cert.expiryDate < today) {
+				context.warnings.push({
+					type: 'warning',
+					line: entryStartLine,
+					message: `Certification "${cert.name}" has expired (${cert.expiryDate})`,
+					suggestion: 'Consider removing or noting the expiration status',
+				});
+			}
+		}
+
+		return cert;
+	});
+}
+
+/**
+ * Parse certification meta line: *issuer | date | expires expiryDate*
+ */
+function parseCertificationMeta(meta: string, cert: Certification): void {
+	const parts = meta.split('|').map((p) => p.trim());
+
+	for (const part of parts) {
+		// Check for expiry date (format: "expires YYYY-MM" or "expires YYYY-MM-DD")
+		const expiryMatch = part.match(/^expires?\s+(\d{4}-\d{2}(?:-\d{2})?)$/i);
+		if (expiryMatch) {
+			cert.expiryDate = expiryMatch[1] ?? '';
+			continue;
+		}
+
+		// Check for date (YYYY-MM or YYYY-MM-DD without "expires")
+		const dateMatch = part.match(/^(\d{4}-\d{2}(?:-\d{2})?)$/);
+		if (dateMatch) {
+			cert.date = dateMatch[1] ?? '';
+			continue;
+		}
+
+		// First non-date part is issuer
+		if (part && !cert.issuer) {
+			cert.issuer = part;
+		}
+	}
 }
 
 /**

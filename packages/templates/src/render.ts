@@ -1,5 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import type { CVData } from '@gottz/cv-core';
+import {
+	loadGlobalConfig,
+	resolveStyle,
+	styleToCssVariables,
+} from './config/index.ts';
 import { createTemplateEnvironment, getTemplate } from './engine/index.ts';
 import type { RenderOptions, RenderResult } from './types.ts';
 
@@ -15,7 +20,7 @@ export async function renderCV(
 	options: RenderOptions,
 	templatesDir: string,
 ): Promise<RenderResult> {
-	const { templateId, locale } = options;
+	const { templateId, locale, styleConfig, projectRoot } = options;
 
 	// Create Nunjucks environment
 	const env = createTemplateEnvironment(templatesDir);
@@ -24,7 +29,29 @@ export async function renderCV(
 	const template = await getTemplate(templatesDir, templateId);
 
 	// Load CSS for inline embedding
-	const css = await readFile(template.stylesPath, 'utf-8');
+	const baseCss = await readFile(template.stylesPath, 'utf-8');
+
+	// Resolve style cascade: template defaults < global config < env vars < frontmatter
+	const warnings: string[] = [];
+	const globalConfig = projectRoot
+		? await loadGlobalConfig(projectRoot)
+		: null;
+
+	const resolvedStyle = resolveStyle(
+		template.config,
+		globalConfig,
+		styleConfig,
+		warnings,
+	);
+
+	// Log style resolution warnings
+	for (const warning of warnings) {
+		console.warn(`[cv-templates] Warning: ${warning}`);
+	}
+
+	// Prepend style overrides to CSS (so templates can use the variables)
+	const styleOverrides = styleToCssVariables(resolvedStyle);
+	const css = `${styleOverrides}\n\n${baseCss}`;
 
 	// Resolve localized content for this locale
 	// Per CONTEXT.md: missing translation -> skip section (undefined in context)
@@ -89,9 +116,31 @@ export function createRenderer(templatesDir: string) {
 		cv: CVData,
 		options: RenderOptions,
 	): Promise<RenderResult> {
-		const { templateId, locale } = options;
+		const { templateId, locale, styleConfig, projectRoot } = options;
 		const template = await getTemplate(templatesDir, templateId);
-		const css = await readFile(template.stylesPath, 'utf-8');
+		const baseCss = await readFile(template.stylesPath, 'utf-8');
+
+		// Resolve style cascade: template defaults < global config < env vars < frontmatter
+		const warnings: string[] = [];
+		const globalConfig = projectRoot
+			? await loadGlobalConfig(projectRoot)
+			: null;
+
+		const resolvedStyle = resolveStyle(
+			template.config,
+			globalConfig,
+			styleConfig,
+			warnings,
+		);
+
+		// Log style resolution warnings
+		for (const warning of warnings) {
+			console.warn(`[cv-templates] Warning: ${warning}`);
+		}
+
+		// Prepend style overrides to CSS (so templates can use the variables)
+		const styleOverrides = styleToCssVariables(resolvedStyle);
+		const css = `${styleOverrides}\n\n${baseCss}`;
 
 		const context = {
 			contact: cv.contact,

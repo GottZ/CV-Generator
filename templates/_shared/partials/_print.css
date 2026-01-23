@@ -14,14 +14,62 @@
     margin: 0;
     width: 100%;
     min-height: auto;
+    /* Remove padding for print - Puppeteer margins handle page spacing */
+    padding: 0;
   }
 
+  /* Sections CAN span pages - don't force entire sections to new page */
   .section {
+    /* Allow sections to break across pages */
+    break-inside: auto;
+    page-break-inside: auto;
+    /* But prefer not to leave orphan/widow lines */
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Section headers should stay with some content */
+  .section h2 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Individual entries should stay intact when possible */
+  .entry {
+    break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .entry {
+  /* But if entry is too long, allow break rather than huge gap */
+  .entry.long-entry {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  /* Bullet lists can break between items */
+  .bullet-list {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  /* But individual bullet items should stay intact */
+  .bullet-item {
+    break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  /* Skills section - allow break between categories */
+  .skill-category {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Contact header should never break */
+  .contact {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-after: avoid;
+    page-break-after: avoid;
   }
 
   /* Don't show URL in printed links - ATS parses href directly */

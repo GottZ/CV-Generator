@@ -432,6 +432,14 @@ function parseProjectEntries(content: string): Project[] {
 				continue;
 			}
 
+			// **Outcome:** text - check before subsection content (can appear after links)
+			if (trimmed.startsWith('**Outcome:**')) {
+				inTechStack = false;
+				inLinks = false;
+				project.outcome = trimmed.slice(12).trim();
+				continue;
+			}
+
 			// Parse subsection content
 			if (inTechStack) {
 				if (trimmed.startsWith('- ')) {
@@ -459,10 +467,6 @@ function parseProjectEntries(content: string): Project[] {
 			else if (trimmed.startsWith('*') && trimmed.endsWith('*')) {
 				const metaContent = trimmed.slice(1, -1);
 				parseProjectMeta(metaContent, project);
-			}
-			// **Outcome:** text
-			else if (trimmed.startsWith('**Outcome:**')) {
-				project.outcome = trimmed.slice(12).trim();
 			}
 			// Regular text is description (collect until subsection)
 			else if (trimmed && !trimmed.startsWith('#')) {

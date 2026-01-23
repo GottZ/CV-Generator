@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 8 in progress (08-04 complete)
+**Session:** Phase 8 in progress (08-05 complete)
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 8 - Multi-Template + Polish (08-04 complete)
+**Current Focus:** Phase 8 - Multi-Template + Polish (08-05 complete)
 
 ## Current Position
 
 **Phase:** 8 of 8 - Multi-Template + Polish
-**Plan:** 4 of 6 complete (08-04)
+**Plan:** 5 of 6 complete (08-05)
 **Status:** In progress
-**Last activity:** 2026-01-23 - Completed 08-04-PLAN.md (Classic template)
+**Last activity:** 2026-01-23 - Completed 08-05-PLAN.md (Configuration cascade)
 
 **Progress:**
 ```
@@ -25,17 +25,17 @@ Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
 Phase 6: [##########] 100% - CLI Commands (4/4 plans) COMPLETE
 Phase 7: [##########] 100% - IT Professional Features (4/4 plans) COMPLETE
-Phase 8: [#######...] 67% - Multi-Template + Polish (4/6 plans)
+Phase 8: [########..] 83% - Multi-Template + Polish (5/6 plans)
 ```
 
-**Overall:** 7/8 phases complete (32/33 plans complete, ~97%)
+**Overall:** 7/8 phases complete (33/34 plans complete, ~97%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 33 |
-| Plans Completed | 32 |
+| Plans Completed | 33 |
 | Requirements Delivered | 40/41 (Phase 8 in progress) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -115,6 +115,10 @@ Phase 8: [#######...] 67% - Multi-Template + Polish (4/6 plans)
 | modern-margins | 25mm page margins for generous whitespace | 2026-01-23 |
 | classic-double-rule | Section headers use thin top + thick bottom border for traditional business look | 2026-01-23 |
 | classic-mixed-fonts | Times New Roman headings + Arial body for formal document pairing | 2026-01-23 |
+| config-cascade-priority | template defaults < global config < env vars < frontmatter | 2026-01-23 |
+| env-var-prefix | CVGEN_ prefix for all environment variables | 2026-01-23 |
+| css-prepend | Prepend CSS variable overrides BEFORE template CSS | 2026-01-23 |
+| invalid-config-warning | Invalid config produces warning but doesn't break generation | 2026-01-23 |
 
 ### Technical Context
 
@@ -278,10 +282,15 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 08-05-PLAN.md (Accent color override).
+**Immediate next step:** Execute 08-06-PLAN.md (Polish and documentation).
 
 **Context to remember:**
-- Phase 8: 08-01 (shared infra), 08-02 (Modern), 08-03 (Minimal), 08-04 (Classic) complete
+- Phase 8: 08-01 through 08-05 complete
+- Config cascade: template defaults < global config < env vars < frontmatter
+- Environment variables: CVGEN_ACCENT_COLOR, CVGEN_FONT_HEADING, CVGEN_FONT_BODY, CVGEN_MARGINS
+- CSS variable injection: prepended BEFORE template CSS so templates can use variables
+- StyleConfig and ResolvedStyle interfaces in types.ts
+- loadGlobalConfig(), getEnvConfig(), mergeStyleConfigs(), resolveStyle(), styleToCssVariables() in config module
 - Templates available: base, modern, minimal, classic
 - _shared/macros/ contains contact.njk, section.njk, entry.njk
 - _shared/partials/ contains _reset.css, _print.css, _theme.css
@@ -348,8 +357,9 @@ None currently.
 - `/workspace/.planning/phases/08-multi-template-polish/08-02-SUMMARY.md` - Plan 08-02 completion (Modern template)
 - `/workspace/.planning/phases/08-multi-template-polish/08-03-SUMMARY.md` - Plan 08-03 completion (Minimal template)
 - `/workspace/.planning/phases/08-multi-template-polish/08-04-SUMMARY.md` - Plan 08-04 completion (Classic template)
+- `/workspace/.planning/phases/08-multi-template-polish/08-05-SUMMARY.md` - Plan 08-05 completion (Configuration cascade)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (08-04 complete)*
+*Last updated: 2026-01-23 (08-05 complete)*

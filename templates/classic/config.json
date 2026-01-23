@@ -1,0 +1,13 @@
+{
+	"$schema": "../../schemas/template-config.schema.json",
+	"name": "Classic",
+	"description": "Traditional business formal design with mixed font pairing. Professional and conservative, ideal for corporate and formal industries.",
+	"atsCompliant": true,
+	"singleColumn": true,
+	"style": {
+		"accentColor": "#1e40af",
+		"fontHeading": "'Times New Roman', Times, serif",
+		"fontBody": "Arial, Helvetica, sans-serif",
+		"margins": "normal"
+	}
+}

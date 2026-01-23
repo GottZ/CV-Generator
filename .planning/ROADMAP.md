@@ -66,6 +66,12 @@ Plans:
 - Wrap all print CSS in strict @media print {} blocks
 - Test both screen and print views after every change
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md - Consolidate print CSS (modify render.ts, remove from templates)
+- [ ] 10-02-PLAN.md - Simplify ATS_PRINT_CSS and verify with visual tests
+
 ---
 
 ## Phase 11: CSS Pagination Improvements

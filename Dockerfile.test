@@ -3,12 +3,13 @@
 
 FROM oven/bun:latest
 
-# Install Chromium and font packages for consistent PDF rendering
+# Install Chromium, font packages, and npm for Playwright CLI
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     fonts-liberation \
     fonts-freefont-ttf \
     fonts-noto-cjk \
+    npm \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure Puppeteer to use system Chromium
@@ -25,6 +26,9 @@ COPY packages/templates/package.json packages/templates/
 
 # Install dependencies with frozen lockfile
 RUN bun install --frozen-lockfile
+
+# Install Playwright browsers (Chromium only)
+RUN bunx playwright install chromium
 
 # Copy the rest of the project
 COPY . .

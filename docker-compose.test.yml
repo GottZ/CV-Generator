@@ -9,8 +9,10 @@ services:
     init: true
     cap_add:
       - SYS_ADMIN
-    # Uncomment for local development with live code changes:
-    # volumes:
-    #   - .:/app
-    #   - /app/node_modules
+    volumes:
+      # Mount snapshot directories for baseline generation
+      # Playwright creates per-test-file snapshot directories
+      - ./tests:/app/tests
+      # Mount test-results for reports
+      - ./test-results:/app/test-results
     network_mode: host

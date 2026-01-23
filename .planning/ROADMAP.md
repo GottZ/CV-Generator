@@ -240,16 +240,17 @@ Plans:
 3. README.md documents installation, usage examples, and template customization
 4. All templates maintain ATS compliance (single-column, standard fonts, semantic structure)
 
-**Plans:** 7 plans
+**Plans:** 8 plans (7 core + 1 gap closure)
 
 Plans:
-- [ ] 08-01-PLAN.md — Shared resources and loader updates (_shared/ directory, private flag, JSON Schema)
-- [ ] 08-02-PLAN.md — Modern template (bold geometric design, 3px accent dividers, wide margins)
-- [ ] 08-03-PLAN.md — Minimal template (clean airy design, hairline dividers, Times New Roman)
-- [ ] 08-04-PLAN.md — Classic template (business formal, mixed fonts, centered header)
-- [ ] 08-05-PLAN.md — Config cascade system (global/template/env/frontmatter merging, style resolution)
-- [ ] 08-06-PLAN.md — Documentation (README.md, CLI.md, MARKDOWN.md, CUSTOMIZATION.md, FAQ.md)
+- [x] 08-01-PLAN.md — Shared resources and loader updates (_shared/ directory, private flag, JSON Schema)
+- [x] 08-02-PLAN.md — Modern template (bold geometric design, 3px accent dividers, wide margins)
+- [x] 08-03-PLAN.md — Minimal template (clean airy design, hairline dividers, Times New Roman)
+- [x] 08-04-PLAN.md — Classic template (business formal, mixed fonts, centered header)
+- [x] 08-05-PLAN.md — Config cascade system (global/template/env/frontmatter merging, style resolution)
+- [x] 08-06-PLAN.md — Documentation (README.md, CLI.md, MARKDOWN.md, CUSTOMIZATION.md, FAQ.md)
 - [ ] 08-07-PLAN.md — Examples and verification (example CV, template generation tests)
+- [ ] 08-08-PLAN.md — [GAP] PDF pagination fixes (page breaks, empty pages, top margin on new pages)
 
 ---
 

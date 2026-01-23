@@ -1,7 +1,9 @@
+import type { Certification } from './certification.ts';
 import type { Contact } from './contact.ts';
 import type { Education } from './education.ts';
 import type { WorkExperience } from './experience.ts';
 import type { Localized } from './localized.ts';
+import type { Project } from './project.ts';
 import type { SkillCategory } from './skills.ts';
 
 /**
@@ -25,7 +27,9 @@ export interface CVData {
 	/** Skills by category (localized) */
 	skills?: Localized<SkillCategory[]>;
 
-	// Phase 7 additions (defined here for forward compatibility):
-	// projects?: Localized<Project[]>;
-	// certifications?: Certification[];
+	/** Projects portfolio (localized) */
+	projects?: Localized<Project[]>;
+
+	/** Professional certifications (NOT localized - cert names are universal) */
+	certifications?: Certification[];
 }

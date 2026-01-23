@@ -89,8 +89,12 @@ function buildLocalizedSection<T>(
 	return result;
 }
 
+/** Regex for tech stack header detection (case-insensitive) */
+const TECH_STACK_HEADER = /^####\s+(technologies|tech stack)\s*$/i;
+
 /**
  * Parse work experience entries separated by ---.
+ * Supports optional #### Technologies or #### Tech Stack subsections.
  */
 function parseExperienceEntries(content: string): WorkExperience[] {
 	// Split by --- delimiter (entry separator per CONTEXT.md)
@@ -106,8 +110,30 @@ function parseExperienceEntries(content: string): WorkExperience[] {
 			bullets: [],
 		};
 
+		// Track whether we're currently inside a tech stack subsection
+		let inTechStack = false;
+		const techStack: string[] = [];
+
 		for (const line of lines) {
 			const trimmed = line.trim();
+
+			// Check for tech stack header: #### Technologies or #### Tech Stack
+			if (TECH_STACK_HEADER.test(trimmed)) {
+				inTechStack = true;
+				continue;
+			}
+
+			// If in tech stack mode, collect tech items
+			if (inTechStack) {
+				// Exit tech stack mode on next section header or empty content
+				if (trimmed.startsWith('#') || trimmed === '') {
+					inTechStack = false;
+				} else if (trimmed.startsWith('- ')) {
+					// Tech item (may have role annotation like "React (lead)")
+					techStack.push(trimmed.slice(2).trim());
+					continue;
+				}
+			}
 
 			// ### Role at Company
 			if (trimmed.startsWith('### ')) {
@@ -138,10 +164,15 @@ function parseExperienceEntries(content: string): WorkExperience[] {
 					experience.location = parts[1];
 				}
 			}
-			// - bullet point
-			else if (trimmed.startsWith('- ')) {
+			// - bullet point (not in tech stack mode)
+			else if (trimmed.startsWith('- ') && !inTechStack) {
 				experience.bullets.push(trimmed.slice(2));
 			}
+		}
+
+		// Add techStack if any items were collected
+		if (techStack.length > 0) {
+			experience.techStack = techStack;
 		}
 
 		return experience;

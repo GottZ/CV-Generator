@@ -17,7 +17,7 @@ program
 	.command('build')
 	.description('Build CV output files')
 	.argument('<name>', 'Person directory name (e.g., johndoe)')
-	.argument('<template>', 'Template ID to use (e.g., base)')
+	.argument('<template>', 'Template ID to use (e.g., base, or "auto")')
 	.option(
 		'--format <formats>',
 		'Output formats (comma-separated: html,pdf,docx)',
@@ -38,6 +38,20 @@ program
 	.option('--html-only', 'Generate HTML only (skip PDF and DOCX)')
 	.option('--no-pdf', 'Skip PDF generation')
 	.option('--no-docx', 'Skip DOCX generation')
+	.option('--dry-run', 'Show what would be generated without generating')
+	.option('--people-dir <dir>', 'People directory (default: ./people)')
+	.option('--template-dir <dir>', 'Templates directory (default: ./templates)')
+	.addHelpText(
+		'after',
+		`
+Examples:
+  $ cvgen build johndoe modern
+  $ cvgen build johndoe base --locale en --no-pdf
+  $ cvgen build johndoe modern --watch
+  $ cvgen build johndoe modern --dry-run
+  $ cvgen build johndoe auto              # Auto-selects if only one template
+`,
+	)
 	.action(buildAction);
 
 // Init command

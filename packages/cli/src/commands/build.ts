@@ -36,6 +36,11 @@ export interface BuildOptions {
 	// --no-pdf sets pdf: false, --no-docx sets docx: false
 	pdf?: boolean;
 	docx?: boolean;
+	// Dry run - show what would be generated without generating
+	dryRun?: boolean;
+	// Custom directory paths
+	peopleDir?: string;
+	templateDir?: string;
 }
 
 // Exit codes per CONTEXT.md
@@ -53,9 +58,32 @@ export async function buildAction(
 ): Promise<void> {
 	const cons = createConsole({ quiet: options.quiet, json: options.json });
 	const cwd = process.cwd();
-	const peopleDir = path.join(cwd, 'people');
-	const templatesDir = path.join(cwd, 'templates');
+
+	// Use custom directories if provided, otherwise use defaults
+	const peopleDir = path.resolve(cwd, options.peopleDir ?? 'people');
+	const templatesDir = path.resolve(cwd, options.templateDir ?? 'templates');
 	const personDir = path.join(peopleDir, name);
+
+	// Auto-select template if only one available (per CONTEXT.md)
+	let resolvedTemplate = template;
+	if (template === 'auto' || !template) {
+		const templates = await discoverTemplates(templatesDir);
+		if (templates.length === 1) {
+			const selectedTemplate = templates[0];
+			if (selectedTemplate) {
+				resolvedTemplate = selectedTemplate.id;
+				cons.info(`Auto-selected template: ${resolvedTemplate}`);
+			}
+		} else if (templates.length === 0) {
+			cons.error('No templates found');
+			process.exit(EXIT_TEMPLATE_ERROR);
+		} else {
+			cons.error(
+				`Multiple templates available. Specify one: ${templates.map((t) => t.id).join(', ')}`,
+			);
+			process.exit(EXIT_TEMPLATE_ERROR);
+		}
+	}
 
 	// Watch mode
 	if (options.watch) {
@@ -71,12 +99,13 @@ export async function buildAction(
 				try {
 					await runBuild(
 						name,
-						template,
+						resolvedTemplate,
 						options,
 						cons,
 						personDir,
 						templatesDir,
 						peopleDir,
+						cwd,
 					);
 				} catch (err) {
 					cons.error((err as Error).message);
@@ -88,12 +117,13 @@ export async function buildAction(
 		try {
 			await runBuild(
 				name,
-				template,
+				resolvedTemplate,
 				options,
 				cons,
 				personDir,
 				templatesDir,
 				peopleDir,
+				cwd,
 			);
 		} catch (err) {
 			cons.error((err as Error).message);
@@ -112,12 +142,13 @@ export async function buildAction(
 	try {
 		await runBuild(
 			name,
-			template,
+			resolvedTemplate,
 			options,
 			cons,
 			personDir,
 			templatesDir,
 			peopleDir,
+			cwd,
 		);
 	} catch (err) {
 		const error = err as Error & { code?: number };
@@ -137,6 +168,7 @@ async function runBuild(
 	personDir: string,
 	templatesDir: string,
 	peopleDir: string,
+	cwd: string,
 ): Promise<void> {
 	const results: WriteResult[] = [];
 	const warnings: string[] = [];
@@ -244,6 +276,23 @@ async function runBuild(
 		if (options.docx === false) {
 			formats = formats.filter((f) => f !== 'docx');
 		}
+	}
+
+	// Dry run - show what would be generated without generating
+	if (options.dryRun) {
+		cons.info('Dry run - would generate:');
+		const slug = cv.contact.slug?.trim() || path.basename(personDir);
+		for (const locale of localesToBuild) {
+			for (const format of formats) {
+				if (supportedFormats.includes(format)) {
+					const filename = `${slug}_${templateId}_${locale}.${format}`;
+					const outputPath = path.join(personDir, 'output', filename);
+					const relativePath = path.relative(cwd, outputPath);
+					cons.info(`  ${relativePath}`);
+				}
+			}
+		}
+		return;
 	}
 
 	// 6. Build for each locale and format

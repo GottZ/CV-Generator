@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 09 Plan 03 Execution
+**Session:** Phase 09 Plan 04 Execution (Gap Closure)
 
 ## Project Reference
 
@@ -14,17 +14,18 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 ## Current Position
 
 **Phase:** 9 - Test Infrastructure Foundation (COMPLETE)
-**Plan:** 3 of 3 complete
+**Plan:** 4 of 4 complete (including gap closure)
 **Status:** Phase 9 fully complete, ready for Phase 10
-**Last activity:** 2026-01-23 - Completed 09-03-PLAN.md (Baseline Snapshots)
+**Last activity:** 2026-01-23 - Completed 09-04-PLAN.md (Test Documentation Gap Closure)
 
 **Progress:**
 ```
 v1.1 Improved PDF Creation [█-----] 20%
-├── Phase 9:  Test Infrastructure Foundation [███] TEST-06, TEST-07 COMPLETE
+├── Phase 9:  Test Infrastructure Foundation [████] TEST-06, TEST-07 COMPLETE + DOCUMENTED
 │   ├── 09-01: Docker CI Infrastructure [x]
 │   ├── 09-02: Test Utilities and Fixtures [x]
-│   └── 09-03: Baseline Snapshots [x]
+│   ├── 09-03: Baseline Snapshots [x]
+│   └── 09-04: Test Documentation (Gap Closure) [x]
 ├── Phase 10: Print CSS Consolidation        [ ] PRINT-02, PRINT-03, PRINT-04
 ├── Phase 11: CSS Pagination Improvements    [ ] PAG-01 to PAG-07
 ├── Phase 12: Print Parity Verification      [ ] PRINT-01, PRINT-05
@@ -37,8 +38,8 @@ v1.1 Improved PDF Creation [█-----] 20%
 |--------|-------|
 | Phases | 5 |
 | Requirements (v1.1) | 20 |
-| Plans Created | 3 |
-| Plans Completed | 3 |
+| Plans Created | 4 |
+| Plans Completed | 4 |
 | Requirements Delivered | 2/20 |
 | Blockers Encountered | 3 |
 | Blockers Resolved | 3 |
@@ -78,6 +79,9 @@ Phase 09-03 decisions:
 - Test helpers must use Node.js APIs (not Bun) for Playwright runtime compatibility
 - Viewport set to A4 (794x1123px) for consistent visual snapshots
 
+Phase 09-04 decisions:
+- Add documentation to README.md (vs separate TESTING.md) for discoverability
+
 ### Research Insights
 
 From `.planning/research/SUMMARY.md`:
@@ -110,8 +114,9 @@ None (3 encountered and resolved during 09-03 execution).
 - `/workspace/.planning/phases/09-test-infrastructure-foundation/09-01-SUMMARY.md` - Docker CI completion
 - `/workspace/.planning/phases/09-test-infrastructure-foundation/09-02-SUMMARY.md` - Test utilities completion
 - `/workspace/.planning/phases/09-test-infrastructure-foundation/09-03-SUMMARY.md` - Baseline snapshots completion
+- `/workspace/.planning/phases/09-test-infrastructure-foundation/09-04-SUMMARY.md` - Test documentation (gap closure)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 09-03 complete)*
+*Last updated: 2026-01-23 (Phase 09-04 complete)*

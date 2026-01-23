@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
 import { buildAction } from './commands/build.ts';
+import { initAction } from './commands/init.ts';
 
 const program = new Command();
 
@@ -36,6 +37,24 @@ program
 	.option('--no-pdf', 'Skip PDF generation')
 	.option('--no-docx', 'Skip DOCX generation')
 	.action(buildAction);
+
+// Init command
+program
+	.command('init')
+	.description('Scaffold a new CV directory with example content')
+	.argument('[name]', 'Person name (e.g., john-doe or "John Doe")')
+	.option('--quiet', 'Suppress non-error output')
+	.option('--json', 'Output results as JSON')
+	.addHelpText(
+		'after',
+		`
+Examples:
+  $ cvgen init john-doe
+  $ cvgen init "John Doe"
+  $ cvgen init              # Interactive: prompts for name
+`,
+	)
+	.action(initAction);
 
 // Parse and run
 program.parseAsync(process.argv).catch((err) => {

@@ -249,8 +249,8 @@ Plans:
 - [x] 08-04-PLAN.md — Classic template (business formal, mixed fonts, centered header)
 - [x] 08-05-PLAN.md — Config cascade system (global/template/env/frontmatter merging, style resolution)
 - [x] 08-06-PLAN.md — Documentation (README.md, CLI.md, MARKDOWN.md, CUSTOMIZATION.md, FAQ.md)
-- [ ] 08-07-PLAN.md — Examples and verification (example CV, template generation tests)
-- [ ] 08-08-PLAN.md — [GAP] PDF pagination fixes (page breaks, empty pages, top margin on new pages)
+- [x] 08-07-PLAN.md — Examples and verification (example CV, template generation tests)
+- [x] 08-08-PLAN.md — [GAP] PDF pagination fixes (page breaks, empty pages, top margin on new pages)
 
 ---
 
@@ -265,7 +265,7 @@ Plans:
 | 5 | DOCX Output | 2 | Complete |
 | 6 | CLI Commands | 6 | Complete |
 | 7 | IT Professional Features | 4 | Complete |
-| 8 | Multi-Template + Polish | 3 | Planned |
+| 8 | Multi-Template + Polish | 3 | Complete |
 
 **Total:** 43 requirement mappings (some requirements support multiple phases through shared infrastructure)
 
@@ -302,4 +302,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-23 (Phase 8 planned)*
+*Last updated: 2026-01-23 (Phase 8 complete - v1 milestone achieved)*

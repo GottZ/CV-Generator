@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 6 plan 03 complete
+**Session:** Phase 6 complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 6 - CLI Commands
+**Current Focus:** Phase 6 Complete - Ready for Phase 7
 
 ## Current Position
 
-**Phase:** 6 of 8 - CLI Commands
-**Plan:** 3 of 4 complete
-**Status:** In progress
-**Last activity:** 2026-01-23 - Completed 06-03-PLAN.md (Validate and list-templates commands)
+**Phase:** 6 of 8 - CLI Commands (COMPLETE)
+**Plan:** 4 of 4 complete
+**Status:** Phase complete
+**Last activity:** 2026-01-23 - Completed 06-04-PLAN.md (Build command enhancements)
 
 **Progress:**
 ```
@@ -23,20 +23,20 @@ Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
-Phase 6: [#######...] 75% - CLI Commands (3/4 plans)
+Phase 6: [##########] 100% - CLI Commands (4/4 plans) COMPLETE
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 5/8 phases complete (20/~25 plans complete, ~80%)
+**Overall:** 6/8 phases complete (21/~25 plans complete, ~84%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 21 |
-| Plans Completed | 20 |
-| Requirements Delivered | 30/41 (Phase 1-5 core complete) |
+| Plans Completed | 21 |
+| Requirements Delivered | 33/41 (Phase 1-6 core complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -96,6 +96,9 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | exit-code-130-cancel | Exit code 130 for user cancellation (SIGINT convention) | 2026-01-23 |
 | person-fuzzy-matching | Person not found suggests similar names with Fuse.js threshold 0.4 | 2026-01-23 |
 | validation-stats-format | Validate shows: sections, jobs, degrees, skill categories, locales | 2026-01-23 |
+| build-spinner-phases | Spinner text updates through PDF stages: generating, metadata, bookmarks | 2026-01-23 |
+| auto-template-selection | Template arg 'auto' or single template auto-selects | 2026-01-23 |
+| dry-run-relative-paths | Dry-run shows relative paths to cwd for readability | 2026-01-23 |
 
 ### Technical Context
 
@@ -185,6 +188,12 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - CSS style extraction: font sizes (half-points), colors (hex), alignment
 - Contact/links left-aligned, date ranges right-aligned (matching HTML)
 
+**CLI Commands (implemented):**
+- build: Generate HTML, PDF, DOCX with spinner progress, fuzzy matching, dry-run, auto-template
+- init: Scaffold new CV directory with example content, placeholder photo, interactive overwrite
+- validate: Check CV markdown structure, show validation stats
+- list-templates: Display available templates in formatted table
+
 ### Open TODOs
 
 - [x] Plan Phase 1 with `/gsd:plan-phase 1`
@@ -201,6 +210,10 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - [x] Execute 05-03-PLAN.md (Build command integration)
 - [x] Execute 05-04-PLAN.md (CSS style extraction for DOCX)
 - [x] Execute 05-05-PLAN.md (Linebreak handling)
+- [x] Execute 06-01-PLAN.md (CLI foundation utilities)
+- [x] Execute 06-02-PLAN.md (Init command)
+- [x] Execute 06-03-PLAN.md (Validate and list-templates)
+- [x] Execute 06-04-PLAN.md (Build command enhancements)
 - [ ] Clarify HTML object tag embedding requirement (research flagged this as non-standard)
 - [ ] Define specific template visual styles (Modern, Minimal, Classic)
 
@@ -233,6 +246,7 @@ None currently.
 - readline/promises is Node.js built-in - no external dependency needed for interactive prompts
 - Sharp can create placeholder images with SVG text overlay via composite method
 - fs/promises access(path, constants.F_OK) for directory existence check with try/catch pattern
+- ConsoleResult can be extended with quiet/json properties for passing to spinner creation
 
 ### Quick Tasks Completed
 
@@ -248,11 +262,11 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 06-04-PLAN.md (Watch mode and build enhancements).
+**Immediate next step:** Plan and execute Phase 7 (IT Professional Features).
 
 **Context to remember:**
-- Phases 1-5 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output all working
-- Build command: `cvgen build <name> <template>` generates HTML, PDF, and DOCX files
+- Phases 1-6 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output, CLI commands all working
+- Build command: `cvgen build <name> <template>` with spinner, fuzzy matching, dry-run, auto-template
 - Init command: `cvgen init <name>` scaffolds new CV directories with example content
 - Validate command: `cvgen validate <name>` checks CV structure and shows stats
 - List-templates command: `cvgen list-templates` displays available templates in formatted table
@@ -291,8 +305,9 @@ None currently.
 - `/workspace/.planning/phases/06-cli-commands/06-01-SUMMARY.md` - Plan 06-01 completion (CLI foundation utilities)
 - `/workspace/.planning/phases/06-cli-commands/06-02-SUMMARY.md` - Plan 06-02 completion (Init command)
 - `/workspace/.planning/phases/06-cli-commands/06-03-SUMMARY.md` - Plan 06-03 completion (Validate and list-templates commands)
+- `/workspace/.planning/phases/06-cli-commands/06-04-SUMMARY.md` - Plan 06-04 completion (Build command enhancements)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 6 plan 03 complete)*
+*Last updated: 2026-01-23 (Phase 6 complete)*

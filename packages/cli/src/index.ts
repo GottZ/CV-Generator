@@ -2,6 +2,8 @@
 import { Command } from 'commander';
 import { buildAction } from './commands/build.ts';
 import { initAction } from './commands/init.ts';
+import { listTemplatesAction } from './commands/list-templates.ts';
+import { validateAction } from './commands/validate.ts';
 
 const program = new Command();
 
@@ -55,6 +57,41 @@ Examples:
 `,
 	)
 	.action(initAction);
+
+// Validate command
+program
+	.command('validate')
+	.description('Check CV markdown against schema without generating files')
+	.argument('<name>', 'Person directory name (e.g., johndoe)')
+	.option('--locale <locale>', 'Validate specific locale only')
+	.option('--quiet', 'Suppress non-error output')
+	.option('--json', 'Output results as JSON')
+	.addHelpText(
+		'after',
+		`
+Examples:
+  $ cvgen validate johndoe
+  $ cvgen validate johndoe --locale en
+  $ cvgen validate johndoe --json
+`,
+	)
+	.action(validateAction);
+
+// List templates command
+program
+	.command('list-templates')
+	.description('Show available templates')
+	.option('--json', 'Output results as JSON')
+	.option('--quiet', 'Suppress non-error output')
+	.addHelpText(
+		'after',
+		`
+Examples:
+  $ cvgen list-templates
+  $ cvgen list-templates --json
+`,
+	)
+	.action(listTemplatesAction);
 
 // Parse and run
 program.parseAsync(process.argv).catch((err) => {

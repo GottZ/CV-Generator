@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ contact.name }} - CV</title>
+  <style>
+    {{ css | safe }}
+  </style>
+</head>
+<body class="classic">
+  <div class="cv-page">
+    {% from "../_shared/macros/entry.njk" import experienceEntry, educationEntry, projectEntry, certificationEntry %}
+
+    {# Contact header - traditional centered style #}
+    <header class="contact">
+      <h1>{{ contact.name }}</h1>
+      <div class="contact-info">
+        {% if contact.email %}<span class="contact-item">{{ contact.email }}</span>{% endif %}
+        {% if contact.phone %}<span class="contact-item">{{ contact.phone }}</span>{% endif %}
+        {% if contact.location %}<span class="contact-item">{{ contact.location }}</span>{% endif %}
+      </div>
+      {% if contact.links and contact.links | length > 0 %}
+      <div class="contact-links">
+        {% for link in contact.links %}
+        <a href="{{ link.url }}" class="contact-link">{{ link.label or link.type }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    <main>
+      {% if summary %}
+      <section class="section summary">
+        <h2>{{ 'summary' | sectionHeader(locale) }}</h2>
+        <p class="summary-text">{{ summary | md | safe }}</p>
+      </section>
+      {% endif %}
+
+      {% if experience and experience | length > 0 %}
+      <section class="section experience">
+        <h2>{{ 'experience' | sectionHeader(locale) }}</h2>
+        {% for job in experience %}
+        {{ experienceEntry(job, locale) }}
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if education and education | length > 0 %}
+      <section class="section education">
+        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
+        {% for edu in education %}
+        {{ educationEntry(edu, locale) }}
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if projects and projects | length > 0 %}
+      <section class="section projects">
+        <h2>{{ 'projects' | sectionHeader(locale) }}</h2>
+        {% for project in projects %}
+        {{ projectEntry(project, locale) }}
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if skills and skills | length > 0 %}
+      <section class="section skills">
+        <h2>{{ 'skills' | sectionHeader(locale) }}</h2>
+        {% for category in skills %}
+        <div class="skill-category">
+          <h3 class="skill-category-name">{{ category.name }}</h3>
+          <div class="skill-list">
+            {% for skill in category.skills %}
+            <span class="skill">{{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if certifications and certifications | length > 0 %}
+      <section class="section certifications">
+        <h2>{{ 'certifications' | sectionHeader(locale) }}</h2>
+        {% for cert in certifications %}
+        {{ certificationEntry(cert, locale) }}
+        {% endfor %}
+      </section>
+      {% endif %}
+    </main>
+  </div>
+
+  <button class="theme-toggle" type="button" aria-label="Toggle color theme">
+    <span class="theme-icon" data-icon="system">&#x2699;</span>
+    <span class="theme-icon" data-icon="light">&#x2600;</span>
+    <span class="theme-icon" data-icon="dark">&#x263D;</span>
+  </button>
+
+  <script>
+    (function() {
+      const toggle = document.querySelector('.theme-toggle');
+      const html = document.documentElement;
+      const STORAGE_KEY = 'cv-theme';
+      const THEMES = ['system', 'light', 'dark'];
+
+      function getStoredTheme() {
+        try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+      }
+
+      function setStoredTheme(theme) {
+        try {
+          if (theme === 'system') localStorage.removeItem(STORAGE_KEY);
+          else localStorage.setItem(STORAGE_KEY, theme);
+        } catch {}
+      }
+
+      function applyTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        toggle.setAttribute('aria-label', {
+          system: 'Current: system preference. Click to switch to light mode.',
+          light: 'Current: light mode. Click to switch to dark mode.',
+          dark: 'Current: dark mode. Click to switch to system preference.'
+        }[theme] || 'Toggle theme');
+      }
+
+      function cycleTheme() {
+        const current = html.getAttribute('data-theme') || 'system';
+        const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+        applyTheme(next);
+        setStoredTheme(next);
+      }
+
+      const stored = getStoredTheme();
+      applyTheme(stored && THEMES.includes(stored) ? stored : 'system');
+      toggle.addEventListener('click', cycleTheme);
+    })();
+  </script>
+</body>
+</html>

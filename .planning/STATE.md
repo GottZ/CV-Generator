@@ -12,9 +12,9 @@
 ## Current Position
 
 **Phase:** 7 of 8 - IT Professional Features
-**Plan:** 2 of 4 complete
+**Plan:** 2 of 4 complete (07-01 + 07-02)
 **Status:** In progress
-**Last activity:** 2026-01-23 - Completed 07-02-PLAN.md (Tech stack and skills parsing)
+**Last activity:** 2026-01-23 - Completed 07-01-PLAN.md (Schema and parser extensions)
 
 **Progress:**
 ```
@@ -102,6 +102,9 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | acronym-heuristic | Detect acronyms via uppercase pattern (2-5 chars) or K8s-style pattern | 2026-01-23 |
 | proficiency-allowlist | Use allowlist of known proficiency levels including German translations | 2026-01-23 |
 | tech-skills-warning | Warning only (not error) when tech not in skills - users may intentionally omit minor tech | 2026-01-23 |
+| certifications-not-localized | Certifications are NOT localized (cert names are universal) | 2026-01-23 |
+| project-sorting | Sort in parser: highlighted first, then by startDate descending | 2026-01-23 |
+| links-subsection | Use #### Links subsection with type: url format | 2026-01-23 |
 
 ### Technical Context
 
@@ -265,10 +268,15 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute Phase 7 Plan 03 (Projects section parsing).
+**Immediate next step:** Execute Phase 7 Plan 03 (Template rendering for Projects/Certifications).
 
 **Context to remember:**
 - Phases 1-6 complete, Phase 7 plans 01-02 complete
+- Project and Certification types in @gottz/cv-core schema
+- Parser extracts projects (localized) and certifications (non-localized) from markdown
+- Section mappings: projects/projekte, certifications/zertifizierungen
+- Project sorting: highlighted first, then by startDate descending
+- Expired certifications produce warnings (but are included in output)
 - Tech stack parsing: `#### Technologies` or `#### Tech Stack` in experience entries
 - Skills acronym detection: K8s, AWS, GCP preserved as full name; expert, proficient split to level
 - Tech-to-skills validation: warns when experience tech not in Skills section
@@ -318,4 +326,4 @@ None currently.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 7 plan 02 complete)*
+*Last updated: 2026-01-23 (Phase 7 plan 01 complete)*

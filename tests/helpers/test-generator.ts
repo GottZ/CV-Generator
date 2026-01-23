@@ -3,9 +3,13 @@
  *
  * Provides utilities to generate CV outputs for testing purposes,
  * using the CLI build command internally.
+ *
+ * Note: This file uses Node.js APIs (not Bun) because Playwright
+ * runs tests in Node.js runtime.
  */
 
-import { mkdir, rm } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 /** Template options for CV generation */
@@ -85,8 +89,8 @@ export async function generateTestCv(
 	// Copy fixture to person directory as cv.md
 	const fixturePath = path.join(FIXTURES_DIR, `${fixture}.md`);
 	const cvPath = path.join(personDir, 'cv.md');
-	const fixtureContent = await Bun.file(fixturePath).text();
-	await Bun.write(cvPath, fixtureContent);
+	const fixtureContent = await readFile(fixturePath, 'utf-8');
+	await writeFile(cvPath, fixtureContent);
 
 	// Run the CLI build command
 	const cliPath = path.join(
@@ -97,42 +101,52 @@ export async function generateTestCv(
 		'index.ts',
 	);
 
-	const proc = Bun.spawn(
-		[
+	// Use spawn with promise wrapper for Node.js compatibility
+	await new Promise<number>((resolve, reject) => {
+		const proc = spawn(
 			'bun',
-			'run',
-			cliPath,
-			'build',
-			personName,
-			template,
-			'--locale',
-			locale,
-			'--format',
-			'html,pdf,docx',
-			'--quiet',
-		],
-		{
-			cwd: process.cwd(),
-			env: {
-				...process.env,
-				// Point to test output directory for people
-				CVGEN_PEOPLE_DIR: TEST_OUTPUT_DIR,
-				// Use standard templates directory
-				CVGEN_TEMPLATES_DIR: TEMPLATES_DIR,
+			[
+				'run',
+				cliPath,
+				'build',
+				personName,
+				template,
+				'--locale',
+				locale,
+				'--format',
+				'html,pdf,docx',
+				'--people-dir',
+				TEST_OUTPUT_DIR,
+				'--template-dir',
+				TEMPLATES_DIR,
+				'--quiet',
+			],
+			{
+				cwd: process.cwd(),
+				env: process.env,
+				stdio: ['ignore', 'pipe', 'pipe'],
 			},
-			stdout: 'pipe',
-			stderr: 'pipe',
-		},
-	);
-
-	const exitCode = await proc.exited;
-
-	if (exitCode !== 0) {
-		const stderr = await new Response(proc.stderr).text();
-		throw new Error(
-			`CV generation failed with exit code ${exitCode}: ${stderr}`,
 		);
-	}
+
+		let stderr = '';
+		proc.stderr?.on('data', (data) => {
+			stderr += data.toString();
+		});
+
+		proc.on('error', (err) => {
+			reject(new Error(`Failed to spawn process: ${err.message}`));
+		});
+
+		proc.on('close', (code) => {
+			if (code !== 0) {
+				reject(
+					new Error(`CV generation failed with exit code ${code}: ${stderr}`),
+				);
+			} else {
+				resolve(code ?? 0);
+			}
+		});
+	});
 
 	// Determine expected output filenames
 	// The CLI uses slug from frontmatter, falling back to directory name
@@ -175,5 +189,10 @@ export async function cleanupTestOutput(): Promise<void> {
  * @returns Promise resolving to true if file exists
  */
 export async function outputExists(filePath: string): Promise<boolean> {
-	return await Bun.file(filePath).exists();
+	try {
+		await stat(filePath);
+		return true;
+	} catch {
+		return false;
+	}
 }

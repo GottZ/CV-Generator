@@ -3,8 +3,12 @@
  *
  * Provides functions to extract metadata and page counts from PDF files
  * for use in test assertions.
+ *
+ * Note: This file uses Node.js APIs (not Bun) because Playwright
+ * runs tests in Node.js runtime.
  */
 
+import { readFile, stat } from 'node:fs/promises';
 import { PDFDocument } from 'pdf-lib';
 
 /**
@@ -35,7 +39,7 @@ export interface PdfMetadata {
  * ```
  */
 export async function getPdfPageCount(pdfPath: string): Promise<number> {
-	const pdfBytes = await Bun.file(pdfPath).arrayBuffer();
+	const pdfBytes = await readFile(pdfPath);
 	const pdfDoc = await PDFDocument.load(pdfBytes);
 	return pdfDoc.getPageCount();
 }
@@ -57,9 +61,9 @@ export async function getPdfPageCount(pdfPath: string): Promise<number> {
  * ```
  */
 export async function getPdfMetadata(pdfPath: string): Promise<PdfMetadata> {
-	const file = Bun.file(pdfPath);
-	const fileSize = file.size;
-	const pdfBytes = await file.arrayBuffer();
+	const fileStat = await stat(pdfPath);
+	const fileSize = fileStat.size;
+	const pdfBytes = await readFile(pdfPath);
 	const pdfDoc = await PDFDocument.load(pdfBytes);
 
 	return {
@@ -84,6 +88,6 @@ export async function getPdfMetadata(pdfPath: string): Promise<PdfMetadata> {
  * ```
  */
 export async function getPdfFileSize(pdfPath: string): Promise<number> {
-	const file = Bun.file(pdfPath);
-	return file.size;
+	const fileStat = await stat(pdfPath);
+	return fileStat.size;
 }

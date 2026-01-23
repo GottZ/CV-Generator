@@ -101,6 +101,44 @@ cvgen list-templates
 - [Bun](https://bun.sh/) 1.0+
 - Chrome/Chromium (for PDF generation via Puppeteer)
 
+## Development
+
+### Running Tests
+
+Tests run in Docker to ensure consistent font rendering across all environments (local development and CI). Font rendering differences between operating systems can cause visual regression tests to fail even when the code is correct.
+
+```bash
+# Run tests locally (same environment as CI)
+docker compose -f docker-compose.test.yml run --rm test
+```
+
+Tests include:
+- Visual regression tests for all three templates (Modern, Minimal, Classic)
+- Page count assertions for single and multi-page CVs
+- PDF metadata validation
+
+### Updating Baseline Snapshots
+
+After intentional CSS changes that affect visual output, update the baseline snapshots:
+
+```bash
+docker compose -f docker-compose.test.yml run --rm test npx playwright test --update-snapshots
+```
+
+Review the diff before committing to ensure changes are expected. The snapshot files are located in `tests/pdf-*.spec.ts-snapshots/`.
+
+### CI
+
+Tests run automatically on every pull request via GitHub Actions. The workflow:
+
+1. Builds the Docker test container
+2. Runs all Playwright tests
+3. On failure, uploads artifacts for debugging:
+   - **playwright-report**: Full HTML report with test results
+   - **snapshot-diffs**: Visual diff images showing what changed
+
+To view artifacts from a failed run: Go to the Actions tab, select the failed workflow run, and scroll to the Artifacts section at the bottom.
+
 ## License
 
 MIT - See [LICENSE](./LICENSE)

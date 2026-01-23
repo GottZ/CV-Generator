@@ -1,0 +1,36 @@
+/* Print styles for PDF generation */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .cv-page {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .section {
+    page-break-inside: avoid;
+  }
+
+  .entry {
+    page-break-inside: avoid;
+  }
+
+  /* Don't show URL in printed links - ATS parses href directly */
+  a[href]::after {
+    content: none;
+  }
+
+  /* Hide theme toggle in print */
+  .theme-toggle {
+    display: none !important;
+  }
+}

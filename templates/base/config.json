@@ -1,7 +1,14 @@
 {
 	"$schema": "../../schemas/template-config.schema.json",
 	"name": "Base",
-	"description": "Clean, ATS-optimized template with semantic HTML structure. Usable standalone or as foundation for custom templates.",
+	"description": "Clean, ATS-optimized template with semantic HTML structure. Foundation for custom templates.",
 	"atsCompliant": true,
-	"singleColumn": true
+	"singleColumn": true,
+	"private": true,
+	"style": {
+		"accentColor": "#2563eb",
+		"fontHeading": "Arial, Helvetica, sans-serif",
+		"fontBody": "Arial, Helvetica, sans-serif",
+		"margins": "normal"
+	}
 }

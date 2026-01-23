@@ -1,6 +1,11 @@
 import * as readline from 'node:readline/promises';
 
 /**
+ * User's choice when prompted about existing directory.
+ */
+export type OverwriteChoice = 'overwrite' | 'skip' | 'cancel';
+
+/**
  * Prompt user for overwrite action when directory already exists.
  * Per CONTEXT.md: Interactive prompt with overwrite, skip, or cancel options.
  * Per RESEARCH.md Pattern 4: readline-based prompt with proper cleanup.
@@ -10,7 +15,7 @@ import * as readline from 'node:readline/promises';
  */
 export async function promptOverwrite(
 	dirPath: string,
-): Promise<'overwrite' | 'skip' | 'cancel'> {
+): Promise<OverwriteChoice> {
 	const rl = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,

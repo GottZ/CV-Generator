@@ -246,11 +246,12 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Plan Phase 6 (CLI Commands) with `/gsd:plan-phase 6`.
+**Immediate next step:** Execute 06-03-PLAN.md (Validate command).
 
 **Context to remember:**
 - Phases 1-5 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output all working
 - Build command: `cvgen build <name> <template>` generates HTML, PDF, and DOCX files
+- Init command: `cvgen init <name>` scaffolds new CV directories with example content
 - HTML files are self-contained with embedded CSS and base64 images
 - PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
 - DOCX files have Word Navigation Pane support, proper headings, and native page numbering
@@ -283,8 +284,10 @@ None currently.
 - `/workspace/.planning/phases/05-docx-output/05-03-SUMMARY.md` - Plan 05-03 completion
 - `/workspace/.planning/phases/05-docx-output/05-04-SUMMARY.md` - Plan 05-04 completion (CSS style extraction)
 - `/workspace/.planning/phases/05-docx-output/05-05-SUMMARY.md` - Plan 05-05 completion (DOCX linebreak handling)
+- `/workspace/.planning/phases/06-cli-commands/06-01-SUMMARY.md` - Plan 06-01 completion (CLI foundation utilities)
+- `/workspace/.planning/phases/06-cli-commands/06-02-SUMMARY.md` - Plan 06-02 completion (Init command)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 5 complete)*
+*Last updated: 2026-01-23 (Phase 6 plan 02 complete)*

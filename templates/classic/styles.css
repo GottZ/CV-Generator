@@ -1,0 +1,487 @@
+/* CV Generator - Classic Template
+ * Traditional business formal design with mixed font pairing
+ * Professional and conservative, ideal for corporate roles
+ * ATS-compliant: single-column, standard fonts, semantic structure
+ */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Classic: Mixed font pairing - serif headings, sans-serif body */
+  --font-heading: 'Times New Roman', Times, serif;
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-size-name: 22pt;
+  --font-size-section: 13pt;
+  --font-size-subsection: 11pt;
+  --font-size-body: 10.5pt;
+  --font-size-small: 9.5pt;
+
+  /* Classic color palette - conservative, professional */
+  --color-accent: #1e40af;
+  --color-accent-light: #3b82f6;
+  --color-heading: #1f2937;
+  --color-body: #374151;
+  --color-muted: #6b7280;
+  --color-border: #d1d5db;
+  --color-background: #ffffff;
+  --color-surface: #f3f4f6;
+
+  /* Classic: Compact, balanced margins */
+  --page-margin: 20mm;
+  --spacing-xs: 3px;
+  --spacing-sm: 6px;
+  --spacing-md: 12px;
+  --spacing-lg: 18px;
+  --spacing-xl: 24px;
+
+  /* Classic-specific: Traditional rules */
+  --divider-color: var(--color-border);
+  --divider-width: 1px;
+
+  /* Bullet style: traditional bullet */
+  --bullet-char: '\2022';
+
+  /* Page dimensions (A4) */
+  --page-width: 210mm;
+  --page-height: 297mm;
+}
+
+/* Dark mode - system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-accent: #60a5fa;
+    --color-accent-light: #93c5fd;
+    --color-heading: #f3f4f6;
+    --color-body: #e5e7eb;
+    --color-muted: #9ca3af;
+    --color-border: #4b5563;
+    --color-background: #1f2937;
+    --color-surface: #374151;
+  }
+
+  :root:not([data-theme="light"]) body {
+    background: #111827;
+  }
+}
+
+/* Explicit dark mode */
+[data-theme="dark"] {
+  --color-accent: #60a5fa;
+  --color-accent-light: #93c5fd;
+  --color-heading: #f3f4f6;
+  --color-body: #e5e7eb;
+  --color-muted: #9ca3af;
+  --color-border: #4b5563;
+  --color-background: #1f2937;
+  --color-surface: #374151;
+}
+
+[data-theme="dark"] body {
+  background: #111827;
+}
+
+/* Explicit light mode */
+[data-theme="light"] {
+  --color-accent: #1e40af;
+  --color-heading: #1f2937;
+  --color-body: #374151;
+  --color-muted: #6b7280;
+  --color-border: #d1d5db;
+  --color-background: #ffffff;
+  --color-surface: #f3f4f6;
+}
+
+[data-theme="light"] body {
+  background: #e5e7eb;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  color: var(--color-body);
+  line-height: 1.5;
+  background: #e5e7eb;
+}
+
+/* Page container */
+.cv-page {
+  width: var(--page-width);
+  min-height: var(--page-height);
+  padding: var(--page-margin);
+  background: var(--color-background);
+  margin: var(--spacing-lg) auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Contact header - Classic: centered, formal */
+.contact {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--color-heading);
+}
+
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-name);
+  color: var(--color-heading);
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  color: var(--color-body);
+  font-size: var(--font-size-body);
+  margin-bottom: var(--spacing-xs);
+}
+
+.contact-item:not(:last-child)::after {
+  content: '|';
+  margin-left: var(--spacing-sm);
+  color: var(--color-muted);
+}
+
+.contact-links {
+  margin-top: var(--spacing-sm);
+}
+
+.contact-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin: 0 var(--spacing-sm);
+  font-size: var(--font-size-body);
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Single column layout */
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Section headers - Classic: traditional double rule */
+.section {
+  margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-section);
+  color: var(--color-heading);
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-xs) 0;
+  border-top: var(--divider-width) solid var(--color-border);
+  border-bottom: 2px solid var(--color-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Entry components */
+.entry {
+  margin-bottom: var(--spacing-md);
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+h3 {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-subsection);
+  color: var(--color-heading);
+  font-weight: 700;
+}
+
+.entry-title {
+  flex: 1;
+}
+
+.date-range {
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+  white-space: nowrap;
+}
+
+.entry-institution,
+.entry-issuer {
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+}
+
+.entry-location {
+  color: var(--color-muted);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--spacing-xs);
+}
+
+.entry-honors {
+  font-style: italic;
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+}
+
+.entry-notes {
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+  margin-top: var(--spacing-xs);
+}
+
+/* Bullet list */
+.bullet-list {
+  margin-top: var(--spacing-sm);
+}
+
+.bullet-item {
+  padding-left: var(--spacing-md);
+  position: relative;
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.45;
+}
+
+.bullet-item::before {
+  content: var(--bullet-char);
+  position: absolute;
+  left: 0;
+  color: var(--color-body);
+}
+
+.bullet-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Summary */
+.summary-text {
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Skills - Classic: formal pills */
+.skill-category {
+  margin-bottom: var(--spacing-md);
+}
+
+.skill-category:last-child {
+  margin-bottom: 0;
+}
+
+.skill-category-name {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-heading);
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.skill {
+  background: var(--color-surface);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: var(--font-size-small);
+  color: var(--color-body);
+  border: 1px solid var(--color-border);
+}
+
+/* Tech stack tags - Classic: bordered */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--color-background);
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+  border-radius: 2px;
+  border: 1px solid var(--color-border);
+}
+
+.job-tech-stack {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: var(--divider-width) solid var(--color-border);
+}
+
+/* Project styles - Classic: formal */
+.project-entry.highlighted {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--spacing-md);
+}
+
+.entry-meta {
+  font-size: var(--font-size-small);
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.project-role::after {
+  content: ' | ';
+}
+
+.project-role:last-child::after {
+  content: '';
+}
+
+.project-description {
+  margin: var(--spacing-sm) 0;
+}
+
+.project-outcome {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.project-links {
+  margin-top: var(--spacing-sm);
+}
+
+.project-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-right: var(--spacing-md);
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+/* Certification styles */
+.certification-entry .entry-issuer {
+  color: var(--color-body);
+  font-size: var(--font-size-body);
+}
+
+.credential-id {
+  font-size: var(--font-size-small);
+  color: var(--color-muted);
+  font-family: monospace;
+}
+
+.verification-link {
+  display: inline-block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-small);
+  color: var(--color-accent);
+}
+
+/* Photo - Classic: oval/formal */
+.photo {
+  border-radius: 50%;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.theme-icon {
+  display: none;
+}
+
+[data-theme="system"] .theme-icon[data-icon="system"],
+:root:not([data-theme]) .theme-icon[data-icon="system"] {
+  display: inline;
+}
+
+[data-theme="light"] .theme-icon[data-icon="light"] {
+  display: inline;
+}
+
+[data-theme="dark"] .theme-icon[data-icon="dark"] {
+  display: inline;
+}
+
+/* Print styles */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .cv-page {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .section {
+    page-break-inside: avoid;
+  }
+
+  .entry {
+    page-break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: none;
+  }
+
+  .theme-toggle {
+    display: none !important;
+  }
+}

@@ -184,6 +184,14 @@ Plans:
 4. `cv-gen list-templates` displays available templates with descriptions
 5. Malformed markdown produces actionable error messages with fix suggestions
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Spinner and prompt utilities (ora, cli-table3, TTY-aware helpers)
+- [ ] 06-02-PLAN.md — Init command (scaffolder, placeholder photo, example markdown)
+- [ ] 06-03-PLAN.md — Validate and list-templates commands (stats, table formatting, fuzzy matching)
+- [ ] 06-04-PLAN.md — Build command enhancement (spinner integration, dry-run, auto-template)
+
 ---
 
 ## Phase 7: IT Professional Features
@@ -274,4 +282,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-22 (Phase 5 complete with gap closure)*
+*Last updated: 2026-01-23 (Phase 6 planned)*

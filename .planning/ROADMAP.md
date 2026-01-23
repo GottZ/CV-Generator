@@ -34,12 +34,13 @@ This milestone improves PDF output quality through better pagination, HTML print
 - Use `--font-render-hinting=none` for reproducible results
 - Pin Puppeteer/Playwright versions in CI
 
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
-- [ ] 09-01-PLAN.md - Docker CI Infrastructure (Dockerfile.test, GitHub Actions workflow)
-- [ ] 09-02-PLAN.md - Test Utilities and Fixtures (CV fixtures, PDF helpers)
-- [ ] 09-03-PLAN.md - Baseline Snapshots (Visual regression tests for all 3 templates)
+- [x] 09-01-PLAN.md - Docker CI Infrastructure (Dockerfile.test, GitHub Actions workflow)
+- [x] 09-02-PLAN.md - Test Utilities and Fixtures (CV fixtures, PDF helpers)
+- [x] 09-03-PLAN.md - Baseline Snapshots (Visual regression tests for all 3 templates)
+- [ ] 09-04-PLAN.md - Documentation (Test infrastructure docs for contributors) [gap closure]
 
 ---
 
@@ -157,7 +158,7 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 9 | Test Infrastructure Foundation | TEST-06, TEST-07 | Planned (3 plans) |
+| 9 | Test Infrastructure Foundation | TEST-06, TEST-07 | In Progress (4 plans, 3 complete) |
 | 10 | Print CSS Consolidation | PRINT-02, PRINT-03, PRINT-04 | Pending |
 | 11 | CSS Pagination Improvements | PAG-01 to PAG-07 | Pending |
 | 12 | Print Parity Verification | PRINT-01, PRINT-05 | Pending |

@@ -28,7 +28,17 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 
 ### Active
 
-(None yet — next milestone will define requirements)
+**Current Milestone: v1.1 Improved PDF Creation**
+
+**Goal:** Improve PDF pagination, achieve HTML print parity, and add automated testing for PDF output quality.
+
+**Target features:**
+- Eliminate wasted whitespace in PDF pagination
+- Prevent near-empty last pages (content should fit on previous page when possible)
+- HTML print output indistinguishable from PDF output
+- Visual regression testing for PDF output
+- Text extraction testing (ATS verification)
+- Structural checks (page count, metadata, file size)
 
 ### Out of Scope
 
@@ -90,4 +100,4 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 | Single-column layouts | Multi-column breaks ATS parsing | Good |
 
 ---
-*Last updated: 2026-01-23 after v1.0 milestone*
+*Last updated: 2026-01-23 after starting v1.1 milestone*

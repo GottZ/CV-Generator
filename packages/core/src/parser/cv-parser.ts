@@ -55,6 +55,9 @@ export function parseCV(markdown: string): ParseResult<CVData> {
 		parseSkillCategories,
 	);
 
+	// Step 4: Validate tech-to-skills consistency
+	validateTechToSkills(experience, skills, warnings);
+
 	// Build CVData if no errors (warnings are OK)
 	const data: CVData | null =
 		errors.length === 0 && frontmatterResult.contact
@@ -334,4 +337,52 @@ function parseSkillCategories(content: string): SkillCategory[] {
 	}
 
 	return categories;
+}
+
+/**
+ * Validate that technologies listed in experience are also in skills section.
+ * Warns when a tech is used in experience but not listed in skills.
+ *
+ * @param experience - Localized experience data
+ * @param skills - Localized skills data
+ * @param warnings - Array to push warnings to
+ */
+function validateTechToSkills(
+	experience: Localized<WorkExperience[]>,
+	skills: Localized<SkillCategory[]>,
+	warnings: ParseError[],
+): void {
+	// Collect all tech from experience (use first locale for validation)
+	const allTechUsed = new Set<string>();
+	const experienceContent = experience[Object.keys(experience)[0] ?? ''] ?? [];
+	for (const exp of experienceContent) {
+		for (const tech of exp.techStack ?? []) {
+			// Strip role annotation for matching: "React (lead)" -> "React"
+			const techName = tech.replace(/\s*\([^)]+\)$/, '').trim();
+			allTechUsed.add(techName.toLowerCase());
+		}
+	}
+
+	// Collect all skill names (use first locale for validation)
+	const allSkillNames = new Set<string>();
+	const skillsContent = skills[Object.keys(skills)[0] ?? ''] ?? [];
+	for (const category of skillsContent) {
+		for (const skill of category.skills) {
+			// Handle both formats: "Kubernetes (K8s)" and "TypeScript"
+			const skillName = skill.name.replace(/\s*\([^)]+\)$/, '').trim();
+			allSkillNames.add(skillName.toLowerCase());
+		}
+	}
+
+	// Warn on tech not in skills
+	for (const tech of allTechUsed) {
+		if (!allSkillNames.has(tech)) {
+			warnings.push({
+				type: 'warning',
+				message: `Technology "${tech}" used in experience but not listed in Skills section`,
+				suggestion:
+					'Consider adding this skill to your Skills section for consistency',
+			});
+		}
+	}
 }

@@ -240,6 +240,17 @@ Plans:
 3. README.md documents installation, usage examples, and template customization
 4. All templates maintain ATS compliance (single-column, standard fonts, semantic structure)
 
+**Plans:** 7 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Shared resources and loader updates (_shared/ directory, private flag, JSON Schema)
+- [ ] 08-02-PLAN.md — Modern template (bold geometric design, 3px accent dividers, wide margins)
+- [ ] 08-03-PLAN.md — Minimal template (clean airy design, hairline dividers, Times New Roman)
+- [ ] 08-04-PLAN.md — Classic template (business formal, mixed fonts, centered header)
+- [ ] 08-05-PLAN.md — Config cascade system (global/template/env/frontmatter merging, style resolution)
+- [ ] 08-06-PLAN.md — Documentation (README.md, CLI.md, MARKDOWN.md, CUSTOMIZATION.md, FAQ.md)
+- [ ] 08-07-PLAN.md — Examples and verification (example CV, template generation tests)
+
 ---
 
 ## Progress
@@ -253,7 +264,7 @@ Plans:
 | 5 | DOCX Output | 2 | Complete |
 | 6 | CLI Commands | 6 | Complete |
 | 7 | IT Professional Features | 4 | Complete |
-| 8 | Multi-Template + Polish | 3 | Pending |
+| 8 | Multi-Template + Polish | 3 | Planned |
 
 **Total:** 43 requirement mappings (some requirements support multiple phases through shared infrastructure)
 
@@ -290,4 +301,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-23 (Phase 7 complete)*
+*Last updated: 2026-01-23 (Phase 8 planned)*

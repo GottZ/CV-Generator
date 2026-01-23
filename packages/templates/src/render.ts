@@ -34,6 +34,9 @@ export async function renderCV(
 		experience: cv.experience?.[locale],
 		education: cv.education?.[locale],
 		skills: cv.skills?.[locale],
+		// Phase 7 additions
+		projects: cv.projects?.[locale],
+		certifications: cv.certifications, // Not localized
 		locale,
 		css,
 	};
@@ -96,6 +99,9 @@ export function createRenderer(templatesDir: string) {
 			experience: cv.experience?.[locale],
 			education: cv.education?.[locale],
 			skills: cv.skills?.[locale],
+			// Phase 7 additions
+			projects: cv.projects?.[locale],
+			certifications: cv.certifications, // Not localized
 			locale,
 			css,
 		};

@@ -10,6 +10,7 @@ export function registerFilters(env: nunjucks.Environment): void {
 	registerDateFilters(env);
 	registerMarkdownFilters(env);
 	registerI18nFilters(env);
+	registerUrlFilters(env);
 }
 
 /**
@@ -86,4 +87,24 @@ function registerI18nFilters(env: nunjucks.Environment): void {
 	env.addFilter('sectionHeader', (section: string, locale: string = 'en') => {
 		return getSectionHeader(section, locale);
 	});
+}
+
+/**
+ * Format URL for display: remove protocol and trailing slash.
+ * Per CONTEXT.md: "Display: icon (if theme provides) + cleaned URL (no `https://`, no trailing slash)"
+ *
+ * "https://github.com/user/repo/" -> "github.com/user/repo"
+ */
+export function formatLinkUrl(url: string): string {
+	if (!url) return '';
+	return url
+		.replace(/^https?:\/\//, '') // Remove protocol
+		.replace(/\/$/, ''); // Remove trailing slash
+}
+
+/**
+ * URL formatting filters.
+ */
+function registerUrlFilters(env: nunjucks.Environment): void {
+	env.addFilter('formatLinkUrl', (url: string) => formatLinkUrl(url));
 }

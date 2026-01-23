@@ -12,9 +12,11 @@
  */
 
 import type {
+	Certification,
 	CVData,
 	Education,
 	Link,
+	Project,
 	SkillCategory,
 	WorkExperience,
 } from '@gottz/cv-core';
@@ -482,6 +484,27 @@ function buildExperienceSection(
 				}),
 			);
 		}
+
+		// Tech stack (comma-separated after bullets)
+		if (exp.techStack && exp.techStack.length > 0) {
+			paragraphs.push(
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: `Technologies: ${exp.techStack.join(', ')}`,
+							size: styles.fontSizes.small,
+							color: styles.colors.muted,
+							font: styles.fonts.body,
+							italics: true,
+						}),
+					],
+					spacing: {
+						before: SPACING.afterBullet,
+						after: SPACING.afterCategory,
+					},
+				}),
+			);
+		}
 	}
 
 	return paragraphs;
@@ -684,6 +707,326 @@ function buildSkillsSection(
 }
 
 /**
+ * Format URL for display: remove protocol and trailing slash.
+ */
+function formatLinkUrl(url: string): string {
+	return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
+
+/**
+ * Build projects section paragraphs.
+ * Structure mirrors experience section with optional dates, role, description.
+ */
+function buildProjectsSection(
+	projects: Project[],
+	locale: string,
+	styles: DocxStyleConfig,
+): Paragraph[] {
+	const paragraphs: Paragraph[] = [];
+
+	// Section header (Heading 2)
+	paragraphs.push(
+		new Paragraph({
+			heading: HeadingLevel.HEADING_2,
+			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('projects', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
+		}),
+	);
+
+	for (const project of projects) {
+		// Project name | Role
+		const nameChildren: TextRun[] = [
+			new TextRun({
+				text: project.name,
+				bold: true,
+				size: styles.fontSizes.subsection,
+				color: styles.colors.heading,
+				font: styles.fonts.heading,
+			}),
+		];
+		if (project.role) {
+			nameChildren.push(
+				new TextRun({
+					text: ` | ${project.role}`,
+					size: styles.fontSizes.body,
+					color: styles.colors.body,
+					font: styles.fonts.body,
+				}),
+			);
+		}
+		paragraphs.push(
+			new Paragraph({
+				children: nameChildren,
+				spacing: { before: SPACING.beforeEntry },
+			}),
+		);
+
+		// Dates | Type (italic, right-aligned)
+		if (project.startDate || project.type) {
+			const metaParts: string[] = [];
+			if (project.startDate) {
+				metaParts.push(
+					project.endDate
+						? `${project.startDate} - ${project.endDate}`
+						: project.startDate,
+				);
+			}
+			if (project.type) {
+				metaParts.push(project.type);
+			}
+			paragraphs.push(
+				new Paragraph({
+					alignment: AlignmentType.RIGHT,
+					children: [
+						new TextRun({
+							text: metaParts.join(' | '),
+							italics: true,
+							size: styles.fontSizes.small,
+							color: styles.colors.muted,
+							font: styles.fonts.body,
+						}),
+					],
+					spacing: { after: SPACING.afterDateLine },
+				}),
+			);
+		}
+
+		// Description
+		if (project.description) {
+			paragraphs.push(
+				new Paragraph({
+					children: textWithBreaks(project.description, {
+						size: styles.fontSizes.body,
+						color: styles.colors.body,
+						font: styles.fonts.body,
+					}),
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+
+		// Tech stack (comma-separated, small text)
+		if (project.techStack && project.techStack.length > 0) {
+			paragraphs.push(
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: `Technologies: ${project.techStack.join(', ')}`,
+							size: styles.fontSizes.small,
+							color: styles.colors.muted,
+							font: styles.fonts.body,
+							italics: true,
+						}),
+					],
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+
+		// Outcome (highlighted)
+		if (project.outcome) {
+			paragraphs.push(
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: 'Outcome: ',
+							bold: true,
+							size: styles.fontSizes.body,
+							color: styles.colors.heading,
+							font: styles.fonts.body,
+						}),
+						...textWithBreaks(project.outcome, {
+							size: styles.fontSizes.body,
+							color: styles.colors.body,
+							font: styles.fonts.body,
+						}),
+					],
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+
+		// Links (clickable hyperlinks)
+		if (project.links && project.links.length > 0) {
+			const linkChildren: (TextRun | ExternalHyperlink)[] = [];
+			for (let i = 0; i < project.links.length; i++) {
+				const link = project.links[i];
+				if (!link) continue;
+
+				if (i > 0) {
+					linkChildren.push(
+						new TextRun({
+							text: ' | ',
+							size: styles.fontSizes.small,
+							color: styles.colors.muted,
+							font: styles.fonts.body,
+						}),
+					);
+				}
+
+				linkChildren.push(
+					new ExternalHyperlink({
+						children: [
+							new TextRun({
+								text: link.label || formatLinkUrl(link.url),
+								style: 'Hyperlink',
+								size: styles.fontSizes.small,
+								color: styles.colors.accent,
+								font: styles.fonts.body,
+							}),
+						],
+						link: link.url,
+					}),
+				);
+			}
+			paragraphs.push(
+				new Paragraph({
+					children: linkChildren,
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+	}
+
+	return paragraphs;
+}
+
+/**
+ * Build certifications section paragraphs.
+ * Certifications are not localized per CONTEXT.md.
+ * Note: Prefixed with underscore - will be connected in Plan 07-04.
+ */
+function _buildCertificationsSection(
+	_certifications: Certification[],
+	_locale: string,
+	_styles: DocxStyleConfig,
+): Paragraph[] {
+	const certifications = _certifications;
+	const locale = _locale;
+	const styles = _styles;
+	const paragraphs: Paragraph[] = [];
+
+	// Section header (Heading 2)
+	paragraphs.push(
+		new Paragraph({
+			heading: HeadingLevel.HEADING_2,
+			spacing: { before: SPACING.beforeSection, after: SPACING.afterSection },
+			children: [
+				new TextRun({
+					text: getSectionHeader('certifications', locale),
+					size: styles.fontSizes.section,
+					color: styles.colors.heading,
+					font: styles.fonts.heading,
+					bold: true,
+				}),
+			],
+		}),
+	);
+
+	for (const cert of certifications) {
+		// Cert name (bold)
+		paragraphs.push(
+			new Paragraph({
+				children: [
+					new TextRun({
+						text: cert.name,
+						bold: true,
+						size: styles.fontSizes.subsection,
+						color: styles.colors.heading,
+						font: styles.fonts.heading,
+					}),
+				],
+				spacing: { before: SPACING.beforeEntry },
+			}),
+		);
+
+		// Issuer
+		paragraphs.push(
+			new Paragraph({
+				children: [
+					new TextRun({
+						text: cert.issuer,
+						size: styles.fontSizes.body,
+						color: styles.colors.muted,
+						font: styles.fonts.body,
+					}),
+				],
+			}),
+		);
+
+		// Dates (right-aligned, italic)
+		const dateStr = cert.expiryDate
+			? `${cert.date} - ${cert.expiryDate}`
+			: cert.date;
+		paragraphs.push(
+			new Paragraph({
+				alignment: AlignmentType.RIGHT,
+				children: [
+					new TextRun({
+						text: dateStr,
+						italics: true,
+						size: styles.fontSizes.small,
+						color: styles.colors.muted,
+						font: styles.fonts.body,
+					}),
+				],
+				spacing: { after: SPACING.afterDateLine },
+			}),
+		);
+
+		// Credential ID (if present)
+		if (cert.credentialId) {
+			paragraphs.push(
+				new Paragraph({
+					children: [
+						new TextRun({
+							text: `Credential ID: ${cert.credentialId}`,
+							size: styles.fontSizes.small,
+							color: styles.colors.muted,
+							font: styles.fonts.body,
+						}),
+					],
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+
+		// Verification URL (as hyperlink)
+		if (cert.verificationUrl) {
+			paragraphs.push(
+				new Paragraph({
+					children: [
+						new ExternalHyperlink({
+							children: [
+								new TextRun({
+									text: 'Verify Credential',
+									style: 'Hyperlink',
+									size: styles.fontSizes.small,
+									color: styles.colors.accent,
+									font: styles.fonts.body,
+								}),
+							],
+							link: cert.verificationUrl,
+						}),
+					],
+					spacing: { after: SPACING.afterBullet },
+				}),
+			);
+		}
+	}
+
+	return paragraphs;
+}
+
+/**
  * Build complete document content from CV data.
  *
  * Creates all CV sections with proper Word built-in styles:
@@ -699,7 +1042,9 @@ function buildSkillsSection(
  * 5. Summary section
  * 6. Experience section
  * 7. Education section
+ * 7.5. Projects section (Phase 7)
  * 8. Skills section
+ * 9. Certifications section (Phase 7)
  *
  * @param cv - CV data to render
  * @param locale - Locale for i18n section headers (en, de)
@@ -773,10 +1118,23 @@ export async function buildDocumentContent(
 		paragraphs.push(...buildEducationSection(educationContent, locale, s));
 	}
 
+	// 7.5. Projects section (Phase 7)
+	const projectsContent = cv.projects?.[locale];
+	if (projectsContent && projectsContent.length > 0) {
+		paragraphs.push(...buildProjectsSection(projectsContent, locale, s));
+	}
+
 	// 8. Skills section
 	const skillsContent = cv.skills?.[locale];
 	if (skillsContent && skillsContent.length > 0) {
 		paragraphs.push(...buildSkillsSection(skillsContent, locale, s));
+	}
+
+	// 9. Certifications section (Phase 7)
+	if (cv.certifications && cv.certifications.length > 0) {
+		paragraphs.push(
+			...buildCertificationsSection(cv.certifications, locale, s),
+		);
 	}
 
 	return paragraphs;

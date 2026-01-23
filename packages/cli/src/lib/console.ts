@@ -10,12 +10,19 @@ export interface ConsoleResult {
 	warn: (message: string) => void;
 	error: (message: string) => void;
 	info: (message: string) => void;
+	/** Whether quiet mode is enabled (--quiet flag) */
+	quiet: boolean;
+	/** Whether JSON output mode is enabled (--json flag) */
+	json: boolean;
 }
 
 export function createConsole(options: ConsoleOptions): ConsoleResult {
 	const isTTY = process.stdout.isTTY && !options.json;
 
 	return {
+		quiet: options.quiet ?? false,
+		json: options.json ?? false,
+
 		success(message: string) {
 			if (options.quiet || options.json) return;
 			console.log(isTTY ? pc.green(`✓ ${message}`) : `OK: ${message}`);

@@ -17,6 +17,7 @@ import { type WriteResult, writeOutput } from '../lib/output-writer.ts';
 import { addPdfBookmarks, getDefaultSections } from '../lib/pdf-bookmarks.ts';
 import { generatePdf } from '../lib/pdf-generator.ts';
 import { setPdfMetadata } from '../lib/pdf-metadata.ts';
+import { createSpinner } from '../lib/spinner.ts';
 
 export interface BuildOptions {
 	format?: string;
@@ -399,7 +400,11 @@ async function buildPdf(
 	const outputPath = path.join(personDir, 'output', filename);
 
 	// Step 1: Generate initial PDF with retry logic
-	cons.info('Generating PDF...');
+	// Per CONTEXT.md: Animated spinner for slow operations (PDF/DOCX generation)
+	const spinner = createSpinner('Generating PDF...', {
+		quiet: cons.quiet,
+		json: cons.json,
+	});
 
 	try {
 		const pdfResult = await withRetry(
@@ -420,7 +425,9 @@ async function buildPdf(
 		let pdfData: Buffer = Buffer.from(pdfArrayBuffer);
 
 		// Step 2: Add metadata
-		cons.info('Adding PDF metadata...');
+		if (spinner) {
+			spinner.text = 'Adding PDF metadata...';
+		}
 		pdfData = await setPdfMetadata(pdfData, {
 			title: `${cv.contact.name} - CV`,
 			author: cv.contact.name,
@@ -428,7 +435,9 @@ async function buildPdf(
 		});
 
 		// Step 3: Add bookmarks
-		cons.info('Adding PDF bookmarks...');
+		if (spinner) {
+			spinner.text = 'Adding PDF bookmarks...';
+		}
 		const sections = getDefaultSections(locale);
 		pdfData = await addPdfBookmarks(pdfData, sections);
 
@@ -437,6 +446,9 @@ async function buildPdf(
 
 		// Check if file existed before (always false here since we just wrote it)
 		const overwritten = pdfResult.bytes > 0;
+
+		// Per RESEARCH.md Pitfall 1: Always spinner?.succeed() or fail() before throwing
+		spinner?.succeed('PDF generated');
 
 		return {
 			writeResult: {
@@ -447,6 +459,9 @@ async function buildPdf(
 			warnings,
 		};
 	} catch (error) {
+		// Per RESEARCH.md Pitfall 1: Always fail spinner before throwing
+		spinner?.fail('PDF generation failed');
+
 		// Clean up partial PDF on failure
 		try {
 			const partialFile = Bun.file(outputPath);
@@ -484,24 +499,37 @@ async function buildDocx(
 	const imagesDir = path.join(personDir, 'images');
 	const templatePath = path.join(templatesDir, templateId);
 
-	cons.info('Generating DOCX...');
-
-	const result = await generateDocx({
-		cv,
-		locale,
-		outputPath,
-		imagesDir,
-		templatePath,
+	// Per CONTEXT.md: Animated spinner for slow operations (PDF/DOCX generation)
+	const spinner = createSpinner('Generating DOCX...', {
+		quiet: cons.quiet,
+		json: cons.json,
 	});
 
-	return {
-		writeResult: {
-			path: result.path,
-			bytes: result.bytes,
-			overwritten: false, // Could check file existence before
-		},
-		warnings,
-	};
+	try {
+		const result = await generateDocx({
+			cv,
+			locale,
+			outputPath,
+			imagesDir,
+			templatePath,
+		});
+
+		// Per RESEARCH.md Pitfall 1: Always spinner?.succeed() or fail() before throwing
+		spinner?.succeed('DOCX generated');
+
+		return {
+			writeResult: {
+				path: result.path,
+				bytes: result.bytes,
+				overwritten: false, // Could check file existence before
+			},
+			warnings,
+		};
+	} catch (error) {
+		// Per RESEARCH.md Pitfall 1: Always fail spinner before throwing
+		spinner?.fail('DOCX generation failed');
+		throw error;
+	}
 }
 
 /**

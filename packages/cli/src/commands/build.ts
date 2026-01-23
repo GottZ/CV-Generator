@@ -1,3 +1,4 @@
+import { readdir } from 'node:fs/promises';
 import path from 'node:path';
 import type { CVData } from '@gottz/cv-core';
 import { parseCV } from '@gottz/cv-core';
@@ -11,7 +12,10 @@ import {
 } from '../lib/console.ts';
 import { generateDocx } from '../lib/docx-generator.ts';
 import { createWatcher, parseWatchFilter } from '../lib/file-watcher.ts';
-import { templateNotFoundError } from '../lib/fuzzy-matcher.ts';
+import {
+	personNotFoundError,
+	templateNotFoundError,
+} from '../lib/fuzzy-matcher.ts';
 import { embedImages } from '../lib/html-embedder.ts';
 import { type WriteResult, writeOutput } from '../lib/output-writer.ts';
 import { addPdfBookmarks, getDefaultSections } from '../lib/pdf-bookmarks.ts';
@@ -72,6 +76,7 @@ export async function buildAction(
 						cons,
 						personDir,
 						templatesDir,
+						peopleDir,
 					);
 				} catch (err) {
 					cons.error((err as Error).message);
@@ -81,7 +86,15 @@ export async function buildAction(
 
 		// Initial build
 		try {
-			await runBuild(name, template, options, cons, personDir, templatesDir);
+			await runBuild(
+				name,
+				template,
+				options,
+				cons,
+				personDir,
+				templatesDir,
+				peopleDir,
+			);
 		} catch (err) {
 			cons.error((err as Error).message);
 		}
@@ -97,7 +110,15 @@ export async function buildAction(
 
 	// Single build
 	try {
-		await runBuild(name, template, options, cons, personDir, templatesDir);
+		await runBuild(
+			name,
+			template,
+			options,
+			cons,
+			personDir,
+			templatesDir,
+			peopleDir,
+		);
 	} catch (err) {
 		const error = err as Error & { code?: number };
 		cons.error(error.message);
@@ -109,21 +130,53 @@ export async function buildAction(
  * Run a single build.
  */
 async function runBuild(
-	_name: string,
+	name: string,
 	templateId: string,
 	options: BuildOptions,
 	cons: ConsoleResult,
 	personDir: string,
 	templatesDir: string,
+	peopleDir: string,
 ): Promise<void> {
 	const results: WriteResult[] = [];
 	const warnings: string[] = [];
 
-	// 1. Validate person directory exists
+	// 1. Validate person directory and CV file exist
 	const cvPath = path.join(personDir, 'cv.md');
 	const cvFile = Bun.file(cvPath);
 	if (!(await cvFile.exists())) {
-		const err = new Error(`CV not found: ${cvPath}`);
+		// Check if it's the person directory that's missing vs just the cv.md file
+		// Per CLI-05/CLI-06: Clear error messages with fix suggestions
+		try {
+			const entries = await readdir(peopleDir);
+			const availablePeople = entries.filter((e) => !e.startsWith('.'));
+
+			// Try to detect if the person directory itself exists
+			const personDirExists = availablePeople.includes(name);
+
+			if (!personDirExists) {
+				// Person directory doesn't exist - suggest similar names
+				const err = personNotFoundError(name, availablePeople);
+				(err as Error & { code: number }).code = EXIT_FILE_ERROR;
+				throw err;
+			}
+		} catch (e) {
+			// If we can't read peopleDir (doesn't exist), throw person not found
+			if ((e as NodeJS.ErrnoException).code === 'ENOENT') {
+				const err = personNotFoundError(name, []);
+				(err as Error & { code: number }).code = EXIT_FILE_ERROR;
+				throw err;
+			}
+			// If it's our personNotFoundError, re-throw it
+			if (e instanceof Error && e.message.includes('not found')) {
+				throw e;
+			}
+		}
+
+		// Directory exists but cv.md is missing
+		const err = new Error(
+			`CV file not found: ${cvPath}\n\nTry: Create cv.md in people/${name}/`,
+		);
 		(err as Error & { code: number }).code = EXIT_FILE_ERROR;
 		throw err;
 	}

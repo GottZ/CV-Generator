@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 6 complete
+**Session:** Phase 7 in progress
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 6 Complete - Ready for Phase 7
+**Current Focus:** Phase 7 - IT Professional Features
 
 ## Current Position
 
-**Phase:** 6 of 8 - CLI Commands (COMPLETE)
-**Plan:** 4 of 4 complete
-**Status:** Phase complete
-**Last activity:** 2026-01-23 - Completed 06-04-PLAN.md (Build command enhancements)
+**Phase:** 7 of 8 - IT Professional Features
+**Plan:** 2 of 4 complete
+**Status:** In progress
+**Last activity:** 2026-01-23 - Completed 07-02-PLAN.md (Tech stack and skills parsing)
 
 **Progress:**
 ```
@@ -24,19 +24,19 @@ Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
 Phase 6: [##########] 100% - CLI Commands (4/4 plans) COMPLETE
-Phase 7: [..........] 0% - IT Professional Features
+Phase 7: [#####.....] 50% - IT Professional Features (2/4 plans)
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 6/8 phases complete (21/~25 plans complete, ~84%)
+**Overall:** 6/8 phases complete (23/~25 plans complete, ~92%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 21 |
-| Plans Completed | 21 |
-| Requirements Delivered | 33/41 (Phase 1-6 core complete) |
+| Plans Created | 25 |
+| Plans Completed | 23 |
+| Requirements Delivered | 35/41 (Phase 1-7 in progress) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
 
@@ -99,6 +99,9 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | build-spinner-phases | Spinner text updates through PDF stages: generating, metadata, bookmarks | 2026-01-23 |
 | auto-template-selection | Template arg 'auto' or single template auto-selects | 2026-01-23 |
 | dry-run-relative-paths | Dry-run shows relative paths to cwd for readability | 2026-01-23 |
+| acronym-heuristic | Detect acronyms via uppercase pattern (2-5 chars) or K8s-style pattern | 2026-01-23 |
+| proficiency-allowlist | Use allowlist of known proficiency levels including German translations | 2026-01-23 |
+| tech-skills-warning | Warning only (not error) when tech not in skills - users may intentionally omit minor tech | 2026-01-23 |
 
 ### Technical Context
 
@@ -262,10 +265,13 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Plan and execute Phase 7 (IT Professional Features).
+**Immediate next step:** Execute Phase 7 Plan 03 (Projects section parsing).
 
 **Context to remember:**
-- Phases 1-6 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output, CLI commands all working
+- Phases 1-6 complete, Phase 7 plans 01-02 complete
+- Tech stack parsing: `#### Technologies` or `#### Tech Stack` in experience entries
+- Skills acronym detection: K8s, AWS, GCP preserved as full name; expert, proficient split to level
+- Tech-to-skills validation: warns when experience tech not in Skills section
 - Build command: `cvgen build <name> <template>` with spinner, fuzzy matching, dry-run, auto-template
 - Init command: `cvgen init <name>` scaffolds new CV directories with example content
 - Validate command: `cvgen validate <name>` checks CV structure and shows stats
@@ -306,8 +312,10 @@ None currently.
 - `/workspace/.planning/phases/06-cli-commands/06-02-SUMMARY.md` - Plan 06-02 completion (Init command)
 - `/workspace/.planning/phases/06-cli-commands/06-03-SUMMARY.md` - Plan 06-03 completion (Validate and list-templates commands)
 - `/workspace/.planning/phases/06-cli-commands/06-04-SUMMARY.md` - Plan 06-04 completion (Build command enhancements)
+- `/workspace/.planning/phases/07-it-professional-features/07-01-SUMMARY.md` - Plan 07-01 completion (Schema interfaces)
+- `/workspace/.planning/phases/07-it-professional-features/07-02-SUMMARY.md` - Plan 07-02 completion (Tech stack and skills parsing)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 6 complete)*
+*Last updated: 2026-01-23 (Phase 7 plan 02 complete)*

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-23
-**Session:** Phase 6 plan 02 complete
+**Session:** Phase 6 plan 03 complete
 
 ## Project Reference
 
@@ -12,9 +12,9 @@
 ## Current Position
 
 **Phase:** 6 of 8 - CLI Commands
-**Plan:** 2 of 4 complete
+**Plan:** 3 of 4 complete
 **Status:** In progress
-**Last activity:** 2026-01-23 - Completed 06-02-PLAN.md (Init command)
+**Last activity:** 2026-01-23 - Completed 06-03-PLAN.md (Validate and list-templates commands)
 
 **Progress:**
 ```
@@ -23,19 +23,19 @@ Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
-Phase 6: [#####.....] 50% - CLI Commands (2/4 plans)
+Phase 6: [#######...] 75% - CLI Commands (3/4 plans)
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 5/8 phases complete (19/~25 plans complete, ~76%)
+**Overall:** 5/8 phases complete (20/~25 plans complete, ~80%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
 | Plans Created | 21 |
-| Plans Completed | 19 |
+| Plans Completed | 20 |
 | Requirements Delivered | 30/41 (Phase 1-5 core complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -94,6 +94,8 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | init-slug-format | Slugify: toLowerCase, non-alphanumeric to hyphen, trim leading/trailing hyphens | 2026-01-23 |
 | sharp-svg-overlay | Use sharp.composite with SVG for text overlay on generated images | 2026-01-23 |
 | exit-code-130-cancel | Exit code 130 for user cancellation (SIGINT convention) | 2026-01-23 |
+| person-fuzzy-matching | Person not found suggests similar names with Fuse.js threshold 0.4 | 2026-01-23 |
+| validation-stats-format | Validate shows: sections, jobs, degrees, skill categories, locales | 2026-01-23 |
 
 ### Technical Context
 
@@ -246,12 +248,14 @@ None currently.
 
 ### For Next Session
 
-**Immediate next step:** Execute 06-03-PLAN.md (Validate command).
+**Immediate next step:** Execute 06-04-PLAN.md (Watch mode and build enhancements).
 
 **Context to remember:**
 - Phases 1-5 complete: monorepo, schema, parser, templates, HTML output, PDF output, DOCX output all working
 - Build command: `cvgen build <name> <template>` generates HTML, PDF, and DOCX files
 - Init command: `cvgen init <name>` scaffolds new CV directories with example content
+- Validate command: `cvgen validate <name>` checks CV structure and shows stats
+- List-templates command: `cvgen list-templates` displays available templates in formatted table
 - HTML files are self-contained with embedded CSS and base64 images
 - PDF files have metadata, bookmarks, i18n footers, and ATS-safe text extraction
 - DOCX files have Word Navigation Pane support, proper headings, and native page numbering
@@ -286,8 +290,9 @@ None currently.
 - `/workspace/.planning/phases/05-docx-output/05-05-SUMMARY.md` - Plan 05-05 completion (DOCX linebreak handling)
 - `/workspace/.planning/phases/06-cli-commands/06-01-SUMMARY.md` - Plan 06-01 completion (CLI foundation utilities)
 - `/workspace/.planning/phases/06-cli-commands/06-02-SUMMARY.md` - Plan 06-02 completion (Init command)
+- `/workspace/.planning/phases/06-cli-commands/06-03-SUMMARY.md` - Plan 06-03 completion (Validate and list-templates commands)
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 6 plan 02 complete)*
+*Last updated: 2026-01-23 (Phase 6 plan 03 complete)*

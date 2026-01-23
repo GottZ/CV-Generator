@@ -33,9 +33,7 @@ export async function renderCV(
 
 	// Resolve style cascade: template defaults < global config < env vars < frontmatter
 	const warnings: string[] = [];
-	const globalConfig = projectRoot
-		? await loadGlobalConfig(projectRoot)
-		: null;
+	const globalConfig = projectRoot ? await loadGlobalConfig(projectRoot) : null;
 
 	const resolvedStyle = resolveStyle(
 		template.config,

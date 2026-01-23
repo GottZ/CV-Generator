@@ -62,6 +62,16 @@
   :root:not([data-theme="light"]) .skill {
     background: var(--color-surface);
   }
+
+  /* Tech tags for system dark mode */
+  :root:not([data-theme="light"]) .tech-tag {
+    background: var(--color-surface);
+  }
+
+  /* Project outcome for system dark mode */
+  :root:not([data-theme="light"]) .project-outcome {
+    background: var(--color-surface);
+  }
 }
 
 /* Explicit dark mode - overrides system preference */
@@ -83,6 +93,14 @@
   background: var(--color-surface);
 }
 
+[data-theme="dark"] .tech-tag {
+  background: var(--color-surface);
+}
+
+[data-theme="dark"] .project-outcome {
+  background: var(--color-surface);
+}
+
 /* Explicit light mode - overrides system preference */
 [data-theme="light"] {
   --color-heading: #1a1a1a;
@@ -99,6 +117,14 @@
 
 [data-theme="light"] .skill {
   background: #f3f4f6;
+}
+
+[data-theme="light"] .tech-tag {
+  background: #f3f4f6;
+}
+
+[data-theme="light"] .project-outcome {
+  background: #f9f9f9;
 }
 
 body {
@@ -302,6 +328,93 @@ h3 {
   border-radius: 4px;
   font-size: var(--font-size-small);
   color: var(--color-body);
+}
+
+/* Tech stack tags (Phase 7) */
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f3f4f6;
+  color: var(--color-body);
+  font-size: var(--font-size-small);
+  border-radius: 3px;
+}
+
+.job-tech-stack {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Project entry styles (Phase 7) */
+.project-entry.highlighted {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--spacing-md);
+}
+
+.entry-meta {
+  font-size: var(--font-size-small);
+  color: var(--color-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.project-role::after {
+  content: ' \2022 ';
+}
+
+.project-role:last-child::after {
+  content: '';
+}
+
+.project-description {
+  margin: var(--spacing-sm) 0;
+}
+
+.project-outcome {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: #f9f9f9;
+  border-left: 2px solid var(--color-accent);
+}
+
+.project-links {
+  margin-top: var(--spacing-sm);
+}
+
+.project-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-right: var(--spacing-md);
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+/* Certification entry styles (Phase 7) */
+.certification-entry .entry-issuer {
+  color: var(--color-muted);
+  font-size: var(--font-size-body);
+}
+
+.credential-id {
+  font-size: var(--font-size-small);
+  color: var(--color-muted);
+  font-family: monospace;
+}
+
+.verification-link {
+  display: inline-block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-small);
+  color: var(--color-accent);
 }
 
 /* Theme toggle button */

@@ -1,0 +1,89 @@
+{# Experience entry macro #}
+{% macro experienceEntry(job, locale) %}
+<article class="entry experience-entry">
+  <div class="entry-header">
+    <h3 class="entry-title">{{ job.role }} at {{ job.company }}</h3>
+    <span class="date-range">{{ job.startDate | formatDate(locale) }} - {{ job.endDate | formatDate(locale) }}</span>
+  </div>
+  {% if job.location %}<div class="entry-location">{{ job.location }}</div>{% endif %}
+  {% if job.bullets and job.bullets | length > 0 %}
+  <div class="bullet-list">
+    {% for bullet in job.bullets %}
+    <div class="bullet-item">{{ bullet | md | safe }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if job.techStack and job.techStack | length > 0 %}
+  <div class="tech-stack job-tech-stack">
+    {% for tech in job.techStack %}
+    <span class="tech-tag">{{ tech }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>
+{% endmacro %}
+
+{# Education entry macro #}
+{% macro educationEntry(edu, locale) %}
+<article class="entry education-entry">
+  <div class="entry-header">
+    <h3 class="entry-title">{{ edu.degree }}{% if edu.field %}, {{ edu.field }}{% endif %}</h3>
+    <span class="date-range">{{ edu.startDate | formatDate(locale) }} - {{ edu.endDate | formatDate(locale) }}</span>
+  </div>
+  <div class="entry-institution">{{ edu.institution }}</div>
+  {% if edu.location %}<div class="entry-location">{{ edu.location }}</div>{% endif %}
+  {% if edu.honors %}<div class="entry-honors">{{ edu.honors }}</div>{% endif %}
+  {% if edu.notes %}<div class="entry-notes">{{ edu.notes | md | safe }}</div>{% endif %}
+</article>
+{% endmacro %}
+
+{# Project entry macro #}
+{% macro projectEntry(project, locale) %}
+<article class="entry project-entry{% if project.highlight %} highlighted{% endif %}">
+  <div class="entry-header">
+    <h3 class="entry-title">{{ project.name }}</h3>
+    {% if project.startDate %}
+    <span class="date-range">{{ project.startDate | formatDate(locale) }}{% if project.endDate %} - {{ project.endDate | formatDate(locale) }}{% endif %}</span>
+    {% endif %}
+  </div>
+  {% if project.role or project.type %}
+  <div class="entry-meta">
+    {% if project.role %}<span class="project-role">{{ project.role }}</span>{% endif %}
+    {% if project.type %}<span class="project-type">{{ project.type }}</span>{% endif %}
+  </div>
+  {% endif %}
+  {% if project.description %}<p class="project-description">{{ project.description | md | safe }}</p>{% endif %}
+  {% if project.techStack and project.techStack | length > 0 %}
+  <div class="tech-stack">
+    {% for tech in project.techStack %}
+    <span class="tech-tag">{{ tech }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if project.outcome %}
+  <div class="project-outcome">
+    <strong>Outcome:</strong> {{ project.outcome | md | safe }}
+  </div>
+  {% endif %}
+  {% if project.links and project.links | length > 0 %}
+  <div class="project-links">
+    {% for link in project.links %}
+    <a href="{{ link.url }}" class="project-link" target="_blank" rel="noopener">{{ link.label or (link.url | formatLinkUrl) }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</article>
+{% endmacro %}
+
+{# Certification entry macro #}
+{% macro certificationEntry(cert, locale) %}
+<article class="entry certification-entry">
+  <div class="entry-header">
+    <h3 class="entry-title">{{ cert.name }}</h3>
+    <span class="date-range">{{ cert.date | formatDate(locale) }}{% if cert.expiryDate %} - {{ cert.expiryDate | formatDate(locale) }}{% endif %}</span>
+  </div>
+  <div class="entry-issuer">{{ cert.issuer }}</div>
+  {% if cert.credentialId %}<div class="credential-id">ID: {{ cert.credentialId }}</div>{% endif %}
+  {% if cert.verificationUrl %}<a href="{{ cert.verificationUrl }}" class="verification-link" target="_blank" rel="noopener">Verify</a>{% endif %}
+</article>
+{% endmacro %}

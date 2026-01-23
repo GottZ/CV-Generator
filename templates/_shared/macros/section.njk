@@ -1,0 +1,7 @@
+{# Section wrapper macro - renders h2 header with localized title #}
+{% macro section(sectionType, locale, className='') %}
+<section class="section {{ className }}">
+  <h2>{{ sectionType | sectionHeader(locale) }}</h2>
+  {{ caller() }}
+</section>
+{% endmacro %}

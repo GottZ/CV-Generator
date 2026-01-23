@@ -1,0 +1,18 @@
+{# Contact block macro - renders name, contact info, and links #}
+{% macro contact(contactData, locale) %}
+<header class="contact">
+  <h1>{{ contactData.name }}</h1>
+  <div class="contact-info">
+    {% if contactData.email %}<span class="contact-item">{{ contactData.email }}</span>{% endif %}
+    {% if contactData.phone %}<span class="contact-item">{{ contactData.phone }}</span>{% endif %}
+    {% if contactData.location %}<span class="contact-item">{{ contactData.location }}</span>{% endif %}
+  </div>
+  {% if contactData.links and contactData.links | length > 0 %}
+  <div class="contact-links">
+    {% for link in contactData.links %}
+    <a href="{{ link.url }}" class="contact-link">{{ link.label or link.type }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</header>
+{% endmacro %}

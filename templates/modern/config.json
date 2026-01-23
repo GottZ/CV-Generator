@@ -1,0 +1,13 @@
+{
+	"$schema": "../../schemas/template-config.schema.json",
+	"name": "Modern",
+	"description": "Bold, geometric design with high contrast and generous whitespace. Ideal for tech and creative roles.",
+	"atsCompliant": true,
+	"singleColumn": true,
+	"style": {
+		"accentColor": "#2563eb",
+		"fontHeading": "Arial, Helvetica, sans-serif",
+		"fontBody": "Arial, Helvetica, sans-serif",
+		"margins": "wide"
+	}
+}

@@ -1,0 +1,13 @@
+{
+	"$schema": "../../schemas/template-config.schema.json",
+	"name": "Minimal",
+	"description": "Clean, spacious design with wide margins for annotations. Single font family, prints beautifully in monochrome.",
+	"atsCompliant": true,
+	"singleColumn": true,
+	"style": {
+		"accentColor": "#1a365d",
+		"fontHeading": "'Times New Roman', Times, serif",
+		"fontBody": "'Times New Roman', Times, serif",
+		"margins": "wide"
+	}
+}

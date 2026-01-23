@@ -1,20 +1,20 @@
 # Project State: CV Generator
 
-**Last Updated:** 2026-01-22
-**Session:** Phase 5 gap closure complete
+**Last Updated:** 2026-01-23
+**Session:** Phase 6 plan 02 complete
 
 ## Project Reference
 
 **Core Value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current Focus:** Phase 5 - DOCX Output (GAP CLOSURE)
+**Current Focus:** Phase 6 - CLI Commands
 
 ## Current Position
 
-**Phase:** 5 of 8 - DOCX Output
-**Plan:** 5 of 5 complete (gap closure plans)
-**Status:** Gap closure complete
-**Last activity:** 2026-01-22 - Completed 05-05-PLAN.md (DOCX linebreak handling)
+**Phase:** 6 of 8 - CLI Commands
+**Plan:** 2 of 4 complete
+**Status:** In progress
+**Last activity:** 2026-01-23 - Completed 06-02-PLAN.md (Init command)
 
 **Progress:**
 ```
@@ -23,19 +23,19 @@ Phase 2: [##########] 100% - Template Engine (3/3 plans) COMPLETE
 Phase 3: [##########] 100% - HTML Output (3/3 plans) COMPLETE
 Phase 4: [##########] 100% - PDF Output (3/3 plans) COMPLETE
 Phase 5: [##########] 100% - DOCX Output (5/5 plans, gap closure) COMPLETE
-Phase 6: [..........] 0% - CLI Commands
+Phase 6: [#####.....] 50% - CLI Commands (2/4 plans)
 Phase 7: [..........] 0% - IT Professional Features
 Phase 8: [..........] 0% - Multi-Template + Polish
 ```
 
-**Overall:** 5/8 phases complete (17/~25 plans complete, ~68%)
+**Overall:** 5/8 phases complete (19/~25 plans complete, ~76%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Plans Created | 17 |
-| Plans Completed | 17 |
+| Plans Created | 21 |
+| Plans Completed | 19 |
 | Requirements Delivered | 30/41 (Phase 1-5 core complete) |
 | Blockers Encountered | 0 |
 | Blockers Resolved | 0 |
@@ -87,6 +87,13 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 | docx-style-config | DocxStyleConfig interface for DOCX font sizes, colors, fonts, spacing | 2026-01-22 |
 | docx-break-number | docx library uses break: number (1 = one line break), not boolean | 2026-01-22 |
 | docx-internal-structure | TextRun stores elements in root array with rootKey identifiers (w:br, w:t, w:rPr) | 2026-01-22 |
+| ora-for-spinners | ora library for terminal spinner - robust edge case handling | 2026-01-23 |
+| cli-table3-for-tables | cli-table3 for formatted table output in list-templates | 2026-01-23 |
+| tty-aware-spinner | Spinner suppressed in quiet/json/non-TTY for clean piped output | 2026-01-23 |
+| readline-finally-close | Always close readline interface in finally block to prevent hanging | 2026-01-23 |
+| init-slug-format | Slugify: toLowerCase, non-alphanumeric to hyphen, trim leading/trailing hyphens | 2026-01-23 |
+| sharp-svg-overlay | Use sharp.composite with SVG for text overlay on generated images | 2026-01-23 |
+| exit-code-130-cancel | Exit code 130 for user cancellation (SIGINT convention) | 2026-01-23 |
 
 ### Technical Context
 
@@ -99,7 +106,7 @@ Phase 8: [..........] 0% - Multi-Template + Polish
 - Templates: Nunjucks 3.2.4 (installed)
 - Dates: dayjs 1.11.13 (installed)
 - Images: Sharp 0.34+ (installed)
-- Terminal: picocolors 1.1+ (installed)
+- Terminal: picocolors 1.1+ (installed), ora 9.1+ (installed), cli-table3 0.6+ (installed)
 - Linting: Biome 2.3.11
 
 **Schema Structure (implemented):**
@@ -220,6 +227,10 @@ None currently.
 - docx TextRun break property uses number (1) not boolean (true)
 - docx TextRun internal structure uses root array with rootKey identifiers (w:br, w:t, w:rPr)
 - textWithBreaks utility converts single newlines to w:br elements, double newlines to separate paragraphs
+- ora spinner should be used via optional chaining (spinner?.succeed) since createSpinner can return null
+- readline/promises is Node.js built-in - no external dependency needed for interactive prompts
+- Sharp can create placeholder images with SVG text overlay via composite method
+- fs/promises access(path, constants.F_OK) for directory existence check with try/catch pattern
 
 ### Quick Tasks Completed
 

@@ -16,6 +16,9 @@ export async function discoverTemplates(
 	for (const entry of entries) {
 		if (!entry.isDirectory()) continue;
 
+		// Skip underscore-prefixed directories (e.g., _shared)
+		if (entry.name.startsWith('_')) continue;
+
 		const configPath = path.join(templatesDir, entry.name, 'config.json');
 		try {
 			const configContent = await readFile(configPath, 'utf-8');
@@ -27,6 +30,9 @@ export async function discoverTemplates(
 					`Template ${entry.name}: config.json missing required fields (name, description)`,
 				);
 			}
+
+			// Skip private templates from discovery
+			if (config.private === true) continue;
 
 			templates.push({
 				id: entry.name,

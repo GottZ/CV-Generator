@@ -65,6 +65,44 @@ export interface DiscoveredTemplate {
 	stylesPath: string;
 }
 
+/** Style configuration (can appear at any cascade level) */
+export interface StyleConfig {
+	/** Primary accent color (hex format) */
+	accentColor?: string;
+	/** Heading font family */
+	fontHeading?: string;
+	/** Body text font family */
+	fontBody?: string;
+	/** Page margins: "narrow" | "normal" | "wide" or number (mm) */
+	margins?: string | number;
+	/** Color palette overrides */
+	colors?: {
+		heading?: string;
+		body?: string;
+		muted?: string;
+		border?: string;
+		background?: string;
+	};
+}
+
+/** Fully resolved style after cascade */
+export interface ResolvedStyle {
+	accentColor: string;
+	fontHeading: string;
+	fontBody: string;
+	marginMm: number;
+	marginCss: string;
+	colors: {
+		accent: string;
+		heading: string;
+		body: string;
+		muted: string;
+		border: string;
+		background: string;
+		surface: string;
+	};
+}
+
 /**
  * Options for rendering a CV.
  */
@@ -73,6 +111,10 @@ export interface RenderOptions {
 	templateId: string;
 	/** Locale code for section headers and date formatting */
 	locale: string;
+	/** Optional style overrides from frontmatter or config */
+	styleConfig?: StyleConfig;
+	/** Project root for loading global config */
+	projectRoot?: string;
 }
 
 /**

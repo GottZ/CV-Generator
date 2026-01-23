@@ -1,0 +1,100 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "https://cvgen.dev/schemas/template-config.json",
+	"title": "CV Generator Template Configuration",
+	"description": "Configuration schema for cvgen template config.json files",
+	"type": "object",
+	"required": ["name", "description"],
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "Display name of the template"
+		},
+		"description": {
+			"type": "string",
+			"description": "Brief description of the template style"
+		},
+		"atsCompliant": {
+			"type": "boolean",
+			"default": true,
+			"description": "Whether template follows ATS optimization rules"
+		},
+		"singleColumn": {
+			"type": "boolean",
+			"default": true,
+			"description": "Whether template uses single-column layout"
+		},
+		"private": {
+			"type": "boolean",
+			"default": false,
+			"description": "Hide from list-templates command"
+		},
+		"minVersion": {
+			"type": "string",
+			"pattern": "^\\d+\\.\\d+\\.\\d+$",
+			"description": "Minimum cvgen version required"
+		},
+		"preview": {
+			"type": "string",
+			"description": "Preview image filename"
+		},
+		"style": {
+			"type": "object",
+			"description": "Style customization options",
+			"properties": {
+				"accentColor": {
+					"type": "string",
+					"pattern": "^#[0-9a-fA-F]{6}$",
+					"description": "Primary accent color (hex format, e.g. #2563eb)"
+				},
+				"fontHeading": {
+					"type": "string",
+					"description": "Heading font family (e.g. 'Arial, Helvetica, sans-serif')"
+				},
+				"fontBody": {
+					"type": "string",
+					"description": "Body text font family"
+				},
+				"margins": {
+					"oneOf": [
+						{ "type": "string", "enum": ["narrow", "normal", "wide"] },
+						{ "type": "number", "minimum": 5, "maximum": 50 }
+					],
+					"description": "Page margins: named size or mm value"
+				},
+				"colors": {
+					"type": "object",
+					"description": "Color palette overrides",
+					"properties": {
+						"heading": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+						"body": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+						"muted": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+						"border": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+						"background": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" }
+					}
+				}
+			}
+		},
+		"sectionHeaders": {
+			"type": "object",
+			"description": "Optional section header overrides per locale",
+			"additionalProperties": {
+				"type": "object",
+				"additionalProperties": { "type": "string" }
+			}
+		},
+		"locales": {
+			"type": "object",
+			"description": "Locale-specific configuration",
+			"additionalProperties": {
+				"type": "object",
+				"properties": {
+					"dateFormat": {
+						"type": "string",
+						"description": "dayjs format string for dates"
+					}
+				}
+			}
+		}
+	}
+}

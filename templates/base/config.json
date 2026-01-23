@@ -1,4 +1,5 @@
 {
+	"$schema": "../../schemas/template-config.schema.json",
 	"name": "Base",
 	"description": "Clean, ATS-optimized template with semantic HTML structure. Usable standalone or as foundation for custom templates.",
 	"atsCompliant": true,

@@ -187,10 +187,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Spinner and prompt utilities (ora, cli-table3, TTY-aware helpers)
-- [ ] 06-02-PLAN.md — Init command (scaffolder, placeholder photo, example markdown)
-- [ ] 06-03-PLAN.md — Validate and list-templates commands (stats, table formatting, fuzzy matching)
-- [ ] 06-04-PLAN.md — Build command enhancement (spinner integration, dry-run, auto-template)
+- [x] 06-01-PLAN.md — Spinner and prompt utilities (ora, cli-table3, TTY-aware helpers)
+- [x] 06-02-PLAN.md — Init command (scaffolder, placeholder photo, example markdown)
+- [x] 06-03-PLAN.md — Validate and list-templates commands (stats, table formatting, fuzzy matching)
+- [x] 06-04-PLAN.md — Build command enhancement (spinner integration, dry-run, auto-template)
 
 ---
 
@@ -243,7 +243,7 @@ Plans:
 | 3 | HTML Output | 8 | Complete |
 | 4 | PDF Output | 4 | Complete |
 | 5 | DOCX Output | 2 | Complete |
-| 6 | CLI Commands | 6 | Pending |
+| 6 | CLI Commands | 6 | Complete |
 | 7 | IT Professional Features | 4 | Pending |
 | 8 | Multi-Template + Polish | 3 | Pending |
 
@@ -282,4 +282,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-23 (Phase 6 planned)*
+*Last updated: 2026-01-23 (Phase 6 complete)*

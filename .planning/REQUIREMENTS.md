@@ -46,12 +46,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### CLI Interface
 
-- [ ] **CLI-01**: `build` command generates all formats for specified person and template
-- [ ] **CLI-02**: `init` command scaffolds new CV directory with example markdown
-- [ ] **CLI-03**: `validate` command checks markdown against schema without generating
-- [ ] **CLI-04**: `list-templates` command shows available templates
-- [ ] **CLI-05**: Clear error messages for malformed markdown input
-- [ ] **CLI-06**: Helpful validation errors with fix suggestions
+- [x] **CLI-01**: `build` command generates all formats for specified person and template
+- [x] **CLI-02**: `init` command scaffolds new CV directory with example markdown
+- [x] **CLI-03**: `validate` command checks markdown against schema without generating
+- [x] **CLI-04**: `list-templates` command shows available templates
+- [x] **CLI-05**: Clear error messages for malformed markdown input
+- [x] **CLI-06**: Helpful validation errors with fix suggestions
 
 ### ATS Optimization
 
@@ -134,12 +134,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-10 | Phase 1 | Complete |
 | DATA-11 | Phase 3 | Complete |
 | DATA-12 | Phase 3 | Complete |
-| CLI-01 | Phase 6 | Pending |
-| CLI-02 | Phase 6 | Pending |
-| CLI-03 | Phase 6 | Pending |
-| CLI-04 | Phase 6 | Pending |
-| CLI-05 | Phase 6 | Pending |
-| CLI-06 | Phase 6 | Pending |
+| CLI-01 | Phase 6 | Complete |
+| CLI-02 | Phase 6 | Complete |
+| CLI-03 | Phase 6 | Complete |
+| CLI-04 | Phase 6 | Complete |
+| CLI-05 | Phase 6 | Complete |
+| CLI-06 | Phase 6 | Complete |
 | ATS-01 | Phase 4 | Pending |
 | ATS-02 | Phase 2 | Complete |
 | ATS-03 | Phase 2 | Complete |
@@ -169,4 +169,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-22 (Phase 3 complete: 24 requirements delivered)*
+*Last updated: 2026-01-23 (Phase 6 complete: 36 requirements delivered)*

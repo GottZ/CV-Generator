@@ -213,6 +213,14 @@ Plans:
 4. Skills section supports acronym pattern (e.g., "Kubernetes (K8s)")
 5. All new sections are optional (existing CVs without them still work)
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Schema and parser for Projects and Certifications
+- [ ] 07-02-PLAN.md — Tech stack per job and skills acronym handling
+- [ ] 07-03-PLAN.md — HTML template rendering for new sections
+- [ ] 07-04-PLAN.md — DOCX section builders for Projects and Certifications
+
 ---
 
 ## Phase 8: Multi-Template + Polish
@@ -244,7 +252,7 @@ Plans:
 | 4 | PDF Output | 4 | Complete |
 | 5 | DOCX Output | 2 | Complete |
 | 6 | CLI Commands | 6 | Complete |
-| 7 | IT Professional Features | 4 | Pending |
+| 7 | IT Professional Features | 4 | Planned |
 | 8 | Multi-Template + Polish | 3 | Pending |
 
 **Total:** 43 requirement mappings (some requirements support multiple phases through shared infrastructure)

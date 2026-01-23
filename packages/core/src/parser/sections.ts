@@ -23,7 +23,7 @@ interface SectionsResult {
 
 /** Known section types and their normalized names */
 const SECTION_MAPPINGS: Record<string, string> = {
-	// English
+	// English - Core sections
 	summary: 'summary',
 	'professional summary': 'summary',
 	objective: 'summary',
@@ -34,7 +34,14 @@ const SECTION_MAPPINGS: Record<string, string> = {
 	skills: 'skills',
 	'technical skills': 'skills',
 
-	// German
+	// English - Projects and Certifications
+	projects: 'projects',
+	'personal projects': 'projects',
+	portfolio: 'projects',
+	certifications: 'certifications',
+	certificates: 'certifications',
+
+	// German - Core sections
 	zusammenfassung: 'summary',
 	profil: 'summary',
 	berufserfahrung: 'experience',
@@ -43,6 +50,12 @@ const SECTION_MAPPINGS: Record<string, string> = {
 	bildung: 'education',
 	kenntnisse: 'skills',
 	fachkenntnisse: 'skills',
+
+	// German - Projects and Certifications
+	projekte: 'projects',
+	'persönliche projekte': 'projects',
+	zertifizierungen: 'certifications',
+	zertifikate: 'certifications',
 };
 
 /**
@@ -89,7 +102,7 @@ export function extractSections(markdown: string): SectionsResult {
 					type: 'warning',
 					line: lineNum,
 					message: `Unknown section type: "${header}"`,
-					suggestion: `Known sections: Summary, Work Experience, Education, Skills`,
+					suggestion: `Known sections: Summary, Work Experience, Education, Skills, Projects, Certifications`,
 					context: line,
 				});
 			}

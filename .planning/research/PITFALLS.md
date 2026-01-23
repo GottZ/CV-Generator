@@ -156,414 +156,717 @@
 
 ---
 
-## PDF Generation Pitfalls
+## PDF Pagination Improvement Pitfalls
 
-### Critical: Page Break Mid-Content
+### Critical: break-inside:avoid Ignored in Headless Mode
 
-**What goes wrong:** Work experience entry split across pages. Bullet points orphaned from their job title. Section header at page bottom with content on next page.
+**What goes wrong:** CSS `break-inside: avoid` works in browser print preview but not in Puppeteer headless PDF generation. Content still splits mid-element.
 
-**Why it happens:** PDF generators don't automatically understand semantic content boundaries. CSS `break-inside: avoid` is inconsistently supported.
+**Why it happens:** Chromium's headless mode has historically had bugs with CSS fragmentation properties. The browser and print preview may behave differently than programmatic PDF generation.
 
 **Warning signs:**
-- Generated PDFs have awkward page breaks
-- Section headers appear alone at page bottoms
-- Single bullet points orphaned on new pages
+- PDF looks correct when printed from Chrome browser
+- Puppeteer-generated PDF has different page breaks
+- Same HTML, different break behavior between screen print and Puppeteer
 
 **Prevention:**
-- Use `break-inside: avoid` on job entries, education entries, skill groups
-- Use `break-before: auto` and `break-after: auto` strategically
-- Test with realistic multi-page content during development
-- Avoid floated elements (page-break doesn't work with floats)
+- Test pagination specifically with Puppeteer, not just browser print preview
+- Use both legacy `page-break-inside: avoid` AND modern `break-inside: avoid` for redundancy
+- Apply break properties to block-level elements only (not inline, not floated)
+- Convert flex containers to `display: block` in print CSS if break-inside fails
 
-**Phase:** PDF template CSS (mid phase)
+**Detection:**
+- Automated test comparing page break positions between expected and actual PDF
+
+**Phase:** PDF pagination improvements
 
 **Sources:**
-- [Dev.to - Page break nightmare solved](https://dev.to/resumemind/htmlcss-to-pdf-how-i-solved-the-page-break-nightmare-mdg)
-- [CSS-Tricks - page-break](https://css-tricks.com/almanac/properties/p/page-break/)
+- [Puppeteer Issue #6366 - break-inside ignored in headless](https://github.com/puppeteer/puppeteer/issues/6366)
+- [Puppeteer Issue #5277 - page break not working](https://github.com/puppeteer/puppeteer/issues/5277)
 
 ---
 
-### High: Font Not Embedded or Substituted
+### Critical: Flexbox/Grid Breaks Page-Break Properties
 
-**What goes wrong:** PDF looks different on different systems. Custom fonts replaced with system defaults. Non-Latin characters display as boxes.
+**What goes wrong:** `page-break-inside: avoid` stops working when applied inside flex or grid containers. Content splits anyway.
 
-**Why it happens:** PDF didn't embed fonts, relying on system availability. Or fonts were subset incorrectly.
+**Why it happens:** CSS fragmentation is poorly supported inside flexbox and grid layouts in print contexts. Chrome and Safari specifically have this limitation.
 
 **Warning signs:**
-- PDFs look different on different machines
-- Font name warnings during generation
-- International characters display incorrectly
+- Page breaks work for some elements but not others
+- Elements inside flex containers split across pages
+- Removing `display: flex` fixes the page break issue
 
 **Prevention:**
-- Always embed fonts fully (not subset for resumes - file size not critical)
-- Test on systems without the font installed
-- Use web-safe fonts as fallbacks
-- For Puppeteer: ensure fonts loaded before render with `document.fonts.ready`
+- In `@media print`, convert flex containers to `display: block`
+- Apply page-break to a block-level pseudo-element inside flex items
+- Test with actual PDF export, not just DevTools print emulation
+- Use single-column, non-flex layout for printable content
 
-**Phase:** PDF generation core (early phase)
+**Detection:**
+- Visual inspection of multi-page PDFs with flexbox layouts
+
+**Phase:** PDF pagination improvements
 
 **Sources:**
-- [Puppeteer - Font loading issues #422](https://github.com/puppeteer/puppeteer/issues/422)
-- [Puppeteer - Custom fonts #3183](https://github.com/puppeteer/puppeteer/issues/3183)
+- [IPython Issue #5115 - Page breaks broken by display:flex](https://github.com/ipython/ipython/issues/5115)
+- [Smashing Magazine - CSS Fragmentation](https://www.smashingmagazine.com/2019/02/css-fragmentation/)
 
 ---
 
-### Medium: Incorrect PDF Metadata
+### High: orphans/widows Properties Not Honored
 
-**What goes wrong:** PDF title shows "Untitled" or template name. Author field wrong. Some ATS/recruiters see metadata.
+**What goes wrong:** Single lines of text appear orphaned at page bottoms or widowed at page tops, despite CSS `orphans` and `widows` properties.
 
-**Why it happens:** Default metadata from generation tool not overwritten with resume-specific values.
+**Why it happens:** Firefox does not support `orphans`/`widows`. Even in Chrome, these properties can be overridden by other layout constraints.
 
-**Prevention:**
-- Set PDF metadata explicitly: Title = "[Name] - Resume", Author = "[Name]"
-- Remove any tool watermarks or version stamps
-- Keep file size under 200KB for optimal ATS processing
-
-**Phase:** PDF generation (mid phase)
-
----
-
-### Medium: Print Background Not Enabled
-
-**What goes wrong:** Colored headers, background sections, design elements all disappear in PDF. Resume looks broken or unfinished.
-
-**Why it happens:** PDF generation tools default to print mode with backgrounds disabled.
+**Warning signs:**
+- Single bullet point at bottom of page with rest on next page
+- Single line of job description isolated on new page
+- Professional appearance degraded
 
 **Prevention:**
-- Enable `printBackground: true` in Puppeteer
-- Design templates that still look complete without backgrounds (graceful degradation)
-- Test both with and without background printing
+- Set `orphans: 3; widows: 3;` as baseline
+- Combine with `break-inside: avoid` on entry containers
+- Accept that Firefox users printing locally may see different behavior
+- For Puppeteer (Chromium), these should work - verify in generated PDFs
 
-**Phase:** PDF generation config (early phase)
+**Detection:**
+- Visual review of multi-page PDFs at various content lengths
+
+**Phase:** PDF pagination improvements
 
 **Sources:**
-- [RisingStack - Puppeteer PDF generation](https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/)
+- [Smashing Magazine - CSS Fragmentation](https://www.smashingmagazine.com/2019/02/css-fragmentation/)
+- [CSS-Tricks - orphans property](https://css-tricks.com/almanac/properties/o/orphans/)
 
 ---
 
-## DOCX Generation Pitfalls
+### High: Page Breaks Inside Tables
 
-### Critical: Word Styles Not Used
+**What goes wrong:** Table rows get cut in half across page boundaries. Half a row at bottom, half at top of next page.
 
-**What goes wrong:** Document appears formatted but uses direct formatting instead of styles. Editing becomes nightmare. Some ATS parse styles for structure.
-
-**Why it happens:** Programmatic DOCX generation often applies formatting directly rather than using Word's built-in styles system.
+**Why it happens:** Tables have complex layout rules. `break-inside: avoid` on `<tr>` may be ignored because browsers apply special fragmentation rules to table elements.
 
 **Warning signs:**
-- Heading 1, Heading 2 not appearing in Word's Navigation Pane
-- No table of contents generation possible
-- Inconsistent formatting when editing
+- Skills table split mid-row
+- Experience entries using table layouts break incorrectly
+- Text appears cut off at page boundaries
 
 **Prevention:**
-- Use Word's built-in styles: Heading 1, Heading 2, Normal, List Bullet
-- Map markdown headings to Word styles explicitly
-- Verify styles in generated document via Word's Styles pane
+- Avoid using tables for layout (semantic tables for data only)
+- Apply `break-inside: avoid` to the entire table, not individual rows
+- If table must span pages, use explicit `<thead>` to repeat headers
+- Apply page-break to block-level pseudo-element on `<tbody>` instead of rows
 
-**Phase:** DOCX generation (mid phase)
+**Detection:**
+- Generate PDFs with tables that would span pages; verify integrity
+
+**Phase:** PDF pagination improvements
 
 **Sources:**
-- [Resumly - ATS formatting fix](https://www.resumly.ai/blog/how-to-fix-formatting-issues-that-break-ats-parsing)
+- [Puppeteer Issue #8708 - Page break within table doesn't work](https://github.com/puppeteer/puppeteer/issues/8708)
+- [CopyProgramming - Avoid page break inside row of table](https://copyprogramming.com/howto/avoid-page-break-inside-row-of-table)
 
 ---
 
-### High: Character Escaping in Templates
+### Medium: Section Headers Orphaned from Content
 
-**What goes wrong:** XML parsing errors. Document won't open. Special characters cause corruption.
+**What goes wrong:** "Work Experience" header appears at bottom of page with all content on next page. Looks broken/incomplete.
 
-**Why it happens:** DOCX is XML-based. Characters like `<`, `>`, `&` in content must be escaped. Template engines may not handle this automatically.
+**Why it happens:** `break-after: avoid` on headings has limited browser support. Only Chrome 108+ supports it; Safari and Firefox do not.
 
 **Warning signs:**
-- "Failed to open" errors in Word
-- Content with ampersands or angle brackets
-- User data containing HTML entities
+- Section titles isolated at page bottoms
+- Large gaps at end of pages
+- Unprofessional appearance
 
 **Prevention:**
-- Always escape XML special characters in content before template insertion
-- Use template libraries that handle escaping automatically (docxtpl with escaping enabled)
-- Test with content containing: `<>&"'` and international characters
+- Wrap section headers with first entry in a container with `break-inside: avoid`
+- Use `break-before: always` on sections instead (force new page)
+- For critical sections, add explicit page break before rather than relying on avoid-after
+- Test with realistic content lengths that trigger pagination
 
-**Phase:** DOCX generation core (mid phase)
+**Detection:**
+- Visual review with various content lengths
+
+**Phase:** PDF pagination improvements
 
 **Sources:**
-- [docxtpl documentation - escaping](https://docxtpl.readthedocs.io/)
+- [Clagnut - Pagination widows](https://clagnut.com/blog/2426)
+- [Smashing Magazine - CSS Fragmentation](https://www.smashingmagazine.com/2019/02/css-fragmentation/)
 
 ---
 
-### Medium: Jinja2 Tags Spanning Word "Runs"
+### Medium: Margin/Padding Accumulation at Page Breaks
 
-**What goes wrong:** Template tags split across formatting boundaries. `{{name}}` renders as literal text because Word split it into `{{na` and `me}}`.
+**What goes wrong:** Extra whitespace appears at top of new pages after page breaks. Margins "double up."
 
-**Why it happens:** Word documents have "runs" - sequences of characters with same formatting. If you bold part of a Jinja2 tag in the template, it breaks.
+**Why it happens:** Element margins don't collapse across page breaks. Top margin of continued content adds to page margin.
 
 **Warning signs:**
-- Some template variables work, others don't
-- Tags appear literally in output
-- Formatting changes break previously working templates
+- Inconsistent vertical spacing on continuation pages
+- First page looks correct, subsequent pages have extra space at top
+- Content appears "pushed down" on page 2+
 
 **Prevention:**
-- Apply formatting to entire template tags, not partial
-- Use "dummy" content in templates to ensure tag integrity
-- After template creation, verify tag wholeness before use
-- Consider using RichText objects for styled content
+- Use `padding` instead of `margin` for internal spacing
+- In print CSS, reduce or zero out top margins on elements that can break
+- Use `@page` margin rules rather than element margins for page edges
 
-**Phase:** Template creation workflow (mid phase)
+**Detection:**
+- Visual comparison of first page vs subsequent pages
+
+**Phase:** PDF pagination improvements
+
+---
+
+## Print CSS / HTML Parity Pitfalls
+
+### Critical: Print Styles Bleed into Screen Display
+
+**What goes wrong:** Adding print CSS breaks the screen display. Elements hidden for print disappear on screen. Layout shifts occur.
+
+**Why it happens:** CSS specificity issues - print rules without proper `@media print` scoping override screen rules. Or print rules accidentally apply to both media.
+
+**Warning signs:**
+- Screen layout changes after adding print.css
+- Elements unexpectedly hidden/shown
+- Colors or fonts different on screen
+- "It was working before we added print styles"
+
+**Prevention:**
+- ALWAYS wrap print-specific CSS in `@media print { }`
+- Keep print CSS in separate file with `media="print"` on link tag
+- Use `@media screen { }` for screen-only styles that conflict
+- Add visual regression tests for BOTH screen AND print views
+- Test screen rendering after every print CSS change
+
+**Detection:**
+- Visual regression test of screen view before/after print CSS changes
+- Developer review: search for CSS rules not inside media queries
+
+**Phase:** Print CSS implementation
 
 **Sources:**
-- [docxtpl documentation - runs](https://docxtpl.readthedocs.io/)
-- [ML Hive - docxtpl guide](https://mlhive.com/2025/12/mastering-dynamic-word-document-generation-python-docxtpl)
+- [PixelFreeStudio - Print styles gone wrong](https://blog.pixelfreestudio.com/print-styles-gone-wrong-avoiding-pitfalls-in-media-print-css/)
+- [Smashing Magazine - How to set up a print style sheet](https://www.smashingmagazine.com/2011/11/how-to-set-up-a-print-style-sheet/)
 
 ---
 
-### Medium: File Size Bloat
+### Critical: CSS Variable Fallbacks Missing for Print
 
-**What goes wrong:** Generated DOCX files are unexpectedly large (1MB+ for a simple resume).
+**What goes wrong:** CSS variables (`var(--color-text)`) that work on screen resolve to nothing in print context, causing invisible text or missing styles.
 
-**Why it happens:** Embedded fonts, unoptimized images, or template cruft carried forward.
-
-**Prevention:**
-- Keep DOCX under 300KB for optimal ATS processing
-- Optimize images before embedding
-- Start from minimal template, not existing complex document
-
-**Phase:** DOCX generation optimization (late phase)
-
----
-
-## HTML Embedding Pitfalls
-
-### Critical: CSS Isolation Failure with Object Tag
-
-**What goes wrong:** Parent page styles bleed into embedded resume. Resume styles affect parent page. Layout breaks.
-
-**Why it happens:** `<object>` tag does NOT provide CSS isolation like `<iframe>` does. You cannot style content inside `<object>` from outside, but the tag itself inherits from parent.
+**Why it happens:** CSS variables defined in `:root` for screen may not be available in print context if defined inside `@media screen`, or print media may have different cascade.
 
 **Warning signs:**
-- Resume looks different embedded vs standalone
-- Link colors wrong
-- Font sizes inconsistent
+- Elements invisible in PDF but visible on screen
+- Colors different between screen and PDF
+- CSS using `var()` extensively
 
 **Prevention:**
-- Use `<iframe>` instead of `<object>` if CSS isolation is critical
-- If using `<object>`, the embedded HTML must be fully self-contained with all styles inline or in `<style>` tags
-- Test embedded view against standalone HTML rendering
-- Use shadow DOM for true isolation if using web components
+- Define CSS variables in both screen AND print media queries, or outside any media query
+- Always provide fallback values: `color: var(--text-color, #333333);`
+- In print CSS, explicitly re-declare critical colors as fixed values
+- Test PDF output whenever modifying CSS variable definitions
 
-**Phase:** HTML output format (mid phase)
+**Detection:**
+- PDF output with missing or wrong colors
+- Compare screen hex colors to PDF hex colors
+
+**Phase:** Print CSS implementation
+
+---
+
+### High: Background Colors Disappear in Print
+
+**What goes wrong:** Colored headers, highlighted sections, background styling all vanish in PDF. Resume looks incomplete or broken.
+
+**Why it happens:** Browsers default to NOT printing backgrounds to save ink. Puppeteer inherits this default behavior.
+
+**Warning signs:**
+- Template looks complete on screen but plain in PDF
+- Section dividers disappear
+- Emphasis styling lost
+
+**Prevention:**
+- Set `printBackground: true` in Puppeteer `page.pdf()` options
+- Add `-webkit-print-color-adjust: exact` and `print-color-adjust: exact` to print CSS
+- Design templates that still look acceptable without backgrounds (graceful degradation)
+- Verify PDF output, not just DevTools print preview
+
+**Detection:**
+- Visual comparison of screen vs PDF backgrounds
+
+**Phase:** Print CSS implementation
 
 **Sources:**
-- [Treehouse - Styling embedded objects](https://teamtreehouse.com/community/is-it-possible-to-style-an-embedded-html-object-with-css)
-- [GeeksforGeeks - object vs embed](https://www.geeksforgeeks.org/html/difference-between-object-and-embed-tags/)
+- [SitePoint - CSS printer-friendly pages](https://www.sitepoint.com/css-printer-friendly-pages/)
 
 ---
 
-### High: Missing Fallback Content
+### High: Responsive Layouts Break in Print
 
-**What goes wrong:** If browser doesn't support embedded content type, nothing displays. No error, just blank space.
+**What goes wrong:** Two-column responsive layout collapses or expands incorrectly when printed. Content overflows or leaves large gaps.
 
-**Why it happens:** `<object>` and `<embed>` don't have robust fallback mechanisms like `<picture>` or `<video>`.
+**Why it happens:** Print has a fixed page size (A4, Letter). Responsive breakpoints based on viewport width don't apply correctly to print context.
 
-**Prevention:**
-- Provide fallback content inside `<object>` tag
-- Include direct link to HTML file as fallback
-- Test in browsers with object support disabled
-
-**Phase:** HTML integration (mid phase)
-
----
-
-### Medium: Long URLs/Strings Overflow
-
-**What goes wrong:** Long GitHub URLs, email addresses break layout, stick out of containers.
-
-**Why it happens:** CSS `overflow-wrap` not universally supported in print/PDF contexts. Long strings with no natural break points don't wrap.
+**Warning signs:**
+- Sidebar content wraps incorrectly
+- Multi-column layout becomes single column unexpectedly
+- Content overflows page width
 
 **Prevention:**
-- Use `word-break: break-all` for URLs (aggressive but safe)
-- Shorten URLs where possible (link shorteners or display text)
-- Test with realistic long content (GitHub URLs, long email addresses)
+- Define explicit fixed-width layout for print: `@media print { .container { width: 170mm; } }`
+- Flatten responsive layouts to single-column for print
+- Don't rely on viewport-based breakpoints; print context width is ambiguous
+- Set explicit widths in mm or pt for print layouts
 
-**Phase:** CSS template refinement (mid phase)
+**Detection:**
+- PDF output with different widths than expected
+- Content overflow visible in PDF
+
+**Phase:** Print CSS implementation
 
 **Sources:**
-- [DiDoesDigital - Print styles](https://didoesdigital.com/blog/print-styles/)
+- [PixelFreeStudio - Print styles gone wrong](https://blog.pixelfreestudio.com/print-styles-gone-wrong-avoiding-pitfalls-in-media-print-css/)
 
 ---
 
-## Template System Pitfalls
+### Medium: Font Sizes Don't Match Screen/Print
 
-### Critical: Format-Specific Logic in Templates
+**What goes wrong:** Text appears larger or smaller in PDF than on screen. Relative units (em, rem) calculate differently.
 
-**What goes wrong:** Template works for PDF but breaks for DOCX. HTML version looks completely different. Maintenance nightmare maintaining three versions.
-
-**Why it happens:** Different formats have different capabilities. If template logic assumes PDF features (page breaks) or HTML features (hyperlinks styled with CSS), other formats fail.
-
-**Prevention:**
-- Design templates format-agnostically first
-- Use abstraction layer between data and format-specific rendering
-- Define clear "template contract" - what features templates can use
-- Test all three formats with same template and data
-
-**Phase:** Template architecture (early phase, foundational decision)
-
----
-
-### High: Inconsistent Date Formatting
-
-**What goes wrong:** Some dates show "2022-01", others show "January 2022", others show "01/2022". Looks unprofessional and confuses ATS.
-
-**Why it happens:** Date formatting not standardized in input schema or template processing.
+**Why it happens:** Print context has different base font size, different DPI assumptions. `rem` units based on `:root` may differ. Browser may scale fonts for print.
 
 **Warning signs:**
-- Date fields accepting free-form text
-- Templates formatting dates inconsistently
-- Regional format differences
+- Resume looks cramped or too sparse in PDF
+- Font sizes visually different between screen and PDF
+- Using `em` or `rem` extensively
 
 **Prevention:**
-- Define strict date format in schema (ISO 8601: YYYY-MM)
-- Single date formatting function used everywhere
-- Document recommended display format (MM/YYYY or Month YYYY)
-- Validate dates in markdown parsing
+- Use absolute units (pt) for print CSS: `@media print { body { font-size: 11pt; } }`
+- Define explicit print font sizes rather than inheriting screen sizes
+- Test with actual PDF output, not just print preview
 
-**Phase:** Schema design + template implementation (early phase)
+**Detection:**
+- Side-by-side comparison of screen and PDF text sizes
+
+**Phase:** Print CSS implementation
+
+---
+
+### Medium: Link Styling Invisible in Print
+
+**What goes wrong:** Hyperlinks that are obvious on screen (blue, underlined) are indistinguishable from regular text in black-and-white print.
+
+**Why it happens:** Link colors may print as black. No hover state in PDF to indicate interactivity.
+
+**Warning signs:**
+- URLs mentioned but not visually distinct
+- Reader doesn't know text is clickable
+- PDF viewer doesn't highlight links on hover
+
+**Prevention:**
+- Keep underlines for links in print CSS
+- Optionally append URL after link text: `a::after { content: " (" attr(href) ")"; }` (but carefully for resume context)
+- Ensure links are actually clickable in PDF (test by clicking)
+- Use consistent link styling that's visible in both color and B&W
+
+**Detection:**
+- Visual inspection of link visibility in PDF
+- Link click testing in PDF viewer
+
+**Phase:** Print CSS implementation
+
+---
+
+### Low: Interactive Elements Visible in PDF
+
+**What goes wrong:** Theme toggle buttons, hover tooltips, or other interactive elements appear in PDF where they serve no purpose.
+
+**Why it happens:** Elements not hidden in print CSS remain visible. Developers forget to hide non-printable elements.
+
+**Warning signs:**
+- Buttons visible in PDF
+- Dropdown indicators showing
+- Navigation elements present
+
+**Prevention:**
+- Hide all interactive elements in print: `.theme-toggle, .nav, .tooltip { display: none; }`
+- Review PDF for any elements that only make sense on screen
+- Create checklist of interactive elements to hide
+
+**Detection:**
+- Visual review of PDF for inappropriate elements
+
+**Phase:** Print CSS implementation
+
+---
+
+## Automated PDF Testing Pitfalls
+
+### Critical: Font Rendering Differs Between Environments
+
+**What goes wrong:** PDF visual tests pass locally but fail in CI. Screenshot comparisons show font differences that aren't real bugs.
+
+**Why it happens:** Different operating systems, fontconfig versions, and installed fonts produce different font rendering. Even same fonts render differently on macOS vs Linux.
+
+**Warning signs:**
+- Tests pass on developer machine, fail on CI
+- Pixel diffs concentrated on text areas
+- Anti-aliasing differences visible in diffs
+
+**Prevention:**
+- Run tests in Docker container matching CI environment
+- Use `--font-render-hinting=none` Chromium flag for consistent rendering
+- Install identical fonts in all environments (web fonts recommended)
+- Use looser pixel diff thresholds (accept 0.1-1% variance)
+- Consider text-based testing (extraction) over pixel testing for content verification
+
+**Detection:**
+- CI failures with font-related diff images
+- Consistent failures only on specific platforms
+
+**Phase:** Automated PDF testing
 
 **Sources:**
-- [Rezi - Resume mistakes](https://www.rezi.ai/posts/common-resume-mistakes)
+- [Puppeteer Issue #661 - Consistent font rendering](https://github.com/puppeteer/puppeteer/issues/661)
+- [Puppeteer Issue #4437 - Different font render on Windows vs Lambda](https://github.com/puppeteer/puppeteer/issues/4437)
 
 ---
 
-### Medium: Hardcoded Content in Templates
+### Critical: PDF-to-Image Conversion Introduces Artifacts
 
-**What goes wrong:** Section headers, labels embedded in template. Can't internationalize. Can't customize "Work Experience" vs "Professional Experience".
+**What goes wrong:** Visual regression tests detect differences that aren't in the actual PDF - they're artifacts of the conversion to image for comparison.
 
-**Why it happens:** Quick templating puts text directly in template files rather than making it configurable.
-
-**Prevention:**
-- All visible text should come from configuration or data
-- Templates should only contain structure and formatting
-- Support i18n/l10n from the start
-
-**Phase:** Template architecture (early phase)
-
----
-
-## Markdown Schema Pitfalls
-
-### Critical: No Schema Validation
-
-**What goes wrong:** Users create invalid markdown structures. Missing required fields. Inconsistent data shapes. Generator fails cryptically or produces broken output.
-
-**Why it happens:** Markdown is flexible by nature. Without explicit schema, anything goes.
+**Why it happens:** Different PDF renderers (pdf.js, PDFium, Poppler) produce different images from identical PDFs. Scaling, color profiles, and anti-aliasing differ.
 
 **Warning signs:**
-- User errors result in confusing error messages
-- Generated resumes missing sections
-- Inconsistent output quality
+- Slight color differences in diff
+- Edge anti-aliasing variations
+- Tests fail after upgrading pdf-to-image library
 
 **Prevention:**
-- Define explicit YAML frontmatter schema (consider JSON Resume as base)
-- Validate on parse with helpful error messages
-- Provide IDE support (JSON Schema for YAML validation in VS Code)
-- Document required vs optional fields clearly
+- Pin PDF rendering library version
+- Use PDFium for consistency (same renderer as Chromium)
+- Render at higher DPI (300+) then compare at lower resolution
+- Use perceptual diff algorithms that tolerate anti-aliasing (pixelmatch's AA detection)
+- Consider multiple rendering passes to verify consistency
 
-**Phase:** Schema design (foundational, early phase)
+**Detection:**
+- Diff images showing artifacts not visible in actual PDF
+- Flaky tests that pass/fail randomly
+
+**Phase:** Automated PDF testing
 
 **Sources:**
-- [JSON Resume Schema](https://jsonresume.org/schema)
-- [RenderCV JSON Schema](https://docs.rendercv.com/developer_guide/json_schema/)
+- [Lost Pixel - PDF visual regression testing](https://www.lost-pixel.com/blog/pdf-visual-regression-testing)
+- [Nutrient - Evaluating render fidelity of PDF.js](https://www.nutrient.io/blog/render-fidelity-of-pdfjs/)
 
 ---
 
-### High: Skills Without Context
+### High: Flaky Tests from Dynamic Content
 
-**What goes wrong:** Skills list is just names: "Python, JavaScript, Docker". No indication of proficiency, years of experience, or context.
+**What goes wrong:** Tests fail intermittently due to timestamps, dates, or other dynamic content changing between baseline and test run.
 
-**Why it happens:** Schema allows simple list without requiring structured skill data.
+**Why it happens:** PDFs may contain generation dates, version numbers, or other content that changes each run.
 
 **Warning signs:**
-- Skills section looks like keyword stuffing
-- No way to filter or prioritize skills
-- Can't generate proficiency indicators
+- Tests fail showing date/time differences
+- Metadata comparisons fail
+- Random test failures without code changes
 
 **Prevention:**
-- Require structured skill format: name, category, proficiency (optional), years (optional)
-- Support both simple (string) and complex (object) skill entries
-- Template should handle both gracefully
+- Mock current date/time during test runs
+- Exclude dynamic regions from visual comparison (use ignore rectangles)
+- Separate content tests from metadata tests
+- Use fixtures with fixed timestamps
 
-**Phase:** Schema design (early phase)
+**Detection:**
+- Diff images highlighting date/time areas
+- Pattern of failures correlating with time
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [ShakaCode - Flaky visual regression tests](https://www.shakacode.com/blog/flaky-visual-regression-tests-and-what-to-do-about-them/)
 
 ---
 
-### Medium: Employment Gaps Not Representable
+### High: Multi-Page PDF Comparison Complexity
 
-**What goes wrong:** Resume generator can't express career breaks, sabbaticals, contract gaps elegantly.
+**What goes wrong:** Tests only compare first page, missing regressions on subsequent pages. Or page count changes cause cascading false failures.
 
-**Why it happens:** Schema assumes continuous employment with employer-title-dates format.
-
-**Prevention:**
-- Allow "gap" entries in work experience
-- Support flexible entry types (employment, contract, volunteer, break)
-- Document how to handle career transitions
-
-**Phase:** Schema design (early-mid phase)
-
----
-
-## Multi-Format Consistency Pitfalls
-
-### Critical: Hyperlinks Work in HTML, Missing in PDF/DOCX
-
-**What goes wrong:** Clickable links in HTML become plain text in PDF/DOCX. Or links present but don't work.
-
-**Why it happens:** Link handling differs by format. PDF links require explicit annotation. DOCX links need proper hyperlink XML elements.
+**Why it happens:** Naive visual testing compares single screenshots. Multi-page documents need page-by-page comparison with tolerance for page count changes.
 
 **Warning signs:**
-- URLs visible but not clickable
-- Email addresses not mailto links
-- LinkedIn URL just displays as text
+- Regression on page 2+ goes undetected
+- Adding content causes all pages after to show as "different"
+- Tests only capture first page screenshot
 
 **Prevention:**
-- Test link clicking in all three formats
-- Ensure PDF generator creates proper link annotations
-- DOCX must use Word hyperlink elements, not just styled text
-- Consider both display and click behavior
+- Render each PDF page to separate image, compare individually
+- Use Puppeteer's PDF viewer navigation (arrow keys) to capture each page
+- Store baseline images per-page, not per-document
+- Handle page count changes gracefully (report new/removed pages)
 
-**Phase:** Multi-format output (mid phase)
+**Detection:**
+- Manual review finds issues on non-first pages
+- Test coverage analysis shows single-page only
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [Medium - PDF visual regression testing with Puppeteer](https://medium.com/the-crc-tech-blog/pdf-visual-regression-testing-the-puppetmaster-approach-7a575d6c5559)
 
 ---
 
-### High: Visual Hierarchy Inconsistent Across Formats
+### High: Threshold Tuning Leads to False Negatives
 
-**What goes wrong:** PDF has clear visual hierarchy. DOCX looks flat. HTML renders differently.
+**What goes wrong:** To stop flaky tests, threshold is set too high. Real bugs pass through undetected because diff percentage is "acceptable."
 
-**Why it happens:** Each format handles spacing, sizing, font weights differently. CSS rem/em units behave differently in HTML vs PDF render.
+**Why it happens:** Fighting flaky tests by increasing tolerance eventually tolerates real bugs. Line between "acceptable variance" and "real bug" is unclear.
 
 **Warning signs:**
-- Same template looks "off" in different formats
-- Relative sizing doesn't translate
-- Margins/padding inconsistent
+- Known visual bugs pass tests
+- Threshold keeps increasing to pass tests
+- Developers distrust test results
 
 **Prevention:**
-- Use absolute units (pt, px) rather than relative for print formats
-- Establish format-specific style overrides
-- Visual regression testing across all formats
-- Side-by-side comparison in review process
+- Start with strict threshold (0.1%), only loosen with documented justification
+- Use smart diff tools that distinguish structural changes from noise
+- Consider AI-powered comparison (Applitools, Percy) that understand "expected" variation
+- Separate "exactly same" tests from "visually acceptable" tests
+- Log threshold changes with reasoning
 
-**Phase:** Template CSS refinement (mid phase)
+**Detection:**
+- Track threshold changes over time
+- Audit: manually verify tests catch known intentional changes
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [BrowserStack - Visual regression testing tools](https://www.browserstack.com/guide/visual-regression-testing-open-source)
 
 ---
 
-### Medium: Content Truncation/Overflow Differences
+### Medium: Screenshot Size/Viewport Inconsistency
 
-**What goes wrong:** Content fits in PDF but overflows in DOCX. Or HTML wraps text that PDF doesn't.
+**What goes wrong:** PDF renders at different sizes between baseline and test, causing entire comparison to fail despite identical content.
 
-**Why it happens:** Different rendering engines have different line-height, character-width calculations.
+**Why it happens:** Viewport size, device scale factor, or browser window size differs between test runs. PDF viewer zooms differently.
+
+**Warning signs:**
+- Entire page shows as different
+- Content is identical but scaled differently
+- Comparison fails on CI but passes locally
 
 **Prevention:**
-- Test with maximum realistic content lengths
-- Avoid fixed-height containers
-- Use text overflow strategies (`overflow-wrap`, `word-break`) consistently
+- Set explicit viewport size before screenshots: `page.setViewport({ width: 1200, height: 1600 })`
+- Use Puppeteer's `clip` option to capture fixed region
+- Crop out PDF viewer chrome (filename, scrollbars)
+- Pin browser/Puppeteer version in CI
 
-**Phase:** Template testing (mid-late phase)
+**Detection:**
+- Diff images showing scale differences
+- Comparison of baseline and test image dimensions
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [Puppeteer Issue #2278 - Inconsistent page width and height](https://github.com/puppeteer/puppeteer/issues/2278)
+
+---
+
+### Medium: Text Extraction Inconsistency Across Versions
+
+**What goes wrong:** Text extraction tests pass on one Puppeteer version, fail on another. Extracted text format changes unexpectedly.
+
+**Why it happens:** Chromium's PDF text layer encoding can vary between versions. Copy-paste behavior changes. Ligatures handled differently.
+
+**Warning signs:**
+- Tests fail after Puppeteer upgrade
+- Extracted text has extra/missing spaces
+- Character encoding issues appear
+
+**Prevention:**
+- Pin Puppeteer/Chromium version for stability
+- Test text extraction specifically when upgrading Puppeteer
+- Use `font-variant-ligatures: none` to avoid ligature extraction issues
+- Compare extracted text with normalization (collapse whitespace, trim)
+
+**Detection:**
+- Text extraction assertions fail after dependency updates
+- Character-by-character diff shows unexpected changes
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [Puppeteer Issue #4125 - Copy content missing characters](https://github.com/puppeteer/puppeteer/issues/4125)
+- [Puppeteer Issue #12447 - Text encoding in PDF generation](https://github.com/puppeteer/puppeteer/issues/12447)
+
+---
+
+### Low: CI Resource Constraints Cause Timeouts
+
+**What goes wrong:** PDF generation times out in CI but works locally. Tests sporadically fail due to resource limits.
+
+**Why it happens:** CI environments often have fewer resources (CPU, memory) than development machines. Puppeteer/Chrome is resource-intensive.
+
+**Warning signs:**
+- TimeoutError in CI logs
+- Tests pass locally, flaky in CI
+- Slower CI runs correlate with failures
+
+**Prevention:**
+- Increase timeout for PDF operations in CI (60s+)
+- Use `--disable-dev-shm-usage` flag in Docker
+- Limit parallelism in CI PDF tests
+- Consider dedicated larger runner for PDF tests
+- Implement retry logic with backoff
+
+**Detection:**
+- CI logs showing timeout errors
+- Correlation analysis: failures during high-load periods
+
+**Phase:** Automated PDF testing
+
+**Sources:**
+- [Baeldung - Run Chrome headless in Docker](https://www.baeldung.com/ops/docker-google-chrome-headless)
+
+---
+
+## Integration Pitfalls (Adding Features to Existing System)
+
+### Critical: Existing PDF Generation Disrupted
+
+**What goes wrong:** Adding pagination improvements or print CSS breaks existing working PDF output. Users report regressions.
+
+**Why it happens:** New CSS rules conflict with existing ones. Print CSS overrides affect screen or existing print behavior. Integration not tested end-to-end.
+
+**Warning signs:**
+- "It was working before this change"
+- Existing tests start failing after pagination changes
+- User complaints after feature release
+
+**Prevention:**
+- Establish baseline test suite BEFORE making changes
+- Run full regression suite after each change
+- Use feature flags to test new pagination without affecting default
+- Incremental rollout with monitoring
+- Code review specifically focused on unintended side effects
+
+**Detection:**
+- Regression test failures
+- Production monitoring for changed behavior
+
+**Phase:** Before any changes begin
+
+---
+
+### High: CSS Specificity Wars Between Screen and Print
+
+**What goes wrong:** Print CSS overrides screen rules with `!important`, then screen needs `!important !important` (impossible). Specificity escalation begins.
+
+**Why it happens:** Both screen and print styles targeting same selectors. Developers add `!important` to force print rules, breaking carefully balanced specificity.
+
+**Warning signs:**
+- Increasing use of `!important` in codebase
+- Print styles require increasingly specific selectors
+- Styles behave unexpectedly after minor changes
+
+**Prevention:**
+- Keep print CSS in completely separate file with `media="print"`
+- Use distinct class names for print-only elements (`.print-header`)
+- Avoid `!important` - restructure selectors instead
+- Document CSS architecture and specificity strategy
+
+**Detection:**
+- Code review flagging `!important`
+- Static analysis of CSS specificity conflicts
+
+**Phase:** Print CSS implementation
+
+**Sources:**
+- [Philip Walton - Side effects in CSS](https://philipwalton.com/articles/side-effects-in-css/)
+
+---
+
+### High: Test Infrastructure Not Ready for PDF Testing
+
+**What goes wrong:** Team tries to add PDF visual regression tests but lacks infrastructure. Tests are slow, flaky, or never actually run.
+
+**Why it happens:** PDF testing requires: image comparison library, baseline storage, CI configuration, Docker setup for consistency. This is a significant infrastructure investment.
+
+**Warning signs:**
+- "We'll add tests later"
+- Tests exist but are skipped
+- Only manual testing performed
+- No baseline images in repository
+
+**Prevention:**
+- Set up test infrastructure BEFORE implementing features
+- Choose testing approach early (visual regression vs text extraction vs hybrid)
+- Allocate time specifically for test infrastructure
+- Start with simple tests, incrementally add sophistication
+
+**Detection:**
+- Test coverage metrics show PDF tests missing
+- No test failures when deliberately introducing bugs
+
+**Phase:** Test infrastructure setup (first priority)
+
+---
+
+### Medium: Performance Regression from Pagination Logic
+
+**What goes wrong:** PDF generation becomes significantly slower after adding pagination improvements. User-facing performance degraded.
+
+**Why it happens:** Complex CSS calculations for pagination. Multiple render passes. Additional DOM manipulation before PDF generation.
+
+**Warning signs:**
+- Longer PDF generation times after changes
+- Browser consumes more memory during generation
+- Users complain about slower exports
+
+**Prevention:**
+- Benchmark PDF generation before and after changes
+- Set performance budget (e.g., <3 seconds for 2-page PDF)
+- Profile slow generation to identify bottlenecks
+- Avoid JavaScript-based pagination calculation if CSS suffices
+
+**Detection:**
+- Performance tests comparing generation times
+- Production monitoring of PDF generation duration
+
+**Phase:** All PDF-related changes
+
+---
+
+### Medium: Incomplete Testing of Edge Cases
+
+**What goes wrong:** Features work for common cases but break for edge cases: very long content, empty sections, special characters, unusual content combinations.
+
+**Why it happens:** Testing focuses on happy path. Edge cases not identified or prioritized. Time pressure leads to incomplete test coverage.
+
+**Warning signs:**
+- User-reported bugs for unusual content
+- "It works on my sample data"
+- No tests for boundary conditions
+
+**Prevention:**
+- Define explicit test cases for: empty content, maximum content, special characters, different page counts, all template variations
+- Use property-based testing to generate edge cases
+- Review user-reported issues for edge case patterns
+- Test with real (anonymized) user data if possible
+
+**Detection:**
+- Bug reports for edge cases
+- Code coverage showing untested branches
+
+**Phase:** All phases - continuous attention
 
 ---
 
@@ -571,45 +874,78 @@
 
 ### By Phase
 
-**Phase 1: Schema & Architecture**
-- Define explicit markdown/YAML schema with validation
-- Choose format-agnostic template approach
-- Decide on PDF generation technology (Puppeteer recommended for HTML-first)
-- Establish section header standards (ATS-compatible)
+**Phase 1: Test Infrastructure Setup (Before Any Changes)**
+- Set up visual regression testing framework
+- Establish baselines for current PDF output
+- Configure CI environment for consistent rendering
+- Document testing strategy and thresholds
 
-**Phase 2: Core Generation**
-- Implement PDF generation with font embedding verification
-- Implement copy-paste test for ATS text extraction
-- Implement DOCX with proper Word styles
-- Implement HTML with fully embedded CSS
+**Phase 2: Print CSS Implementation**
+- Verify no screen display regression after each change
+- Test both screen AND print views
+- Use separate print stylesheet with media attribute
+- Avoid `!important` escalation
 
-**Phase 3: Template System**
-- Create ATS-compliant base templates
-- Implement page break handling
-- Establish consistent date formatting
-- Test all three formats from same data
+**Phase 3: PDF Pagination Improvements**
+- Use both legacy and modern break properties
+- Convert flex layouts to block for print context
+- Test with realistic multi-page content
+- Verify page breaks with Puppeteer, not just browser print preview
 
-**Phase 4: Validation & Testing**
-- Automated ATS simulation testing (copy-paste extraction)
-- Visual regression testing across formats
-- Schema validation with helpful errors
-- Multi-format consistency checks
+**Phase 4: Automated PDF Testing**
+- Pin all versions (Puppeteer, Chromium, pdf libraries)
+- Use Docker for environment consistency
+- Set appropriate thresholds with documented rationale
+- Separate content tests from visual tests
 
-### Testing Checklist (Every Build)
+**Phase 5: Integration & Verification**
+- Run full regression suite
+- Performance benchmark before/after
+- Test edge cases explicitly
+- Monitor production for regressions
 
-- [ ] PDF: Copy-paste all text to plain text editor, verify no garbled characters
-- [ ] PDF: Open in multiple viewers (Chrome, Adobe, Preview)
-- [ ] PDF: Verify all links clickable
-- [ ] DOCX: Open in Word, check Styles pane shows proper heading styles
-- [ ] DOCX: Verify document opens without repair prompts
-- [ ] DOCX: Test with special characters in content (`<>&"'`)
-- [ ] HTML: View standalone and embedded, compare rendering
-- [ ] All: Test with 2+ pages of content for page break behavior
-- [ ] All: Verify section headers are standard ATS-compatible names
+### Testing Checklist (Every Change)
+
+- [ ] Screen display unchanged (visual regression)
+- [ ] Print preview matches expectations (manual spot check)
+- [ ] PDF output matches print preview (automated comparison)
+- [ ] Page breaks in correct locations (multi-page content)
+- [ ] Text extraction produces correct content (copy-paste test)
+- [ ] Performance within budget (generation time)
+- [ ] CI tests pass (not just local)
+- [ ] Edge cases covered (long content, empty sections)
 
 ---
 
 ## Sources
+
+### PDF Pagination / CSS Fragmentation
+- [Puppeteer Issue #6366 - break-inside ignored](https://github.com/puppeteer/puppeteer/issues/6366)
+- [Puppeteer Issue #5277 - page break not working](https://github.com/puppeteer/puppeteer/issues/5277)
+- [Puppeteer Issue #8708 - table page breaks](https://github.com/puppeteer/puppeteer/issues/8708)
+- [Smashing Magazine - CSS Fragmentation](https://www.smashingmagazine.com/2019/02/css-fragmentation/)
+- [CSS-Tricks - page-break](https://css-tricks.com/almanac/properties/p/page-break/)
+- [Dev.to - Page break nightmare solved](https://dev.to/resumemind/htmlcss-to-pdf-how-i-solved-the-page-break-nightmare-mdg)
+
+### Print Stylesheets
+- [PixelFreeStudio - Print styles pitfalls](https://blog.pixelfreestudio.com/print-styles-gone-wrong-avoiding-pitfalls-in-media-print-css/)
+- [Smashing Magazine - Print stylesheets guide](https://www.smashingmagazine.com/2018/05/print-stylesheets-in-2018/)
+- [SitePoint - CSS printer-friendly pages](https://www.sitepoint.com/css-printer-friendly-pages/)
+
+### Visual Regression Testing
+- [Lost Pixel - PDF visual regression](https://www.lost-pixel.com/blog/pdf-visual-regression-testing)
+- [ShakaCode - Flaky visual regression tests](https://www.shakacode.com/blog/flaky-visual-regression-tests-and-what-to-do-about-them/)
+- [Medium - PuppetMaster PDF testing](https://medium.com/the-crc-tech-blog/pdf-visual-regression-testing-the-puppetmaster-approach-7a575d6c5559)
+- [BrowserStack - Visual testing tools](https://www.browserstack.com/guide/visual-testing-tools)
+
+### Font Rendering / Environment Consistency
+- [Puppeteer Issue #661 - Consistent font rendering](https://github.com/puppeteer/puppeteer/issues/661)
+- [Puppeteer Issue #4437 - Windows vs Lambda rendering](https://github.com/puppeteer/puppeteer/issues/4437)
+- [Baeldung - Chrome headless in Docker](https://www.baeldung.com/ops/docker-google-chrome-headless)
+
+### Text Extraction
+- [Puppeteer Issue #4125 - Copy missing characters](https://github.com/puppeteer/puppeteer/issues/4125)
+- [Puppeteer Issue #12447 - Text encoding issues](https://github.com/puppeteer/puppeteer/issues/12447)
 
 ### ATS & iCIMS
 - [Jobscan - iCIMS ATS](https://www.jobscan.co/blog/icims-ats/)
@@ -622,8 +958,6 @@
 ### PDF Generation
 - [RisingStack - Puppeteer PDF](https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/)
 - [Puppeteer PDF documentation](https://pptr.dev/guides/pdf-generation)
-- [Dev.to - Page break solutions](https://dev.to/resumemind/htmlcss-to-pdf-how-i-solved-the-page-break-nightmare-mdg)
-- [CSS-Tricks - page-break](https://css-tricks.com/almanac/properties/p/page-break/)
 
 ### DOCX Generation
 - [python-docx-template docs](https://docxtpl.readthedocs.io/)

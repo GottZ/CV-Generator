@@ -496,3 +496,227 @@ Input:                    Processing:              Output:
 ### Community Patterns (verified with official sources)
 - [Node.js 2025 TypeScript Guide](https://medium.com/@gabrieldrouin/node-js-2025-guide-how-to-setup-express-js-with-typescript-eslint-and-prettier-b342cd21c30d)
 - [TypeScript Best Practices 2025](https://medium.com/@nikhithsomasani/best-practices-for-using-typescript-in-2025-a-guide-for-experienced-developers-4fca1cfdf052)
+
+---
+
+## Addendum: PDF Pagination, Print CSS, and Automated PDF Testing
+
+**Added:** 2026-01-23
+**Context:** Milestone 2 - Improving PDF pagination, HTML print parity, and adding automated PDF testing
+
+### Executive Summary for Milestone 2
+
+This milestone requires **zero new runtime dependencies** for PDF pagination and print CSS - these capabilities exist within the current Puppeteer + CSS stack. For automated PDF testing, we need **one test-time dependency**: `unpdf` for text extraction. Visual regression testing uses already-installed Playwright.
+
+---
+
+### 1. PDF Pagination Control
+
+**Recommendation:** Use existing Puppeteer + CSS @page rules. **No new dependencies.**
+
+| Aspect | Technology | Status | Notes |
+|--------|------------|--------|-------|
+| Page breaks | CSS `break-inside`, `page-break-*` | Existing | Puppeteer 24+ supports both legacy and modern properties |
+| Page sizing | `@page` CSS rule | Existing | Use with `preferCSSPageSize: true` in Puppeteer |
+| Orphan/widow control | CSS `orphans`, `widows` | Existing | Standard print CSS |
+| Section headers | CSS `break-after: avoid` | Existing | Keep headings with content |
+
+**Key Puppeteer PDF options to leverage:**
+
+```typescript
+await page.emulateMediaType('print');  // CRITICAL: Required for @media print rules
+await page.pdf({
+  format: 'A4',
+  preferCSSPageSize: true,  // Let CSS @page rules control sizing
+  printBackground: true,
+  margin: { top: '0.5in', bottom: '0.5in', left: '0.5in', right: '0.5in' }
+});
+```
+
+**Required CSS patterns (no libraries needed):**
+
+```css
+@page {
+  size: A4;
+  margin: 0.5in;
+}
+
+@media print {
+  /* Prevent section breaks */
+  .cv-section { break-inside: avoid; page-break-inside: avoid; }
+
+  /* Keep headings with content */
+  h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
+
+  /* Control orphans/widows */
+  p { orphans: 3; widows: 3; }
+}
+```
+
+**Known Puppeteer Issues:**
+- `break-inside: avoid` may be ignored in some headless modes ([Issue #6366](https://github.com/puppeteer/puppeteer/issues/6366))
+- Workaround: Use both legacy `page-break-inside` and modern `break-inside` properties
+
+**Source:** [Puppeteer PDFOptions API](https://pptr.dev/api/puppeteer.pdfoptions), [CSS-Tricks page-break](https://css-tricks.com/almanac/properties/p/page-break/)
+
+---
+
+### 2. Print CSS for HTML Parity
+
+**Recommendation:** CSS-only solution with `@media print` rules. **No new dependencies.**
+
+| Feature | Approach | Notes |
+|---------|----------|-------|
+| Media query | `@media print {}` | Browser native |
+| Page simulation | `@page` CSS rule | Standard CSS |
+| Print preview | Browser print dialog | User-initiated `Cmd/Ctrl+P` |
+
+**Implementation strategy:**
+
+The HTML output should include the same CSS used for PDF generation. When a user prints the HTML, the `@media print` rules activate automatically.
+
+```css
+/* Shared print styles (included in HTML output) */
+@media print {
+  /* Hide screen-only elements */
+  .no-print { display: none; }
+
+  /* Apply same page breaks as PDF */
+  .cv-section { break-inside: avoid; }
+
+  /* Match PDF typography */
+  body { font-size: 11pt; line-height: 1.4; }
+}
+```
+
+**Why no print CSS library:**
+- [Paged.js](https://pagedjs.org/) is overkill for single-document CVs
+- Browser print engines handle simple pagination well
+- Keeping CSS inline avoids JS runtime dependency for static HTML output
+
+---
+
+### 3. Automated PDF Testing
+
+**Recommendation:** Two-pronged approach using Playwright (visual) + unpdf (structural).
+
+#### 3.1 Visual Regression Testing
+
+| Library | Version | Purpose | Why This One |
+|---------|---------|---------|--------------|
+| `@playwright/test` | ^1.57.0 | Visual snapshot comparison | **Already installed**, mature visual diff, CI-ready |
+
+**Why Playwright over alternatives:**
+
+| Option | Verdict | Reason |
+|--------|---------|--------|
+| `@playwright/test` | **USE** | Already in stack, built-in `toHaveScreenshot()`, maintained |
+| `pdf-visual-diff` | Skip | Requires Jest peer dependency, conflicts with Bun test runner |
+| `jest-image-snapshot` | Skip | Jest-only, not compatible with Bun's test runner |
+| `pdf-visual-compare` | Skip | Low adoption (70 weekly downloads), marked inactive |
+
+**Testing approach:**
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('CV PDF visual regression', async ({ page }) => {
+  // Open PDF in browser (Chromium renders PDFs)
+  await page.goto(`file://${pdfPath}`);
+
+  // Screenshot each page for visual comparison
+  await expect(page).toHaveScreenshot('cv-page-1.png', {
+    maxDiffPixels: 100  // Allow minor anti-aliasing differences
+  });
+});
+```
+
+**Source:** [Playwright Visual Comparisons](https://playwright.dev/docs/test-snapshots)
+
+#### 3.2 Structural/Text Validation
+
+| Library | Version | Purpose | Why This One |
+|---------|---------|---------|--------------|
+| `unpdf` | ^1.4.0 | PDF text extraction | Zero deps, TypeScript-first, Bun/serverless compatible |
+
+**Why unpdf over alternatives:**
+
+| Option | Verdict | Reason |
+|--------|---------|--------|
+| `unpdf` | **USE** | Zero dependencies, TypeScript-native, works in Bun, active maintenance (v1.4.0 Oct 2025) |
+| `pdf-parse` | Skip | v2.x has Node version requirements (>=20.16.0), heavier |
+| `pdfjs-dist` | Skip | Requires canvas native module, complex setup |
+| `pdf-lib` | **Already installed** | Can read PDF structure but limited text extraction |
+
+**Testing approach:**
+
+```typescript
+import { extractText, getMeta } from 'unpdf';
+
+test('CV PDF contains expected content', async () => {
+  const pdf = await Bun.file('output.pdf').arrayBuffer();
+
+  // Extract all text
+  const { text } = await extractText(pdf, { mergePages: true });
+
+  // Verify expected content
+  expect(text).toContain('John Doe');
+  expect(text).toContain('Software Engineer');
+
+  // Check page count via metadata
+  const meta = await getMeta(pdf);
+  expect(meta.info?.numPages).toBeLessThanOrEqual(2);
+});
+```
+
+**Source:** [unpdf GitHub](https://github.com/unjs/unpdf)
+
+---
+
+### Installation for Milestone 2
+
+```bash
+# PDF text extraction for tests (dev dependency only)
+bun add -D unpdf
+```
+
+**Already installed (no action needed):**
+- `puppeteer@^24.36.0` - PDF generation with page break support
+- `@playwright/test@^1.57.0` - Visual regression testing
+- `pdf-lib@^1.17.1` - PDF metadata (outline, page count)
+
+---
+
+### What NOT to Add for Milestone 2
+
+| Library | Why Not |
+|---------|---------|
+| **Paged.js** | Overkill for CV-length documents; adds JS runtime to HTML output |
+| **WeasyPrint** | Python-based, doesn't fit Bun/TypeScript stack |
+| **wkhtmltopdf** | Legacy tool, binary dependency, inferior page break support |
+| **pdf-visual-diff** | Requires Jest, incompatible with Bun test runner |
+| **pdf-parse v2** | Complex Node version requirements, unpdf is simpler |
+| **canvas/@napi-rs/canvas** | Native module complexity; Playwright screenshots avoid this |
+
+---
+
+### Confidence Assessment for Milestone 2
+
+| Area | Confidence | Basis |
+|------|------------|-------|
+| Puppeteer PDF options | HIGH | Official docs at pptr.dev |
+| CSS page break properties | HIGH | Long-standing CSS standard, browser support verified |
+| Playwright visual testing | HIGH | Official docs, already in project |
+| unpdf for text extraction | HIGH | GitHub releases show active maintenance, v1.4.0 from Oct 2025 |
+| Bun compatibility | MEDIUM | unpdf claims Bun support but limited direct verification |
+
+---
+
+### Milestone 2 Sources
+
+- [Puppeteer PDFOptions API](https://pptr.dev/api/puppeteer.pdfoptions) - Official documentation
+- [Playwright Visual Comparisons](https://playwright.dev/docs/test-snapshots) - Official documentation
+- [unpdf GitHub Repository](https://github.com/unjs/unpdf) - v1.4.0 release notes
+- [CSS-Tricks page-break](https://css-tricks.com/almanac/properties/p/page-break/) - CSS property reference
+- [PrintCSS Widows and Orphans](https://printcss.net/articles/widows-and-orphans) - Typography best practices
+- [Puppeteer page break issues](https://github.com/puppeteer/puppeteer/issues/6366) - Known limitations

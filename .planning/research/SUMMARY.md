@@ -1,327 +1,279 @@
-# Research Summary: CV/Resume Generator CLI Tool
+# Research Summary: v1.1 PDF Pagination Improvements
 
-**Project:** CLI-based CV/resume generator (Markdown to PDF/HTML/DOCX)
-**Target Users:** IT professionals
-**Core Goal:** iCIMS expert-grade ATS optimization
-**Synthesized:** 2026-01-22
+**Project:** CV Generator CLI - PDF Quality Enhancements
+**Milestone:** v1.1 Improved PDF Creation
+**Research Date:** 2026-01-23
 **Overall Confidence:** HIGH
 
 ---
 
 ## Executive Summary
 
-This project builds a CLI tool that transforms markdown-formatted CVs into ATS-optimized PDF, HTML, and DOCX files, specifically targeting IT professionals who need to pass iCIMS and similar ATS systems. Research reveals that the critical success factor is not visual design but text extractability and structural compatibility with ATS parsers.
+The v1.1 milestone focuses on three interconnected PDF quality improvements: eliminating wasted whitespace through better pagination, ensuring HTML print output matches CLI-generated PDFs, and establishing automated PDF testing to catch regressions. The excellent news: the existing Puppeteer-based architecture already provides all necessary foundations.
 
-The recommended approach uses **Node.js 20+ with TypeScript** and a browser-based PDF generation strategy (Puppeteer) to ensure text layers are properly embedded. The architecture follows a clear pipeline: markdown parsing (gray-matter + marked) -> template rendering (Nunjucks) -> multi-format output (Puppeteer for PDF, docx library for DOCX, self-contained HTML). This stack prioritizes ATS compatibility over visual creativity, as 97%+ of Fortune 500 companies use ATS systems that silently reject poorly formatted resumes.
+**Key finding:** This milestone requires minimal new dependencies (only `unpdf` for test-time text extraction) and no architectural changes. The work is primarily CSS refinement in existing template files, test infrastructure additions using already-installed Playwright, and consolidation of duplicated print CSS rules. The current codebase has print CSS spread across three locations (_print.css, template CSS, and ATS_PRINT_CSS in pdf-generator.ts), creating maintenance burden. Consolidating to a single source of truth is the critical first step.
 
-Key risks center on PDF text extraction failures (garbled ToUnicode maps), ATS parser confusion (tables, headers/footers, non-standard sections), and multi-format consistency. These are mitigated through: (1) automated copy-paste testing of generated PDFs, (2) single-column template constraints, (3) standard section headers, and (4) shared intermediate HTML representation across all formats.
+**Risk mitigation:** The primary technical risks are browser-specific CSS fragmentation bugs (break-inside ignored in headless mode, flexbox breaking page-break properties) and test infrastructure complexity (font rendering differences, PDF-to-image artifacts). Both are well-documented with proven workarounds: use legacy fallback properties alongside modern ones, run tests in Docker for consistency, and use perceptual diff algorithms with appropriate thresholds.
 
 ---
 
 ## Key Findings
 
-### From STACK.md: Technology Recommendations
+### From STACK.md: Technology Readiness
 
-**Core Stack:**
-- **Runtime:** Node.js 20+ LTS with TypeScript 5.x - Required by modern dependencies, provides type safety for structured CV data
-- **CLI Framework:** Commander.js 14+ - Lightweight, TypeScript-native, sufficient for focused single-purpose CLI
-- **PDF Generation:** Puppeteer 24+ - Browser-based HTML-to-PDF ensures ATS-compatible text layers, Google-backed maintenance
-- **DOCX Generation:** docx 9.5+ - Declarative API, full control over ATS-friendly structure, 13k+ dependents
-- **Markdown Parsing:** marked 17+ (speed) + gray-matter 4+ (frontmatter) - Battle-tested combination, 21M+ weekly downloads
-- **Templating:** Nunjucks 3.2.4 - Template inheritance for theme variations, Jinja2-style syntax, Mozilla-backed
-- **Build Tool:** tsup 8.5+ - Zero-config TypeScript bundling, 10-100x faster than Webpack
+**Current stack already supports pagination improvements:**
+- Puppeteer 24.36.0 has full CSS @page support with `preferCSSPageSize: true` option
+- CSS fragmentation properties (break-inside, orphans, widows) work in Chromium print context
+- No additional runtime dependencies needed for pagination or print parity
 
-**Critical Version Requirements:**
-- Node.js 20+ required by Commander 14
-- Puppeteer downloads ~150MB Chromium (acceptable for CLI tool; users can use puppeteer-core with local Chrome)
+**New dependency for testing only:**
+- `unpdf` v1.4.0 - Zero-dependency PDF text extraction, Bun-compatible, TypeScript-native
+- Already installed: `@playwright/test` v1.57.0 for visual regression, `pdf-lib` v1.17.1 for metadata
 
-**Stack Rationale:**
-Browser-based PDF generation is non-negotiable for ATS compatibility. Tools like wkhtmltopdf or PDFKit either lack modern CSS support or require manual layout, producing PDFs with poor text extraction. Puppeteer generates text-layer PDFs that ATS systems can reliably parse.
+**What NOT to add:**
+- Paged.js (overkill for CV-length documents)
+- pdf-visual-diff (requires Jest, incompatible with Bun test runner)
+- pdf-parse v2 (complex Node version requirements)
 
-### From FEATURES.md: Feature Requirements
+### From FEATURES-pdf-pagination.md: User Expectations
 
-**Table Stakes (MVP Requirements):**
-1. Multi-format output (PDF, HTML, DOCX) - Recruiters expect all three
-2. ATS-compatible output - Single-column, standard fonts, parseable text, proper headings
-3. Standard CV sections - Contact, Summary, Work Experience, Education, Skills
-4. Template system - Minimum 3-5 templates with style variations
-5. Consistent date formatting - ISO 8601 input, flexible display
-6. Error handling - Clear messages for malformed markdown
+**Table stakes (must have):**
+1. No orphan headings - section headers at page bottom with content on next page
+2. No widow content - single lines isolated at page top
+3. Keep sections together - work experience entries not split mid-item
+4. Consistent margins - professional balanced whitespace
+5. Browser print parity - Ctrl+P should match CLI output
 
-**IT Professional Differentiators:**
-1. **Skills taxonomy** - Categorized by type (languages, frameworks, databases, cloud, tools)
-2. **Project section** - GitHub links, tech stack, role, outcome
-3. **Certifications with expiry** - AWS, GCP, Cisco certs require dates
-4. **Tech stack per job** - List technologies used in each position
-5. **Keyword optimization** - Both acronym AND full form ("Kubernetes (K8s)")
+**Differentiators (nice to have):**
+- Smart content fitting algorithm (reduce whitespace to avoid near-empty pages)
+- Page number footers ("Page 1 of 2")
+- Template-specific visual test baselines
+- Dynamic content masking in visual comparisons
 
-**Must-Have Differentiators (Core Value):**
-- iCIMS expert-grade optimization - Standard section headers, single-column, text-based content
-- Single-file HTML with embedded CSS - Portable, embeddable via object/iframe tag
-- Per-person directory structure - `/people/[name]/cv.md` pattern supports teams
+**Anti-features (explicitly avoid):**
+- Complex margin box headers (incomplete Chrome support)
+- Pixel-perfect PDF-to-HTML matching (font rendering varies)
+- Fully automated page break optimization (diminishing returns)
+- URL-based images in @page rules (fail in headless mode)
 
-**Anti-Features (Deliberately Avoid):**
-- Multi-column layouts (confuse ATS parsers)
-- Graphics/icons/skill bars (ATS cannot parse images)
-- Headers/footers for contact info (25% of ATS ignore these)
-- Tables for layout (break sequential reading order)
-- AI/LLM content generation (out of scope)
-- Web application UI (CLI only)
+### From ARCHITECTURE-pdf-pagination.md: Implementation Strategy
 
-**File Format Recommendations:**
-- **PDF:** Default for applications (96% parsing accuracy from Google Docs -> PDF)
-- **DOCX:** When portal explicitly requests Word (95% parsing accuracy)
-- **HTML:** For portfolio embedding only (not for ATS submission)
+**Integration points identified:**
+- `templates/_shared/partials/_print.css` - Shared print rules (single source of truth)
+- `templates/*/styles.css` - Template-specific print rules
+- `packages/cli/src/lib/pdf-generator.ts` - Currently injects `ATS_PRINT_CSS` (duplicated rules)
 
-### From ARCHITECTURE.md: Component Structure
+**Critical architectural finding:**
+Current codebase has print CSS duplication across three locations. Recommended consolidation:
+1. Move all print rules to `_print.css` (single source of truth)
+2. Templates import `_print.css`
+3. Simplify `ATS_PRINT_CSS` to only ligature disabling for ATS
 
-**High-Level Pipeline:**
+**Data flow remains unchanged:**
 ```
-CLI Interface (Commander)
-    -> Data Layer (gray-matter + marked + validator)
-    -> Template Engine (Nunjucks)
-    -> Renderer Layer (PDF/HTML/DOCX in parallel)
-    -> Output Layer (filesystem)
+Template CSS (imports _print.css) → HTML (embedded CSS) → Puppeteer → PDF
+                                                              ↓
+                                                        [unpdf] → Content tests
+                                                        [Playwright] → Visual tests
 ```
 
-**Component Boundaries:**
+**Testing patterns established:**
+- Pattern 1: CSS fragmentation with legacy fallbacks
+- Pattern 2: PDF content testing with unpdf
+- Pattern 3: Visual regression with Playwright screenshots
+- Pattern 4: Pagination validation tests
 
-1. **CLI Interface Layer** - Parse commands, validate paths, orchestrate execution. Does NOT process markdown or generate documents.
+### From PITFALLS.md: Critical Risks and Prevention
 
-2. **Data Layer (Parser)** - Extract structured CVData object from markdown. Sub-components:
-   - Frontmatter Extractor (gray-matter) - YAML metadata
-   - Markdown Parser (marked) - Body content to HTML
-   - Schema Validator - Ensures required fields, helpful errors
+**Critical pitfalls for this milestone:**
 
-3. **Template Engine Layer** - Apply design templates to CVData. Sub-components:
-   - Template Loader - Discover and cache templates
-   - Template Processor (Nunjucks) - Inject data, produce styled HTML
-   - Style Processor - Embed CSS for self-contained HTML
+1. **break-inside:avoid ignored in headless mode** (Puppeteer Issue #6366)
+   - Prevention: Use both `page-break-inside: avoid` (legacy) and `break-inside: avoid` (modern)
+   - Test specifically with Puppeteer, not just browser print preview
 
-4. **Renderer Layer** - Three parallel renderers consuming same intermediate HTML:
-   - **HTML Renderer:** Embed CSS in `<style>` tag, single-file output
-   - **PDF Renderer:** Puppeteer with `printBackground: true`, Letter/A4 format
-   - **DOCX Renderer:** Use docx library (NOT html-to-docx) for full control over structure
+2. **Flexbox/Grid breaks page-break properties** (IPython Issue #5115)
+   - Prevention: Convert flex containers to `display: block` in @media print
+   - CV templates use flexbox - requires careful print CSS
 
-5. **Output Layer** - Write files with pattern `{name}_{template}.{format}`
+3. **Print styles bleed into screen display**
+   - Prevention: ALWAYS wrap print CSS in `@media print {}` blocks
+   - Add visual regression tests for BOTH screen AND print views
 
-**Critical ATS Architecture Decisions:**
-- Single-column template constraint (multi-column breaks ATS parsing)
-- Semantic HTML structure (h1 for name, h2 for sections)
-- Contact info in main body (not headers/footers)
-- Standard fonts only (Arial, Calibri, Times New Roman)
-- No tables for layout (CSS/HTML structure for visual layout only)
+4. **Font rendering differs between environments**
+   - Prevention: Run tests in Docker matching CI, use `--font-render-hinting=none`
+   - Use looser pixel diff thresholds (0.1-1% variance)
 
-**Recommended File Structure:**
-```
-src/
-  cli/ - Commands, UI helpers
-  parser/ - Frontmatter, markdown, validator
-  template/ - Loader, processor
-  renderers/ - html.ts, pdf.ts, docx.ts
-  output/ - File writing
-  types/ - TypeScript interfaces
-templates/
-  modern/ - template.njk, styles.css, config.json
-  ats-optimized/
-  minimal/
-people/ - [name]/cv.md (user data)
-```
+5. **PDF-to-image conversion introduces artifacts**
+   - Prevention: Pin rendering library versions, use perceptual diff algorithms
+   - Render at higher DPI, compare at lower resolution
 
-### From PITFALLS.md: Critical Risks
-
-**Critical Pitfalls (Must Address Early):**
-
-1. **Missing ToUnicode Map in PDFs** - PDF looks perfect but ATS extracts gibberish when copy-pasting
-   - **Prevention:** Test every PDF by copy-pasting to plain text editor, ensure Puppeteer waits for fonts with `document.fonts.ready`
-   - **Phase Impact:** Core PDF generation (Phase 1)
-
-2. **Headers/Footers Ignored by ATS** - 25% of ATS fail to read document headers/footers
-   - **Prevention:** Place ALL contact info in main body, use headers only for decorative page numbers
-   - **Phase Impact:** Template design (Phase 1)
-
-3. **Non-Standard Section Headers** - ATS cannot categorize "My Journey So Far" as work experience
-   - **Prevention:** Enforce standard headers (Work Experience, Education, Skills, Summary), template validation
-   - **Phase Impact:** Template validation (Phase 2)
-
-4. **Tables/Text Boxes Break Parsing** - ATS skips entire sections or creates parsing loops
-   - **Prevention:** Never use tables for layout, single-column CSS/Flexbox only
-   - **Phase Impact:** Template design constraints (Phase 1)
-
-5. **Acronym-Only Skills** - ATS filters for "Kubernetes" but resume only says "K8s"
-   - **Prevention:** Require both forms in schema ("Kubernetes (K8s)"), document in examples
-   - **Phase Impact:** Schema design + documentation (Phase 1)
-
-**High Pitfalls (Address Mid-Development):**
-
-6. **Page Breaks Mid-Content** - Work experience split across pages, headers orphaned
-   - **Prevention:** Use `break-inside: avoid` on job entries, test with multi-page content
-   - **Phase Impact:** PDF template CSS (Phase 2)
-
-7. **Font Not Embedded** - PDFs look different on different systems
-   - **Prevention:** Embed fonts fully in Puppeteer, test on systems without fonts installed
-   - **Phase Impact:** PDF generation core (Phase 1-2)
-
-8. **Word Styles Not Used in DOCX** - Document formatted but not using Heading 1/2 styles
-   - **Prevention:** Map markdown headings to Word built-in styles explicitly
-   - **Phase Impact:** DOCX generation (Phase 2)
-
-**Testing Requirements (Every Build):**
-- [ ] PDF copy-paste test (no garbled characters)
-- [ ] PDF link clicking (all hyperlinks work)
-- [ ] DOCX styles verification (Heading 1/2 in Navigation Pane)
-- [ ] Multi-format consistency (same data renders predictably)
-- [ ] Multi-page content (page breaks handled gracefully)
+**ATS pitfalls to maintain awareness:**
+- ToUnicode map corruption (garbled text extraction)
+- Headers/footers ignored by ATS (already avoided in codebase)
+- Non-standard section headers (validate in templates)
 
 ---
 
-## Implications for Roadmap
+## Recommended Stack Additions
 
-### Suggested Phase Structure
+### New Dev Dependency (Required)
 
-Based on component dependencies and risk mitigation, recommend **4 phases**:
+```json
+{
+  "devDependencies": {
+    "unpdf": "^1.4.0"
+  }
+}
+```
 
-#### Phase 1: Core Pipeline (Foundation)
-**Rationale:** Establish ATS-compliant foundation before adding features. Cannot build differentiators on broken ATS parsing.
+**Rationale:** Zero dependencies, TypeScript-first, Bun-compatible, active maintenance. Superior to pdf-parse for this use case.
 
-**Deliverables:**
-- TypeScript project setup (Node 20+, tsup build)
-- Data schema definition with validation (CVData interfaces, Zod/Joi)
-- Markdown parser (gray-matter + marked integration)
-- Single ATS-optimized template (modern, single-column, standard headers)
-- HTML output with embedded CSS
-- PDF output via Puppeteer (with ToUnicode map testing)
-- Basic CLI (Commander) for `cv-gen build <name>`
+### Already Available (No Action Needed)
+
+- `puppeteer@^24.36.0` - PDF generation with page break support
+- `@playwright/test@^1.57.0` - Visual regression testing via screenshots
+- `pdf-lib@^1.17.1` - PDF metadata reading (outline, page count)
+
+### Installation Command
+
+```bash
+bun add -D unpdf
+```
+
+---
+
+## Suggested Phase Structure
+
+Based on dependency analysis and risk mitigation strategy:
+
+### Phase 1: Print CSS Consolidation (Foundation)
+
+**Rationale:** Must establish single source of truth before adding rules. Reduces risk of conflicts and regressions.
+
+**What it delivers:**
+- Consolidated print CSS in `_print.css`
+- Removed duplication from template CSS files
+- Simplified `ATS_PRINT_CSS` in pdf-generator.ts (ligatures only)
+- Documented CSS architecture
+
+**Features from FEATURES.md:** None directly - this is technical debt cleanup
+
+**Pitfalls to avoid:**
+- Print styles bleeding into screen display
+- CSS specificity wars between screen and print
+- Existing PDF generation disrupted
+
+**Research flag:** No additional research needed - well-documented pattern
+
+**Estimated effort:** Low (2-3 hours)
+
+---
+
+### Phase 2: CSS Pagination Improvements (Core Feature)
+
+**Rationale:** Build on consolidated CSS foundation. Pure CSS changes with no new dependencies.
+
+**What it delivers:**
+- No orphan headings (break-after: avoid on h1-h4)
+- No widow content (orphans: 3, widows: 3 on paragraphs)
+- Sections stay together (break-inside: avoid on entry containers)
+- Consistent @page margins
+- Flexbox → block conversion in print context
+
+**Features from FEATURES.md:** All table stakes items
+
+**Pitfalls to avoid:**
+- break-inside ignored in headless mode (use legacy fallbacks)
+- Flexbox breaks page-break properties (convert to block for print)
+- Section headers orphaned from content (wrap with first entry)
+- Margin/padding accumulation at page breaks (use padding over margin)
+
+**Research flag:** No additional research needed - patterns established in ARCHITECTURE.md
+
+**Estimated effort:** Medium (4-6 hours implementation + testing)
+
+---
+
+### Phase 3: Browser Print Parity (Feature Parity)
+
+**Rationale:** Depends on Phase 2 CSS consolidation. Ensures @media print rules mirror Puppeteer settings.
+
+**What it delivers:**
+- Dual CSS approach: works for both browser print and Puppeteer
+- Documented print CSS architecture
+- Manual test workflow (generate PDF, then Ctrl+P HTML, compare)
+
+**Features from FEATURES.md:** Browser print parity (table stakes)
+
+**Pitfalls to avoid:**
+- Print styles bleed into screen display (strict @media print scoping)
+- CSS variable fallbacks missing for print (explicit re-declaration)
+- Background colors disappear (printBackground: true + print-color-adjust: exact)
+- Responsive layouts break in print (explicit fixed-width for print)
+
+**Research flag:** No additional research needed - established patterns
+
+**Estimated effort:** Low-Medium (3-4 hours)
+
+---
+
+### Phase 4: Automated PDF Testing (Quality Assurance)
+
+**Rationale:** Depends on working pagination to create meaningful baselines. Catches regressions automatically.
+
+**What it delivers:**
+- PDF content tests (text extraction, page count via unpdf)
+- PDF pagination tests (page break validation, orphan/widow checks)
+- Visual regression tests (screenshot comparison via Playwright)
+- Test utilities (PDF parsing helpers)
+- Baseline snapshots for all templates
 
 **Features from FEATURES.md:**
-- Markdown input parsing (table stakes)
-- Multi-format output: HTML + PDF (table stakes, DOCX deferred to Phase 2)
-- Single template (table stakes)
-- ATS-compatible output (table stakes)
-- Contact, Summary, Work Experience, Education, Skills sections (table stakes)
+- Template-specific baselines (differentiator)
+- Multi-page snapshot testing (differentiator)
+- Page count assertions (differentiator)
 
-**Pitfalls to Avoid:**
-- Missing ToUnicode Map (test copy-paste after every PDF generation)
-- Headers/Footers for contact info (enforce in template design)
-- Non-standard section headers (validate in schema)
-- Tables/text boxes (template constraint)
-- Acronym-only skills (document both forms in schema examples)
+**Pitfalls to avoid:**
+- Font rendering differs between environments (Docker, --font-render-hinting=none)
+- PDF-to-image conversion artifacts (pin versions, perceptual diff)
+- Flaky tests from dynamic content (mock dates, use ignore rectangles)
+- Multi-page comparison complexity (page-by-page comparison)
+- Threshold tuning false negatives (start strict, document loosening)
 
-**Research Flags:** Standard patterns, no additional research needed.
+**Research flag:** NEEDS RESEARCH - Visual regression testing approach for PDFs
+- Specifically: Playwright PDF screenshot strategy, baseline management, CI configuration
 
----
-
-#### Phase 2: Multi-Format + DOCX
-**Rationale:** DOCX is table stakes but requires different rendering path. Add after HTML/PDF pipeline proven.
-
-**Deliverables:**
-- DOCX renderer using docx library (NOT html-to-docx)
-- Word styles mapping (Heading 1/2, Normal, List Bullet)
-- Multi-format consistency testing
-- Page break handling in PDF templates (`break-inside: avoid`)
-- Font embedding verification in PDFs
-
-**Features from FEATURES.md:**
-- DOCX output (table stakes)
-- Per-person directory structure (differentiator)
-- Template name in output filename (differentiator)
-
-**Pitfalls to Avoid:**
-- Word styles not used (map markdown headings to built-in styles)
-- Character escaping in DOCX (test with `<>&"'` characters)
-- Page breaks mid-content (implement `break-inside` CSS)
-- Font not embedded (Puppeteer font loading)
-
-**Research Flags:** Minimal - DOCX generation patterns well-documented, follow docx library examples.
+**Estimated effort:** High (8-10 hours infrastructure + test writing)
 
 ---
 
-#### Phase 3: IT Professional Features
-**Rationale:** With stable multi-format output, extend schema for IT-specific needs. These are differentiators that justify using this tool over generic resume generators.
+## Critical Pitfalls to Avoid
 
-**Deliverables:**
-- Extended schema (projects, certifications, tech stacks)
-- Skills taxonomy (categorized by language/framework/database/cloud/tools)
-- Second template option (classic or minimal)
-- Schema validation with helpful error messages
-- CLI commands: `cv-gen validate <name>`, `cv-gen list-templates`
+### Ranked by Impact and Likelihood
 
-**Features from FEATURES.md:**
-- IT-professional data schema (differentiator)
-- Project section with tech context (differentiator)
-- Certifications section (differentiator)
-- Skills taxonomy (differentiator)
-- Additional templates (table stakes)
+| Rank | Pitfall | Phase | Prevention Strategy |
+|------|---------|-------|---------------------|
+| 1 | Existing PDF generation disrupted | Phase 2 | Establish baseline test suite BEFORE changes; feature flags |
+| 2 | break-inside ignored in headless mode | Phase 2 | Use both legacy and modern properties; test with Puppeteer |
+| 3 | Flexbox breaks page-break properties | Phase 2 | Convert flex to block in @media print; CV templates use flexbox |
+| 4 | Print styles bleed into screen display | Phases 2-3 | Strict @media print scoping; visual regression for screen view |
+| 5 | Font rendering differs in CI | Phase 4 | Docker containers, pinned versions, looser thresholds |
+| 6 | Test infrastructure not ready | Phase 4 | Set up infrastructure BEFORE implementing features |
+| 7 | CSS specificity wars | Phases 2-3 | Separate print CSS file; avoid !important; distinct class names |
+| 8 | Incomplete edge case testing | All phases | Define explicit edge cases: empty content, max content, all templates |
 
-**Pitfalls to Avoid:**
-- Skills without context (require structured format with categories)
-- Format-specific logic in templates (keep templates format-agnostic)
-- Inconsistent date formatting (single formatting function)
+### Testing Checklist for Every Change
 
-**Research Flags:** Minimal - JSON Resume schema provides good reference for IT professional fields.
+Apply this checklist after each commit:
 
----
-
-#### Phase 4: Polish + Advanced Features
-**Rationale:** Add nice-to-have features after core functionality proven. These enhance usability but aren't blocking.
-
-**Deliverables:**
-- Print-optimized CSS (`@media print` rules)
-- Template customization (style variables: colors, fonts)
-- CLI command: `cv-gen init <name>` (scaffold new CV)
-- Word frequency analysis (identify weak bullet points)
-- Documentation and examples
-- Third template option
-
-**Features from FEATURES.md:**
-- Print-optimized CSS (differentiator)
-- Git-friendly workflow (differentiator, inherent in markdown)
-- Word frequency analysis (differentiator, defer to v2 acceptable)
-
-**Pitfalls to Avoid:**
-- Hardcoded content in templates (externalize all visible text)
-- Long URLs overflow (use `word-break: break-all`)
-- CSS isolation failure with object tag (test embedded HTML)
-
-**Research Flags:** None - standard patterns for all features.
-
----
-
-### Phase Dependencies
-
-```
-Phase 1 (Core Pipeline)
-    |
-    +---> Establishes: Data schema, template architecture, PDF/HTML renderers
-    |
-    v
-Phase 2 (Multi-Format + DOCX)
-    |
-    +---> Depends on: Phase 1 schema, template system
-    +---> Establishes: DOCX renderer, multi-format consistency
-    |
-    v
-Phase 3 (IT Professional Features)
-    |
-    +---> Depends on: Phase 2 multi-format output
-    +---> Establishes: Extended schema, second template
-    |
-    v
-Phase 4 (Polish + Advanced)
-    |
-    +---> Depends on: Phase 3 stable feature set
-    +---> Establishes: Usability enhancements, documentation
-```
-
-### Which Phases Need `/gsd:research-phase`?
-
-**No additional research needed for any phase.** All phases use well-documented patterns:
-- Phase 1: Standard markdown parsing, Puppeteer PDF generation (extensive docs)
-- Phase 2: docx library has comprehensive examples
-- Phase 3: JSON Resume schema provides IT professional field reference
-- Phase 4: Standard CSS and CLI patterns
-
-**Caveat:** If ATS testing reveals unexpected parsing failures, may need targeted research on specific ATS vendor quirks. This would be reactive, not planned.
+- [ ] Screen display unchanged (visual regression)
+- [ ] Print preview matches expectations (manual spot check)
+- [ ] PDF output matches print preview (automated comparison)
+- [ ] Page breaks in correct locations (multi-page content)
+- [ ] Text extraction produces correct content (copy-paste test)
+- [ ] Performance within budget (<3 seconds for 2-page PDF)
+- [ ] CI tests pass (not just local)
+- [ ] Edge cases covered (long content, empty sections, all 4 templates)
 
 ---
 
@@ -329,159 +281,71 @@ Phase 4 (Polish + Advanced)
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| **Stack** | HIGH | All libraries verified at latest versions (Puppeteer 24, Commander 14, marked 17, docx 9.5). Puppeteer for PDF is industry standard for HTML-to-PDF with ATS requirements. |
-| **Features** | HIGH | Table stakes features well-defined from existing markdown resume tools. IT professional features match JSON Resume schema. ATS requirements verified across 7+ authoritative sources. |
-| **Architecture** | HIGH | Component boundaries follow standard CLI tool patterns. Data pipeline (parse -> validate -> template -> render -> output) is straightforward. Multiple reference implementations examined. |
-| **Pitfalls** | HIGH | ATS pitfalls sourced from Jobscan, Careerflow, iCIMS documentation. PDF/DOCX technical pitfalls from Puppeteer issues, docx library docs, Stack Overflow common problems. |
+| **Stack** | HIGH | Existing Puppeteer provides all needed capabilities; unpdf verified v1.4.0 Oct 2025 |
+| **Features** | HIGH | Based on authoritative sources (MDN, Puppeteer docs, CSS-Tricks); table stakes vs differentiators clear |
+| **Architecture** | HIGH | Direct codebase analysis; integration points identified; data flow understood |
+| **Pitfalls** | HIGH | Verified against multiple GitHub issues, technical articles, and authoritative sources |
+| **CSS Pagination** | HIGH | Long-standing CSS standards, Chromium support verified |
+| **Visual Testing** | MEDIUM | Playwright docs official, but CI consistency requires careful setup |
+| **Bun Compatibility** | MEDIUM | unpdf claims Bun support but limited direct verification |
 
 ### Gaps to Address During Planning
 
-1. **HTML object tag embedding requirement** - PROJECT.md specifies "CSS embedded in object tag." Research shows `<object>` tag does NOT provide CSS isolation and is non-standard for CSS embedding. **Action:** Clarify requirement with stakeholder. Recommend `<iframe>` for isolation or inline `<style>` tag for self-contained HTML.
-
-2. **Template count** - Research recommends 3-5 templates minimum, but no specific template designs identified. **Action:** Define template themes during Phase 1 (e.g., "Modern," "ATS-Optimized," "Minimal"). Consider user research or competitor analysis.
-
-3. **ATS testing methodology** - Copy-paste testing validates text extraction, but doesn't verify actual ATS scoring. **Action:** Document recommended ATS testing tools (Jobscan, Resume Worded) for users to validate output.
-
-4. **International considerations** - Research focused on US ATS systems (iCIMS). EU CVs may require photos, different section standards. **Action:** Phase 4 or v2 feature if needed.
-
-5. **Error message strategy** - Validation errors need helpful guidance. **Action:** During Phase 1 schema validation, write error messages that include fix suggestions and schema examples.
-
----
-
-## Build Order Implications
-
-### Dependencies Driving Order
-
-1. **Schema must be first** - All components depend on CVData interface and validation schema
-2. **Template system after parser** - Templates consume CVData output
-3. **Renderers after templates** - All renderers consume intermediate HTML from templates
-4. **DOCX parallel to PDF** - Both renderers independent, but DOCX has more edge cases (defer to Phase 2)
-5. **CLI last for integration** - Can start early for testing, but full integration requires all renderers complete
-
-### Risk-Driven Order
-
-1. **PDF ToUnicode map testing early** - This is silent failure that breaks ATS. Must validate in Phase 1.
-2. **ATS template constraints upfront** - Cannot retrofit single-column after multi-column designs exist. Phase 1 constraint.
-3. **Multi-format consistency before features** - Adding IT-specific schema to inconsistent formats creates 3x debugging. Fix in Phase 2.
-
-### Value-Driven Order
-
-1. **HTML + PDF first** - Delivers 80% of value (most users submit PDF, HTML for portfolios)
-2. **DOCX second** - Completes multi-format story, required by some portals
-3. **IT features third** - Differentiators that justify tool over Pandoc or JSON Resume
-4. **Polish last** - Nice-to-have enhancements after proven core
-
----
-
-## ATS/iCIMS Specific Insights
-
-### iCIMS Parsing Characteristics
-
-From research, iCIMS is "notoriously rigid" compared to Greenhouse or Lever:
-- **Exact keyword matching** - Match job description terminology precisely (both "Continuous Integration" and "CI/CD")
-- **No formatting forgiveness** - Errors are not tolerated; broken structure fails silently
-- **Standard section focus** - Non-standard headers ("My Journey") cause categorization failures
-- **Single-column preference** - Multi-column layouts scramble reading order
-
-### ATS Scoring Targets
-
-Research indicates ATS scoring ranges:
-- **85+**: Well-optimized, consistently reaches recruiters
-- **70-79**: May pass but improvement needed
-- **Below 60**: Significant optimization required
-
-**Recommendation:** Tool should target 85+ scores by default through:
-1. Standard section headers enforced in schema
-2. Single-column template constraint
-3. Text-based content (no images/graphics)
-4. Both acronym and full form for technical terms
-5. Clean hierarchy (H1 for name, H2 for sections)
-
-### File Format Preferences by ATS
-
-From Enhancv testing:
-- Google Docs -> PDF: 96% parsing accuracy
-- Google Docs -> DOC: 95% parsing accuracy
-- MS Office -> DOC: 88% parsing accuracy
-- MS Office -> PDF: 85% parsing accuracy
-
-**Implication:** Puppeteer-generated PDFs from HTML should achieve 90%+ parsing accuracy (better than MS Office -> PDF). Document this as a selling point.
-
----
-
-## Open Questions for Requirements Phase
-
-1. **Template design specifics** - What visual styles for "Modern," "ATS-Optimized," "Minimal" templates? Need mockups or design direction.
-
-2. **CV data examples** - Should `/people/` directory include example CVs? Or just documentation in README?
-
-3. **Output directory default** - Where should generated files be written? `/output/`, `/people/[name]/output/`, or user-specified only?
-
-4. **HTML embedding documentation** - If object tag is required, need to document limitations (no CSS isolation, fallback content needed).
-
-5. **Version numbering** - Should output files include version/date metadata for tracking which version was sent where?
-
-6. **Template contribution** - Should templates be user-extendable? If so, need template validation and documentation.
-
-7. **Multi-page handling** - At what content length should tool warn about 2+ page resume? (Standard guidance: 1 page for <10 years experience, 2 for 10+)
-
-8. **Skills proficiency display** - How to represent proficiency without skill bars? Text labels ("Expert," "Proficient," "Familiar")? Years of experience?
+1. **Baseline establishment:** Need to generate baseline PDFs for all 4 templates before any changes
+2. **Docker CI configuration:** Playwright PDF screenshot strategy needs CI-specific setup documented
+3. **Edge case definition:** Explicitly define test cases for: empty sections, maximum content length (3+ pages), special characters, all template combinations
+4. **Performance baseline:** Establish current PDF generation time benchmarks before optimization
+5. **Flexbox inventory:** Audit all templates for flexbox usage that needs print CSS conversion
 
 ---
 
 ## Sources Summary
 
-### Authoritative Sources (HIGH Confidence)
+### Authoritative (HIGH Confidence)
+- [Puppeteer PDFOptions API](https://pptr.dev/api/puppeteer.pdfoptions) - Official documentation
+- [Playwright Visual Comparisons](https://playwright.dev/docs/test-snapshots) - Official documentation
+- [MDN @page](https://developer.mozilla.org/en-US/docs/Web/CSS/@page) - CSS paged media reference
+- [MDN CSS Printing Guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Printing) - Print stylesheet guidance
+- [unpdf GitHub](https://github.com/unjs/unpdf) - v1.4.0 release notes
 
-**Stack & Technology:**
-- [Commander.js GitHub](https://github.com/tj/commander.js) - v14.0.2 verified
-- [Puppeteer GitHub](https://github.com/puppeteer/puppeteer) - v24.x verified
-- [docx GitHub](https://github.com/dolanmiu/docx) - v9.5.1 verified
-- [Marked GitHub](https://github.com/markedjs/marked) - v17.0.1 verified
-- [Node.js Releases](https://nodejs.org/en/about/releases/) - LTS schedule
+### Technical Articles (MEDIUM Confidence)
+- [Eric Draken PDF Layout Algorithm](https://ericdraken.com/algorithm-optimized-pdf-page-layout/) - Smart content fitting
+- [Smashing Magazine - CSS Fragmentation](https://www.smashingmagazine.com/2019/02/css-fragmentation/) - Page break behavior
+- [PuppetMaster PDF Testing](https://medium.com/the-crc-tech-blog/pdf-visual-regression-testing-the-puppetmaster-approach-7a575d6c5559) - Visual regression patterns
 
-**ATS & iCIMS:**
-- [Jobscan - ATS Formatting Mistakes](https://www.jobscan.co/blog/ats-formatting-mistakes/)
-- [Careerflow - ATS Resume Mistakes](https://www.careerflow.ai/blog/ats-resume-mistakes-to-avoid)
-- [iCIMS Developer Community](https://developer-community.icims.com/) - Binary file parsing requirements
-- [Enhancv - ATS Myths](https://enhancv.com/blog/busting-ats-myths/) - File format testing data
-
-**Architecture Patterns:**
-- [markdown-resume (there4)](https://github.com/there4/markdown-resume) - PHP reference
-- [markdown-resume-js](https://github.com/c0bra/markdown-resume-js) - Node.js reference
-- [JSON Resume Schema](https://jsonresume.org/schema) - Standard CV data structure
-
-**PDF Generation:**
-- [RisingStack - Puppeteer PDF](https://blog.risingstack.com/pdf-from-html-node-js-puppeteer/)
-- [Dev.to - Page Break Solutions](https://dev.to/resumemind/htmlcss-to-pdf-how-i-solved-the-page-break-nightmare-mdg)
-- [Adobe Community - ToUnicode Issues](https://community.adobe.com/t5/acrobat-discussions/copying-and-pasting-text-in-pdf-turns-to-gibberish/td-p/10194796)
-
-### Ecosystem Research (MEDIUM Confidence)
-
-- [Top PDF Generation Libraries 2025](https://pdfbolt.com/blog/top-nodejs-pdf-generation-libraries)
-- [Puppeteer vs Playwright Performance](https://www.skyvern.com/blog/puppeteer-vs-playwright-complete-performance-comparison-2025/)
-- [Template Engine Comparison](https://npm-compare.com/ejs,handlebars,nunjucks,pug)
-- [Resume Adapter - ATS Optimization Hub](https://www.resumeadapter.com/blog/ats-optimization-hub)
-- [Toptal - Tech Resume Keywords](https://www.toptal.com/techresume/career-advice/the-perfect-tech-resume-in-2025-key-trends-ats-keywords-and-formatting-tips)
+### Community Issues (HIGH Confidence - Known Bugs)
+- [Puppeteer #6366](https://github.com/puppeteer/puppeteer/issues/6366) - break-inside ignored in headless
+- [Puppeteer #5277](https://github.com/puppeteer/puppeteer/issues/5277) - page break not working
+- [Puppeteer #8708](https://github.com/puppeteer/puppeteer/issues/8708) - table page breaks
+- [IPython #5115](https://github.com/ipython/ipython/issues/5115) - Flexbox breaks page-break
 
 ---
 
-## Ready for Requirements Definition
+## Ready for Requirements
 
-**Summary written:** /workspace/.planning/research/SUMMARY.md
+### Summary
 
-**Research files synthesized:**
-- STACK.md (Node.js 20+, Puppeteer, docx, marked, Nunjucks, Commander, tsup)
-- FEATURES.md (Table stakes, IT professional differentiators, anti-features)
-- ARCHITECTURE.md (5-layer pipeline, component boundaries, build order)
-- PITFALLS.md (8 critical risks, testing checklist, prevention strategies)
+Research synthesis complete. All four research outputs analyzed and integrated into cohesive roadmap guidance.
 
-**Key recommendations for roadmapper:**
-1. **4-phase structure** - Core Pipeline -> Multi-Format -> IT Features -> Polish
-2. **No additional research needed** - All patterns well-documented
-3. **Phase 1 is ATS-critical** - ToUnicode map testing, template constraints, schema validation
-4. **DOCX deferred to Phase 2** - Focus HTML + PDF first for 80% of value
+**Files synthesized:**
+- STACK.md - Technology readiness confirmed, unpdf selected for testing
+- FEATURES-pdf-pagination.md - Table stakes vs differentiators identified
+- ARCHITECTURE-pdf-pagination.md - Integration points mapped, consolidation strategy defined
+- PITFALLS.md - Critical risks documented with prevention strategies
 
-**Confidence level:** HIGH across all areas
+**Recommended phase order:**
+1. Print CSS Consolidation (foundation - 2-3 hours)
+2. CSS Pagination Improvements (core feature - 4-6 hours)
+3. Browser Print Parity (feature parity - 3-4 hours)
+4. Automated PDF Testing (quality assurance - 8-10 hours)
 
-**Next step:** Orchestrator can proceed to requirements definition with clear technology choices, feature prioritization, and risk mitigation strategies.
+**Total estimated effort:** 17-23 hours
+
+**Critical success factors:**
+- Establish baseline tests BEFORE any changes
+- Consolidate print CSS first to avoid conflicts
+- Use Docker for test environment consistency
+- Test both screen and print views after every change
+- Document flexbox → block conversions for print
+
+**Next step:** Orchestrator can proceed to requirements definition. Roadmapper has clear guidance on phase structure, technology choices, and risk mitigation strategies.

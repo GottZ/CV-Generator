@@ -902,16 +902,12 @@ function buildProjectsSection(
 /**
  * Build certifications section paragraphs.
  * Certifications are not localized per CONTEXT.md.
- * Note: Prefixed with underscore - will be connected in Plan 07-04.
  */
-function _buildCertificationsSection(
-	_certifications: Certification[],
-	_locale: string,
-	_styles: DocxStyleConfig,
+function buildCertificationsSection(
+	certifications: Certification[],
+	locale: string,
+	styles: DocxStyleConfig,
 ): Paragraph[] {
-	const certifications = _certifications;
-	const locale = _locale;
-	const styles = _styles;
 	const paragraphs: Paragraph[] = [];
 
 	// Section header (Heading 2)

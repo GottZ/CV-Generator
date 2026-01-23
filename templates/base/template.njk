@@ -54,6 +54,13 @@
             {% endfor %}
           </div>
           {% endif %}
+          {% if job.techStack and job.techStack | length > 0 %}
+          <div class="tech-stack job-tech-stack">
+            {% for tech in job.techStack %}
+            <span class="tech-tag">{{ tech }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
         </article>
         {% endfor %}
       </section>
@@ -78,6 +85,49 @@
       </section>
       {% endif %}
 
+      {# Projects section #}
+      {% if projects and projects | length > 0 %}
+      <section class="section projects">
+        <h2>{{ 'projects' | sectionHeader(locale) }}</h2>
+        {% for project in projects %}
+        <article class="entry project-entry{% if project.highlight %} highlighted{% endif %}">
+          <div class="entry-header">
+            <h3 class="entry-title">{{ project.name }}</h3>
+            {% if project.startDate %}
+            <span class="date-range">{{ project.startDate | formatDate(locale) }}{% if project.endDate %} - {{ project.endDate | formatDate(locale) }}{% endif %}</span>
+            {% endif %}
+          </div>
+          {% if project.role or project.type %}
+          <div class="entry-meta">
+            {% if project.role %}<span class="project-role">{{ project.role }}</span>{% endif %}
+            {% if project.type %}<span class="project-type">{{ project.type }}</span>{% endif %}
+          </div>
+          {% endif %}
+          {% if project.description %}<p class="project-description">{{ project.description | md | safe }}</p>{% endif %}
+          {% if project.techStack and project.techStack | length > 0 %}
+          <div class="tech-stack">
+            {% for tech in project.techStack %}
+            <span class="tech-tag">{{ tech }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if project.outcome %}
+          <div class="project-outcome">
+            <strong>Outcome:</strong> {{ project.outcome | md | safe }}
+          </div>
+          {% endif %}
+          {% if project.links and project.links | length > 0 %}
+          <div class="project-links">
+            {% for link in project.links %}
+            <a href="{{ link.url }}" class="project-link" target="_blank" rel="noopener">{{ link.label or (link.url | formatLinkUrl) }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
       {# Skills section #}
       {% if skills and skills | length > 0 %}
       <section class="section skills">
@@ -91,6 +141,24 @@
             {% endfor %}
           </div>
         </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {# Certifications section #}
+      {% if certifications and certifications | length > 0 %}
+      <section class="section certifications">
+        <h2>{{ 'certifications' | sectionHeader(locale) }}</h2>
+        {% for cert in certifications %}
+        <article class="entry certification-entry">
+          <div class="entry-header">
+            <h3 class="entry-title">{{ cert.name }}</h3>
+            <span class="date-range">{{ cert.date | formatDate(locale) }}{% if cert.expiryDate %} - {{ cert.expiryDate | formatDate(locale) }}{% endif %}</span>
+          </div>
+          <div class="entry-issuer">{{ cert.issuer }}</div>
+          {% if cert.credentialId %}<div class="credential-id">ID: {{ cert.credentialId }}</div>{% endif %}
+          {% if cert.verificationUrl %}<a href="{{ cert.verificationUrl }}" class="verification-link" target="_blank" rel="noopener">Verify</a>{% endif %}
+        </article>
         {% endfor %}
       </section>
       {% endif %}

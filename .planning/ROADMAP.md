@@ -216,10 +216,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Schema and parser for Projects and Certifications
-- [ ] 07-02-PLAN.md — Tech stack per job and skills acronym handling
-- [ ] 07-03-PLAN.md — HTML template rendering for new sections
-- [ ] 07-04-PLAN.md — DOCX section builders for Projects and Certifications
+- [x] 07-01-PLAN.md — Schema and parser for Projects and Certifications
+- [x] 07-02-PLAN.md — Tech stack per job and skills acronym handling
+- [x] 07-03-PLAN.md — HTML template rendering for new sections
+- [x] 07-04-PLAN.md — DOCX section builders for Projects and Certifications
 
 ---
 
@@ -252,7 +252,7 @@ Plans:
 | 4 | PDF Output | 4 | Complete |
 | 5 | DOCX Output | 2 | Complete |
 | 6 | CLI Commands | 6 | Complete |
-| 7 | IT Professional Features | 4 | Planned |
+| 7 | IT Professional Features | 4 | Complete |
 | 8 | Multi-Template + Polish | 3 | Pending |
 
 **Total:** 43 requirement mappings (some requirements support multiple phases through shared infrastructure)
@@ -290,4 +290,4 @@ All phases are sequential. Each phase builds on the previous phase's foundation.
 
 ---
 
-*Last updated: 2026-01-23 (Phase 6 complete)*
+*Last updated: 2026-01-23 (Phase 7 complete)*

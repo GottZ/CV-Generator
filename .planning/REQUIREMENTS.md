@@ -36,9 +36,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **DATA-03**: Schema supports work experience (company, role, dates, location, bullets)
 - [x] **DATA-04**: Schema supports education (institution, degree, field, dates, honors)
 - [x] **DATA-05**: Schema supports skills list with categories (languages, frameworks, databases, cloud, tools)
-- [ ] **DATA-06**: Schema supports projects section (name, description, tech stack, GitHub link, outcome)
-- [ ] **DATA-07**: Schema supports certifications (name, issuer, date, expiry date)
-- [ ] **DATA-08**: Schema supports tech stack per job position
+- [x] **DATA-06**: Schema supports projects section (name, description, tech stack, GitHub link, outcome)
+- [x] **DATA-07**: Schema supports certifications (name, issuer, date, expiry date)
+- [x] **DATA-08**: Schema supports tech stack per job position
 - [x] **DATA-09**: Missing sections are skipped silently (no empty sections, no errors)
 - [x] **DATA-10**: Unknown sections trigger warning but generation continues without them
 - [x] **DATA-11**: Images stored in `/people/[name]/images/` directory
@@ -58,7 +58,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ATS-01**: PDF text layers are copy-paste verifiable (no garbled characters)
 - [x] **ATS-02**: All contact info in main body (not headers/footers)
 - [x] **ATS-03**: No tables used for layout (CSS/flexbox only)
-- [ ] **ATS-04**: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
+- [x] **ATS-04**: Skills include both acronym and full form where applicable (e.g., "Kubernetes (K8s)")
 - [x] **ATS-05**: Semantic HTML structure (h1 for name, h2 for sections)
 - [x] **ATS-06**: Warning printed when images are included (ATS cannot parse image content)
 
@@ -127,9 +127,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-03 | Phase 1 | Complete |
 | DATA-04 | Phase 1 | Complete |
 | DATA-05 | Phase 1 | Complete |
-| DATA-06 | Phase 7 | Pending |
-| DATA-07 | Phase 7 | Pending |
-| DATA-08 | Phase 7 | Pending |
+| DATA-06 | Phase 7 | Complete |
+| DATA-07 | Phase 7 | Complete |
+| DATA-08 | Phase 7 | Complete |
 | DATA-09 | Phase 1 | Complete |
 | DATA-10 | Phase 1 | Complete |
 | DATA-11 | Phase 3 | Complete |
@@ -143,7 +143,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ATS-01 | Phase 4 | Pending |
 | ATS-02 | Phase 2 | Complete |
 | ATS-03 | Phase 2 | Complete |
-| ATS-04 | Phase 4 | Pending |
+| ATS-04 | Phase 7 | Complete |
 | ATS-05 | Phase 2 | Complete |
 | ATS-06 | Phase 3 | Complete |
 | REPO-01 | Phase 8 | Pending |
@@ -161,12 +161,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Phase 1 | 9 | DATA-01, DATA-02, DATA-03, DATA-04, DATA-05, DATA-09, DATA-10, REPO-02, REPO-03 |
 | Phase 2 | 7 | TMPL-01, TMPL-02, TMPL-03, TMPL-06, ATS-02, ATS-03, ATS-05 |
 | Phase 3 | 8 | OUT-02, OUT-04, OUT-05, OUT-06, OUT-08, DATA-11, DATA-12, ATS-06 |
-| Phase 4 | 5 | OUT-01, OUT-07, OUT-09, ATS-01, ATS-04 |
+| Phase 4 | 4 | OUT-01, OUT-07, OUT-09, ATS-01 |
 | Phase 5 | 2 | OUT-03, OUT-10 |
 | Phase 6 | 6 | CLI-01, CLI-02, CLI-03, CLI-04, CLI-05, CLI-06 |
-| Phase 7 | 3 | DATA-06, DATA-07, DATA-08 |
+| Phase 7 | 4 | DATA-06, DATA-07, DATA-08, ATS-04 |
 | Phase 8 | 3 | TMPL-04, TMPL-05, REPO-01 |
 
 ---
 *Requirements defined: 2026-01-22*
-*Last updated: 2026-01-23 (Phase 6 complete: 36 requirements delivered)*
+*Last updated: 2026-01-23 (Phase 7 complete: 40 requirements delivered)*

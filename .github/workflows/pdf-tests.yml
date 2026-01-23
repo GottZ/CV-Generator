@@ -1,0 +1,37 @@
+name: PDF Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build test container
+        run: docker build -t cvgen-test -f Dockerfile.test .
+
+      - name: Run tests
+        run: docker run --rm --init --cap-add=SYS_ADMIN cvgen-test bun test
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Upload snapshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-diffs
+          path: tests/__snapshots__/**/*-diff.png
+          retention-days: 7

@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import type { CVData } from '@gottz/cv-core';
 import {
 	loadGlobalConfig,
@@ -31,6 +32,10 @@ export async function renderCV(
 	// Load CSS for inline embedding
 	const baseCss = await readFile(template.stylesPath, 'utf-8');
 
+	// Load shared print CSS (single source of truth - PRINT-02)
+	const printCssPath = path.join(templatesDir, '_shared/partials/_print.css');
+	const printCss = await readFile(printCssPath, 'utf-8');
+
 	// Resolve style cascade: template defaults < global config < env vars < frontmatter
 	const warnings: string[] = [];
 	const globalConfig = projectRoot ? await loadGlobalConfig(projectRoot) : null;
@@ -48,8 +53,9 @@ export async function renderCV(
 	}
 
 	// Prepend style overrides to CSS (so templates can use the variables)
+	// Print CSS loaded AFTER template CSS for correct cascade order (PRINT-02)
 	const styleOverrides = styleToCssVariables(resolvedStyle);
-	const css = `${styleOverrides}\n\n${baseCss}`;
+	const css = `${styleOverrides}\n\n${baseCss}\n\n${printCss}`;
 
 	// Resolve localized content for this locale
 	// Per CONTEXT.md: missing translation -> skip section (undefined in context)
@@ -118,6 +124,10 @@ export function createRenderer(templatesDir: string) {
 		const template = await getTemplate(templatesDir, templateId);
 		const baseCss = await readFile(template.stylesPath, 'utf-8');
 
+		// Load shared print CSS (single source of truth - PRINT-02)
+		const printCssPath = path.join(templatesDir, '_shared/partials/_print.css');
+		const printCss = await readFile(printCssPath, 'utf-8');
+
 		// Resolve style cascade: template defaults < global config < env vars < frontmatter
 		const warnings: string[] = [];
 		const globalConfig = projectRoot
@@ -137,8 +147,9 @@ export function createRenderer(templatesDir: string) {
 		}
 
 		// Prepend style overrides to CSS (so templates can use the variables)
+		// Print CSS loaded AFTER template CSS for correct cascade order (PRINT-02)
 		const styleOverrides = styleToCssVariables(resolvedStyle);
-		const css = `${styleOverrides}\n\n${baseCss}`;
+		const css = `${styleOverrides}\n\n${baseCss}\n\n${printCss}`;
 
 		const context = {
 			contact: cv.contact,

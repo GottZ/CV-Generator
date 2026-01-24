@@ -146,6 +146,22 @@
     page-break-after: avoid;
   }
 
+  /* === Orphan/Widow Control === */
+  /* Prevent isolated lines at page boundaries */
+  p,
+  .summary-text,
+  .project-description,
+  .entry-notes {
+    orphans: 2;
+    widows: 2;
+  }
+
+  /* Section content needs minimum lines with header */
+  .section > *:first-child {
+    orphans: 2;
+    widows: 2;
+  }
+
   /* Don't show URL in printed links - ATS parses href directly */
   a[href]::after {
     content: none;

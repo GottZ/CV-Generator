@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 10-print-css-consolidation
 source: [10-01-SUMMARY.md, 10-02-SUMMARY.md]
 started: 2026-01-24T10:00:00Z
@@ -47,9 +47,12 @@ skipped: 0
   reason: "User reported: individual pages no longer have any margins to any of the edges. this is not the desired outcome. each page should have appropriate empty space to each edge as described in the template."
   severity: major
   test: 1
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "_print.css line 18 has 'padding: 0;' which overrides template's var(--page-margin) padding. Original template CSS did NOT have this line. Templates define --page-margin as 20-30mm for content padding."
+  artifacts:
+    - path: "templates/_shared/partials/_print.css"
+      issue: "Line 18: padding: 0; removes page margins"
+  missing:
+    - "Remove 'padding: 0;' from .cv-page rule in _print.css to preserve template margins"
   debug_session: ""
 
 - truth: "Visual regression tests verify page margins are correct"
@@ -57,7 +60,10 @@ skipped: 0
   reason: "User reported: appropriate page margins need to be added to the check."
   severity: major
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "Visual regression baselines were captured with broken margins (after _print.css already had padding: 0). Tests pass because they compare against the wrong baseline."
+  artifacts:
+    - path: "tests/__screenshots__/"
+      issue: "Baselines captured without proper margins"
+  missing:
+    - "After fixing _print.css, regenerate visual regression baselines with correct margins"
   debug_session: ""

@@ -103,6 +103,13 @@ Plans:
 - Test with Puppeteer specifically, not just browser print preview
 - Use padding over margin to avoid accumulation at page breaks
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md - Core pagination CSS (flexbox conversion, entry-type rules, orphan/widow control)
+- [ ] 11-02-PLAN.md - Long-entry template logic (conditional class for 15+ bullet entries)
+- [ ] 11-03-PLAN.md - Visual regression baseline updates and verification
+
 ---
 
 ## Phase 12: Print Parity Verification

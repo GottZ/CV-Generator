@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-24
-**Session:** Phase 10 Re-verified After Gap Closure
+**Session:** Phase 11 Plans 01 and 02 Complete
 
 ## Project Reference
 
@@ -13,14 +13,14 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 
 ## Current Position
 
-**Phase:** 10 - Print CSS Consolidation (RE-VERIFIED ✓)
-**Plan:** 3 of 3 complete
-**Status:** Phase 10 re-verified after gap closure, ready for Phase 11
-**Last activity:** 2026-01-24 - Re-verified phase goal (10/10 must-haves, all gaps closed)
+**Phase:** 11 - CSS Pagination Improvements
+**Plan:** 2 of 3 complete
+**Status:** In progress
+**Last activity:** 2026-01-24 - Completed 11-01-PLAN.md (Core Pagination CSS)
 
 **Progress:**
 ```
-v1.1 Improved PDF Creation [██----] 40%
+v1.1 Improved PDF Creation [███---] 50%
 ├── Phase 9:  Test Infrastructure Foundation [████] TEST-06, TEST-07 VERIFIED
 │   ├── 09-01: Docker CI Infrastructure [x]
 │   ├── 09-02: Test Utilities and Fixtures [x]
@@ -30,7 +30,10 @@ v1.1 Improved PDF Creation [██----] 40%
 │   ├── 10-01: Print CSS Consolidation [x]
 │   ├── 10-02: ATS_PRINT_CSS Simplification [x]
 │   └── 10-03: Page Margins Fix (Gap Closure) [x]
-├── Phase 11: CSS Pagination Improvements    [ ] PAG-01 to PAG-07
+├── Phase 11: CSS Pagination Improvements    [███-] PAG-01 to PAG-07
+│   ├── 11-01: Core Pagination CSS [x]
+│   ├── 11-02: Long Entry Class Detection [x]
+│   └── 11-03: [ ]
 ├── Phase 12: Print Parity Verification      [ ] PRINT-01, PRINT-05
 └── Phase 13: Full Test Suite                [ ] TEST-01 to TEST-05, TEST-08
 ```
@@ -41,8 +44,8 @@ v1.1 Improved PDF Creation [██----] 40%
 |--------|-------|
 | Phases | 5 |
 | Requirements (v1.1) | 20 |
-| Plans Created | 7 |
-| Plans Completed | 7 |
+| Plans Created | 10 |
+| Plans Completed | 9 |
 | Requirements Delivered | 5/20 |
 | Blockers Encountered | 4 |
 | Blockers Resolved | 4 |
@@ -100,6 +103,16 @@ Phase 10-03 decisions:
 - Remove padding:0 from print CSS (Puppeteer margins only apply during PDF generation)
 - Template --page-margin CSS variable controls padding in HTML print preview
 
+Phase 11-01 decisions:
+- Convert flexbox to block display in print media for break property support
+- Use both modern (break-*) and legacy (page-break-*) properties for Puppeteer compatibility
+- Float right for date-range elements to maintain alignment after block conversion
+
+Phase 11-02 decisions:
+- Experience entries: 15+ bullets triggers .long-entry class
+- Project entries: 10+ tech stack items triggers .long-entry class
+- Conservative thresholds preserve atomic behavior for most entries
+
 ### Research Insights
 
 From `.planning/research/SUMMARY.md`:
@@ -120,7 +133,7 @@ None.
 
 ### For Next Session
 
-**Current step:** Ready for Phase 11 (CSS Pagination Improvements)
+**Current step:** Phase 11 Plans 01 and 02 complete, continue with 11-03
 **Resume file:** None
 
 ### Files to Reference
@@ -136,4 +149,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-24 (Phase 10 re-verified after gap closure)*
+*Last updated: 2026-01-24 (Phase 11 Plans 01 and 02 complete)*

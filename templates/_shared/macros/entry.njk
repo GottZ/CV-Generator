@@ -39,7 +39,7 @@
 
 {# Project entry macro #}
 {% macro projectEntry(project, locale) %}
-<article class="entry project-entry{% if project.highlight %} highlighted{% endif %}">
+<article class="entry project-entry{% if project.highlight %} highlighted{% endif %}{% if project.techStack and project.techStack | length >= 10 %} long-entry{% endif %}">
   <div class="entry-header">
     <h3 class="entry-title">{{ project.name }}</h3>
     {% if project.startDate %}

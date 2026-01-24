@@ -1,6 +1,6 @@
 {# Experience entry macro #}
 {% macro experienceEntry(job, locale) %}
-<article class="entry experience-entry">
+<article class="entry experience-entry{% if job.bullets and job.bullets | length >= 15 %} long-entry{% endif %}">
   <div class="entry-header">
     <h3 class="entry-title">{{ job.role }} at {{ job.company }}</h3>
     <span class="date-range">{{ job.startDate | formatDate(locale) }} - {{ job.endDate | formatDate(locale) }}</span>

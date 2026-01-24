@@ -69,8 +69,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md - Consolidate print CSS (modify render.ts, remove from templates)
-- [ ] 10-02-PLAN.md - Simplify ATS_PRINT_CSS and verify with visual tests
+- [x] 10-01-PLAN.md - Consolidate print CSS (modify render.ts, remove from templates)
+- [x] 10-02-PLAN.md - Simplify ATS_PRINT_CSS and verify with visual tests
 
 ---
 
@@ -165,7 +165,7 @@ Plans:
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
 | 9 | Test Infrastructure Foundation | TEST-06, TEST-07 | Complete |
-| 10 | Print CSS Consolidation | PRINT-02, PRINT-03, PRINT-04 | Pending |
+| 10 | Print CSS Consolidation | PRINT-02, PRINT-03, PRINT-04 | Complete |
 | 11 | CSS Pagination Improvements | PAG-01 to PAG-07 | Pending |
 | 12 | Print Parity Verification | PRINT-01, PRINT-05 | Pending |
 | 13 | Full Test Suite | TEST-01 to TEST-05, TEST-08 | Pending |

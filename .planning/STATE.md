@@ -142,6 +142,7 @@ None.
 - `/workspace/.planning/ROADMAP.md` - v1.1 phase structure
 - `/workspace/.planning/REQUIREMENTS.md` - v1.1 requirements with traceability
 - `/workspace/.planning/research/SUMMARY.md` - Research findings
+- `/workspace/.planning/phases/11-css-pagination-improvements/11-02-SUMMARY.md` - Long entry class detection
 - `/workspace/.planning/phases/10-print-css-consolidation/10-03-SUMMARY.md` - Page margins fix (gap closure)
 - `/workspace/.planning/phases/10-print-css-consolidation/10-02-SUMMARY.md` - ATS_PRINT_CSS simplification
 - `/workspace/.planning/phases/10-print-css-consolidation/10-01-SUMMARY.md` - Print CSS consolidation

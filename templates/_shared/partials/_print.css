@@ -14,8 +14,6 @@
     margin: 0;
     width: 100%;
     min-height: auto;
-    /* Remove padding for print - Puppeteer margins handle page spacing */
-    padding: 0;
   }
 
   /* Sections CAN span pages - don't force entire sections to new page */

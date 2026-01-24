@@ -14,10 +14,10 @@ import {
 	type TestCvResult,
 } from './helpers/test-generator';
 
-// Run tests sequentially to ensure deterministic output generation
-test.describe.configure({ mode: 'serial' });
-
 test.describe('Classic template visual snapshots', () => {
+	// Run tests sequentially to ensure deterministic output generation
+	test.describe.configure({ mode: 'serial' });
+
 	let singlePageResult: TestCvResult;
 	let multiPageResult: TestCvResult;
 

@@ -33,5 +33,6 @@ RUN bunx playwright install chromium
 # Copy the rest of the project
 COPY . .
 
-# Default command: run tests
-CMD ["bun", "test"]
+# Default command: run both bun tests and playwright tests
+# Uses a shell to run both test commands
+CMD ["sh", "-c", "bun test packages/ && npx playwright test"]

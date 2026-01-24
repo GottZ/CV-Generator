@@ -70,6 +70,66 @@
     page-break-after: avoid;
   }
 
+  /* === Flexbox-to-Block Conversion (required for break properties) === */
+  /* Main content area */
+  main {
+    display: block;
+  }
+
+  /* Contact info row */
+  .contact-info {
+    display: block;
+  }
+
+  .contact-item {
+    display: inline;
+    margin-right: 8px;
+  }
+
+  .contact-item:not(:last-child)::after {
+    content: ' | ';
+    margin-left: 8px;
+  }
+
+  /* Entry header (title + date) */
+  .entry-header {
+    display: block;
+  }
+
+  .entry-title {
+    display: inline;
+  }
+
+  .date-range {
+    display: inline;
+    float: right;
+  }
+
+  /* Skill lists */
+  .skill-list {
+    display: block;
+  }
+
+  .skill {
+    display: inline;
+    margin-right: 8px;
+  }
+
+  /* Tech stack tags */
+  .tech-stack {
+    display: block;
+  }
+
+  .tech-tag {
+    display: inline;
+    margin-right: 8px;
+  }
+
+  /* Project links */
+  .project-links {
+    display: block;
+  }
+
   /* Don't show URL in printed links - ATS parses href directly */
   a[href]::after {
     content: none;

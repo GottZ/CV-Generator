@@ -66,11 +66,12 @@ Plans:
 - Wrap all print CSS in strict @media print {} blocks
 - Test both screen and print views after every change
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
 - [x] 10-01-PLAN.md - Consolidate print CSS (modify render.ts, remove from templates)
 - [x] 10-02-PLAN.md - Simplify ATS_PRINT_CSS and verify with visual tests
+- [x] 10-03-PLAN.md - Fix page margins in print CSS [gap closure]
 
 ---
 

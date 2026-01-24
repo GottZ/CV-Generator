@@ -130,6 +130,22 @@
     display: block;
   }
 
+  /* === Entry-Type Specific Pagination === */
+  /* All entry types are atomic units - never break inside */
+  .experience-entry,
+  .education-entry,
+  .project-entry,
+  .certification-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Entry headers stay with content that follows */
+  .entry-header {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
   /* Don't show URL in printed links - ATS parses href directly */
   a[href]::after {
     content: none;

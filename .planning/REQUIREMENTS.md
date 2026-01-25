@@ -11,8 +11,8 @@
 ### AI Content Generation (AI-*)
 
 **Core Infrastructure:**
-- [ ] **AI-01**: User can configure LLM provider (OpenAI, Anthropic, Ollama) via environment variables or config file
-- [ ] **AI-02**: User can export AI prompts to clipboard/file for manual LLM use when no API key is configured
+- [x] **AI-01**: User can configure LLM provider (OpenAI, Anthropic, Ollama) via environment variables or config file
+- [x] **AI-02**: User can export AI prompts to clipboard/file for manual LLM use when no API key is configured
 - [ ] **AI-03**: System uses multi-stage prompt workflow with progression state stored in `/people/[name]/output/.ai-state.json`
 - [ ] **AI-04**: User can view current stage and resume from any point after context reset via `cvgen ai status [name]`
 - [ ] **AI-05**: User can lookup context details (CV sections, previous stage results) via `cvgen ai context [name] [section]`
@@ -125,8 +125,8 @@
 
 | Requirement | Phase | Plan | Status |
 |-------------|-------|------|--------|
-| AI-01 | Phase 14 | - | Pending |
-| AI-02 | Phase 14 | - | Pending |
+| AI-01 | Phase 14 | 14-01, 14-03 | Complete |
+| AI-02 | Phase 14 | 14-02, 14-03 | Complete |
 | AI-03 | Phase 15 | - | Pending |
 | AI-04 | Phase 15 | - | Pending |
 | AI-05 | Phase 15 | - | Pending |

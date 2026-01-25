@@ -97,8 +97,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Start Phase 15 (Multi-Stage Workflow)
-**Resume command:** `/gsd:execute-phase 15`
+**Current step:** Plan Phase 15 (Multi-Stage Workflow)
+**Resume command:** `/gsd:discuss-phase 15`
 
 ### Files to Reference
 

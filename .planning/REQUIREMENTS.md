@@ -9,13 +9,13 @@ Requirements for improved PDF pagination, HTML print parity, and automated testi
 
 ### PDF Pagination
 
-- [ ] **PAG-01**: Job entries do not split across page breaks (break-inside: avoid)
-- [ ] **PAG-02**: Education blocks do not split across page breaks
-- [ ] **PAG-03**: Skills sections do not split across page breaks
-- [ ] **PAG-04**: Section headers are not orphaned at page bottom (stay with content)
-- [ ] **PAG-05**: Minimum 2 lines before/after page breaks (orphans/widows control)
-- [ ] **PAG-06**: Consistent page margins via @page CSS rules
-- [ ] **PAG-07**: No near-empty last pages (content fits on previous page when possible)
+- [x] **PAG-01**: Job entries do not split across page breaks (break-inside: avoid)
+- [x] **PAG-02**: Education blocks do not split across page breaks
+- [x] **PAG-03**: Skills sections do not split across page breaks
+- [x] **PAG-04**: Section headers are not orphaned at page bottom (stay with content)
+- [x] **PAG-05**: Minimum 2 lines before/after page breaks (orphans/widows control)
+- [x] **PAG-06**: Consistent page margins via @page CSS rules
+- [x] **PAG-07**: No near-empty last pages (content fits on previous page when possible)
 
 ### Print CSS Parity
 
@@ -68,13 +68,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PAG-01 | Phase 11 | Pending |
-| PAG-02 | Phase 11 | Pending |
-| PAG-03 | Phase 11 | Pending |
-| PAG-04 | Phase 11 | Pending |
-| PAG-05 | Phase 11 | Pending |
-| PAG-06 | Phase 11 | Pending |
-| PAG-07 | Phase 11 | Pending |
+| PAG-01 | Phase 11 | Complete |
+| PAG-02 | Phase 11 | Complete |
+| PAG-03 | Phase 11 | Complete |
+| PAG-04 | Phase 11 | Complete |
+| PAG-05 | Phase 11 | Complete |
+| PAG-06 | Phase 11 | Complete |
+| PAG-07 | Phase 11 | Complete |
 | PRINT-01 | Phase 12 | Pending |
 | PRINT-02 | Phase 10 | Complete |
 | PRINT-03 | Phase 10 | Complete |
@@ -93,7 +93,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 - v1.1 requirements: 20 total
 - Mapped to phases: 20
 - Unmapped: 0
+- Complete: 12/20
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-24 (Phase 10 requirements complete)*
+*Last updated: 2026-01-25 (Phase 11 requirements complete)*

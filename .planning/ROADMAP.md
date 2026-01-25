@@ -106,9 +106,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 11-01-PLAN.md - Core pagination CSS (flexbox conversion, entry-type rules, orphan/widow control)
-- [ ] 11-02-PLAN.md - Long-entry template logic (conditional class for 15+ bullet entries)
-- [ ] 11-03-PLAN.md - Visual regression baseline updates and verification
+- [x] 11-01-PLAN.md - Core pagination CSS (flexbox conversion, entry-type rules, orphan/widow control)
+- [x] 11-02-PLAN.md - Long-entry template logic (conditional class for 15+ bullet entries)
+- [x] 11-03-PLAN.md - Visual regression baseline updates, @page margin fixes, two-pass PDF generation
 
 ---
 
@@ -174,7 +174,7 @@ Plans:
 |-------|------|--------------|--------|
 | 9 | Test Infrastructure Foundation | TEST-06, TEST-07 | Complete |
 | 10 | Print CSS Consolidation | PRINT-02, PRINT-03, PRINT-04 | Complete |
-| 11 | CSS Pagination Improvements | PAG-01 to PAG-07 | Pending |
+| 11 | CSS Pagination Improvements | PAG-01 to PAG-07 | Complete |
 | 12 | Print Parity Verification | PRINT-01, PRINT-05 | Pending |
 | 13 | Full Test Suite | TEST-01 to TEST-05, TEST-08 | Pending |
 

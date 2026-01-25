@@ -101,7 +101,9 @@ describe('DOCX linebreak handling', () => {
 		it('returns single TextRun for text without newlines', () => {
 			const runs = textWithBreaks('Hello world');
 			expect(runs).toHaveLength(1);
-			expect(getText(runs[0]!)).toBe('Hello world');
+			const first = runs[0];
+			if (!first) throw new Error('Expected first TextRun');
+			expect(getText(first)).toBe('Hello world');
 		});
 
 		it('creates line break for single newline', () => {
@@ -109,12 +111,15 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(2);
 
 			// First line - no break
-			expect(getText(runs[0]!)).toBe('Line one');
-			expect(hasBreak(runs[0]!)).toBe(false);
+			const first = runs[0];
+			const second = runs[1];
+			if (!first || !second) throw new Error('Expected two TextRuns');
+			expect(getText(first)).toBe('Line one');
+			expect(hasBreak(first)).toBe(false);
 
 			// Second line - has break (w:br element)
-			expect(getText(runs[1]!)).toBe('Line two');
-			expect(hasBreak(runs[1]!)).toBe(true);
+			expect(getText(second)).toBe('Line two');
+			expect(hasBreak(second)).toBe(true);
 		});
 
 		it('handles multiple single newlines', () => {
@@ -122,9 +127,12 @@ describe('DOCX linebreak handling', () => {
 			expect(runs).toHaveLength(3);
 
 			// Lines 2 and 3 should have breaks
-			expect(hasBreak(runs[0]!)).toBe(false);
-			expect(hasBreak(runs[1]!)).toBe(true);
-			expect(hasBreak(runs[2]!)).toBe(true);
+			const [first, second, third] = runs;
+			if (!first || !second || !third)
+				throw new Error('Expected three TextRuns');
+			expect(hasBreak(first)).toBe(false);
+			expect(hasBreak(second)).toBe(true);
+			expect(hasBreak(third)).toBe(true);
 		});
 
 		it('skips empty lines (no empty TextRuns)', () => {
@@ -152,19 +160,25 @@ describe('DOCX linebreak handling', () => {
 		it('normalizes Windows newlines (\\r\\n)', () => {
 			const runs = textWithBreaks('Windows\r\nline breaks');
 			expect(runs).toHaveLength(2);
-			expect(hasBreak(runs[1]!)).toBe(true);
+			const second = runs[1];
+			if (!second) throw new Error('Expected second TextRun');
+			expect(hasBreak(second)).toBe(true);
 		});
 
 		it('handles trailing newlines without creating empty TextRuns', () => {
 			const runs = textWithBreaks('Content\n');
 			expect(runs).toHaveLength(1);
-			expect(getText(runs[0]!)).toBe('Content');
+			const first = runs[0];
+			if (!first) throw new Error('Expected first TextRun');
+			expect(getText(first)).toBe('Content');
 		});
 
 		it('handles leading newlines', () => {
 			const runs = textWithBreaks('\nContent');
 			expect(runs).toHaveLength(1);
-			expect(hasBreak(runs[0]!)).toBe(true);
+			const first = runs[0];
+			if (!first) throw new Error('Expected first TextRun');
+			expect(hasBreak(first)).toBe(true);
 		});
 	});
 

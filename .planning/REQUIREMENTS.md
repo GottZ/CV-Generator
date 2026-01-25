@@ -27,14 +27,14 @@ Requirements for improved PDF pagination, HTML print parity, and automated testi
 
 ### Automated Testing
 
-- [ ] **TEST-01**: Visual regression tests detect layout changes in PDF output
-- [ ] **TEST-02**: Text extraction tests verify ATS-readable content in PDFs
-- [ ] **TEST-03**: Structural tests verify page count expectations
-- [ ] **TEST-04**: Structural tests verify PDF metadata presence
-- [ ] **TEST-05**: Structural tests verify file size sanity (not empty, not bloated)
+- [x] **TEST-01**: Visual regression tests detect layout changes in PDF output
+- [x] **TEST-02**: Text extraction tests verify ATS-readable content in PDFs
+- [x] **TEST-03**: Structural tests verify page count expectations
+- [x] **TEST-04**: Structural tests verify PDF metadata presence
+- [x] **TEST-05**: Structural tests verify file size sanity (not empty, not bloated)
 - [x] **TEST-06**: Tests run in CI with consistent environment (Docker)
 - [x] **TEST-07**: Baseline snapshots exist for all 3 templates
-- [ ] **TEST-08**: Tests catch Puppeteer dependency update regressions
+- [x] **TEST-08**: Tests catch Puppeteer dependency update regressions
 
 ## Future Requirements
 
@@ -80,21 +80,21 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRINT-03 | Phase 10 | Complete |
 | PRINT-04 | Phase 10 | Complete |
 | PRINT-05 | Phase 12 | Complete |
-| TEST-01 | Phase 13 | Pending |
-| TEST-02 | Phase 13 | Pending |
-| TEST-03 | Phase 13 | Pending |
-| TEST-04 | Phase 13 | Pending |
-| TEST-05 | Phase 13 | Pending |
+| TEST-01 | Phase 13 | Complete |
+| TEST-02 | Phase 13 | Complete |
+| TEST-03 | Phase 13 | Complete |
+| TEST-04 | Phase 13 | Complete |
+| TEST-05 | Phase 13 | Complete |
 | TEST-06 | Phase 9 | Complete |
 | TEST-07 | Phase 9 | Complete |
-| TEST-08 | Phase 13 | Pending |
+| TEST-08 | Phase 13 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 20 total
 - Mapped to phases: 20
 - Unmapped: 0
-- Complete: 14/20
+- Complete: 20/20
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-25 (Phase 12 requirements complete)*
+*Last updated: 2026-01-25 (Phase 13 requirements complete - v1.1 MILESTONE COMPLETE)*

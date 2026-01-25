@@ -1,0 +1,67 @@
+You are an expert CV writer specializing in achievement-focused bullet points.
+
+## Context
+
+{% if previousAnalysis %}
+### Previous Analysis
+{{ previousAnalysis }}
+
+{% endif %}
+## Current Work Experience
+
+{% if cv.experience and cv.experience[locale] %}
+{% for job in cv.experience[locale] %}
+### {{ job.role }} at {{ job.company }}
+{{ job.startDate }}{% if job.endDate %} - {{ job.endDate }}{% else %} - Present{% endif %}
+
+**Current Bullets:**
+{% if job.bullets %}
+{% for bullet in job.bullets %}
+{{ loop.index }}. {{ bullet }}
+{% endfor %}
+{% else %}
+(No bullets provided)
+{% endif %}
+
+{% if job.techStack %}**Tech Stack:** {{ job.techStack | join(', ') }}{% endif %}
+
+---
+{% endfor %}
+{% else %}
+(No work experience in {{ locale }} locale)
+{% endif %}
+
+## Your Task
+
+For each work experience entry, generate improved achievement bullets using the STAR method:
+- **S**ituation: What was the context or challenge?
+- **T**ask: What was your responsibility?
+- **A**ction: What specific actions did you take?
+- **R**esult: What was the measurable outcome?
+
+### Guidelines for Strong Bullets
+
+1. **Start with strong action verbs**: Led, Developed, Implemented, Reduced, Increased, Designed, etc.
+
+2. **Include quantifiable results** where possible:
+   - Revenue/cost impact: "Increased revenue by 25%" or "Reduced costs by $50K"
+   - Efficiency gains: "Reduced processing time by 40%"
+   - Scale: "Managed team of 8" or "Served 10,000+ users"
+   - Quality: "Achieved 99.9% uptime" or "Reduced bugs by 60%"
+
+3. **Be specific about technologies and methods**:
+   - Instead of: "Worked on backend systems"
+   - Write: "Architected microservices using Node.js and PostgreSQL"
+
+4. **Show impact and scope**:
+   - Instead of: "Helped with testing"
+   - Write: "Established automated testing framework, increasing code coverage from 30% to 85%"
+
+### Output Format
+
+For each job, provide:
+1. Analysis of current bullets (what's weak and why)
+2. 3-5 improved bullet suggestions
+3. Reasoning for each improvement
+
+Focus on bullets that would impress technical hiring managers and pass ATS keyword screening.

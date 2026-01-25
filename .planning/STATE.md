@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-25
-**Session:** v1.1 ARCHIVED
+**Session:** v1.2 MILESTONE STARTED
 
 ## Project Reference
 
@@ -9,13 +9,13 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Core value:** Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCIMS and similar applicant tracking systems while maintaining visual professionalism.
 
-**Current focus:** No active milestone
+**Current focus:** v1.2 Prompts for CV and Template Generation
 
 ## Current Position
 
-**Phase:** None (between milestones)
-**Status:** v1.1 archived, ready for next milestone
-**Last activity:** 2026-01-25 - Archived v1.1 milestone
+**Phase:** Not started (defining requirements)
+**Status:** Defining requirements
+**Last activity:** 2026-01-25 — Milestone v1.2 started
 
 ## Shipped Milestones
 
@@ -43,9 +43,15 @@ v1.1 decisions:
 - Two-pass PDF generation for sparse last page elimination
 - Flexbox-to-block for print (break properties don't work with flexbox)
 
+v1.2 scope decisions:
+- AI content generation is top priority
+- New subcommands (cv-gen ai, cv-gen wizard) over flags
+- Support API keys, local models, AND prompt export fallback
+- Minimal new dependencies
+
 ### Open TODOs
 
-None - ready for next milestone.
+None - requirements being defined.
 
 ### Blockers
 
@@ -55,7 +61,7 @@ None.
 
 ### For Next Session
 
-**Current step:** Run `/gsd:new-milestone` to start next version
+**Current step:** Defining requirements for v1.2
 **Resume file:** None
 
 ### Files to Reference
@@ -69,4 +75,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (v1.1 archived)*
+*Last updated: 2026-01-25 (v1.2 started)*

@@ -28,7 +28,15 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 
 ### Active
 
-*No active milestone. Run `/gsd:new-milestone` to start the next version.*
+## Current Milestone: v1.2 Prompts for CV and Template Generation
+
+**Goal:** Add AI-assisted content generation, interactive CLI wizards, and template scaffolding to help users create and customize CVs and templates through guided prompts.
+
+**Target features:**
+- LLM prompts for AI-assisted CV writing (bullets, summaries, tailoring, improvements)
+- Interactive CLI wizard for CV creation from scratch and incremental updates
+- Template scaffolding and customization through guided prompts
+- Support for API keys (OpenAI/Anthropic), local models (Ollama), and prompt export fallback
 
 <details>
 <summary>v1.1 Improved PDF Creation (Shipped 2026-01-25)</summary>
@@ -76,8 +84,8 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 - Avoid multi-column layouts that confuse parsers
 - Clear contact information placement
 
-**Current State (v1.1 shipped):**
-- ~18,500 lines of TypeScript (+11,500 from v1.0)
+**Current State (v1.2 in progress):**
+- ~18,500 lines of TypeScript (as of v1.1)
 - Tech stack: Bun, Commander.js, Nunjucks, Puppeteer, docx, Sharp, Playwright, unpdf
 - 3 templates: Modern, Minimal, Classic (all with print parity)
 - 4 CLI commands: build, init, validate, list-templates
@@ -108,4 +116,4 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 | Single-column layouts | Multi-column breaks ATS parsing | Good |
 
 ---
-*Last updated: 2026-01-25 after completing v1.1 milestone*
+*Last updated: 2026-01-25 — v1.2 milestone started*

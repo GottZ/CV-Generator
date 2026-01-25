@@ -7,12 +7,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { getPdfPageCount } from './helpers/pdf-utils';
 import {
-	cleanupTestOutput,
-	generateTestCv,
-	type TestCvResult,
-} from './helpers/test-generator';
+	cleanTestOutput,
+	saveFailureArtifacts,
+} from './helpers/artifact-utils';
+import { getPdfPageCount } from './helpers/pdf-utils';
+import { generateTestCv, type TestCvResult } from './helpers/test-generator';
 
 test.describe('Minimal template visual snapshots', () => {
 	// Run tests sequentially to ensure deterministic output generation
@@ -22,6 +22,9 @@ test.describe('Minimal template visual snapshots', () => {
 	let multiPageResult: TestCvResult;
 
 	test.beforeAll(async () => {
+		// Clean output directory first (CONTEXT.md: cleanup in beforeAll)
+		await cleanTestOutput();
+
 		// Generate CVs once, reuse for all tests
 		singlePageResult = await generateTestCv({
 			template: 'minimal',
@@ -33,9 +36,15 @@ test.describe('Minimal template visual snapshots', () => {
 		});
 	});
 
-	test.afterAll(async () => {
-		// Clean up generated files
-		await cleanupTestOutput();
+	// biome-ignore lint/correctness/noEmptyPattern: Playwright requires destructuring pattern
+	test.afterEach(async ({}, testInfo) => {
+		// Save artifacts on failure for debugging
+		const isSinglePage = testInfo.title.includes('single');
+		await saveFailureArtifacts(testInfo, {
+			pdf: isSinglePage ? singlePageResult?.pdf : multiPageResult?.pdf,
+			html: isSinglePage ? singlePageResult?.html : multiPageResult?.html,
+			label: `minimal-${testInfo.title}`,
+		});
 	});
 
 	test('single page CV matches baseline', async ({ page }) => {

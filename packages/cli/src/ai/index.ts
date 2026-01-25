@@ -12,6 +12,17 @@ export {
 	mergeAIConfigs,
 	normalizeModel,
 } from './config.ts';
+// Prompts
+export {
+	getPromptList,
+	getPromptMetadata,
+	getPromptsByStage,
+	isValidPrompt,
+	type PromptContext,
+	PromptError,
+	type PromptMetadata,
+	renderPrompt,
+} from './prompts/index.ts';
 // Providers
 export {
 	createProvider,

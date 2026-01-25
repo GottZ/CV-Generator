@@ -3,6 +3,10 @@
  *
  * Uses Puppeteer for rendering with configurable footer, i18n support,
  * and ATS-safe text extraction (ligatures disabled).
+ *
+ * Implements two-pass generation to detect and fix near-empty last pages:
+ * 1. First pass: Generate PDF and analyze page content distribution
+ * 2. If last page is <20% filled: inject spacing CSS and regenerate
  */
 import { PDFDocument } from 'pdf-lib';
 import { getBrowser } from './browser-manager';
@@ -169,6 +173,11 @@ const DEFAULT_MARGINS = {
  * - Print background enabled for colors
  * - Tagged PDF for accessibility
  *
+ * Implements two-pass generation:
+ * 1. First pass generates PDF and analyzes page distribution
+ * 2. If last page is sparse (<20% content), injects redistribution CSS
+ * 3. Second pass generates final PDF with better content distribution
+ *
  * @param options - PDF generation options
  * @returns Promise<PdfResult> - Generated PDF info
  */
@@ -203,10 +212,8 @@ export async function generatePdf(options: PdfOptions): Promise<PdfResult> {
 		const footerTemplate = buildFooterTemplate(name, locale, footer);
 		const displayHeaderFooter = footer.enabled !== false;
 
-		// Generate PDF with ATS-optimized settings
-		const pdfBuffer = await page.pdf({
-			path: outputPath,
-			format: 'A4',
+		const pdfOptions = {
+			format: 'A4' as const,
 			printBackground: true,
 			preferCSSPageSize: true,
 			displayHeaderFooter,
@@ -220,15 +227,42 @@ export async function generatePdf(options: PdfOptions): Promise<PdfResult> {
 			},
 			tagged: true, // Accessibility - generates tagged PDF
 			timeout,
+		};
+
+		// === FIRST PASS: Generate and analyze ===
+		const firstPassBuffer = await page.pdf({
+			...pdfOptions,
+			path: outputPath,
 		});
 
-		// Get actual page count using pdf-lib
-		const pageCount = await getPageCount(pdfBuffer);
+		// Analyze page distribution
+		const analysis = await analyzePageDistribution(firstPassBuffer);
 
+		// If last page is sparse and we have multiple pages, do second pass
+		if (analysis.isLastPageSparse && analysis.pageCount > 1) {
+			// Inject redistribution CSS to spread content more evenly
+			await page.addStyleTag({ content: REDISTRIBUTION_CSS });
+
+			// === SECOND PASS: Regenerate with redistribution ===
+			const secondPassBuffer = await page.pdf({
+				...pdfOptions,
+				path: outputPath,
+			});
+
+			const finalPageCount = await getPageCount(secondPassBuffer);
+
+			return {
+				path: outputPath,
+				bytes: secondPassBuffer.length,
+				pages: finalPageCount,
+			};
+		}
+
+		// No redistribution needed, first pass is final
 		return {
 			path: outputPath,
-			bytes: pdfBuffer.length,
-			pages: pageCount,
+			bytes: firstPassBuffer.length,
+			pages: analysis.pageCount,
 		};
 	} finally {
 		// Always close page to prevent memory leaks (RESEARCH.md Pitfall 5)
@@ -243,3 +277,88 @@ async function getPageCount(pdfBuffer: Uint8Array): Promise<number> {
 	const pdfDoc = await PDFDocument.load(pdfBuffer);
 	return pdfDoc.getPageCount();
 }
+
+/**
+ * Analyze PDF page content distribution to detect near-empty last page.
+ *
+ * Uses pdf-lib to compare content stream sizes between pages.
+ * A near-empty last page has significantly less content than the average.
+ *
+ * @param pdfBuffer - PDF file buffer
+ * @returns Object with analysis results
+ */
+async function analyzePageDistribution(pdfBuffer: Uint8Array): Promise<{
+	pageCount: number;
+	lastPageRatio: number;
+	isLastPageSparse: boolean;
+}> {
+	const pdfDoc = await PDFDocument.load(pdfBuffer);
+	const pages = pdfDoc.getPages();
+	const pageCount = pages.length;
+
+	if (pageCount <= 1) {
+		return { pageCount, lastPageRatio: 1, isLastPageSparse: false };
+	}
+
+	// Estimate content by measuring content stream sizes
+	// This is a heuristic - larger content streams = more content
+	const contentSizes: number[] = [];
+
+	for (const page of pages) {
+		// Get the content streams for this page
+		const contents = page.node.Contents();
+		let size = 0;
+
+		if (contents) {
+			// Contents can be a single stream or an array of streams
+			const contentArray = Array.isArray(contents) ? contents : [contents];
+			for (const content of contentArray) {
+				if (content && typeof content.sizeInBytes === 'function') {
+					size += content.sizeInBytes();
+				}
+			}
+		}
+
+		contentSizes.push(size);
+	}
+
+	// Calculate average of non-last pages
+	const nonLastSizes = contentSizes.slice(0, -1);
+	const avgSize = nonLastSizes.reduce((a, b) => a + b, 0) / nonLastSizes.length;
+	const lastSize = contentSizes[contentSizes.length - 1] ?? 0;
+
+	// Calculate ratio of last page to average
+	const lastPageRatio = avgSize > 0 ? lastSize / avgSize : 1;
+
+	// Consider last page sparse if it's less than 20% of average
+	// This threshold catches pages with just 1-2 small entries
+	const isLastPageSparse = lastPageRatio < 0.2;
+
+	return { pageCount, lastPageRatio, isLastPageSparse };
+}
+
+/**
+ * CSS to inject for redistributing content when last page is sparse.
+ *
+ * Adds margin to sections to spread content more evenly, potentially
+ * pulling content from the sparse last page onto earlier pages.
+ */
+const REDISTRIBUTION_CSS = `
+@media print {
+	/* Add spacing between sections to redistribute content */
+	.section {
+		margin-bottom: 8mm !important;
+	}
+
+	/* Add spacing after entries to spread content */
+	.entry {
+		margin-bottom: 4mm !important;
+	}
+
+	/* Relax break-inside to allow more flexible pagination */
+	.certification-entry {
+		break-inside: auto !important;
+		page-break-inside: auto !important;
+	}
+}
+`;

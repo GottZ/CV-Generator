@@ -7,6 +7,12 @@
   margin: 20mm 0;
 }
 
+/* First page doesn't need header margin reservation (no header content).
+   Only bottom margin needed for footer. */
+@page :first {
+  margin-top: 0;
+}
+
 @media print {
   body {
     background: white;

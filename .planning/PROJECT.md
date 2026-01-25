@@ -28,17 +28,23 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 
 ### Active
 
-**Current Milestone: v1.1 Improved PDF Creation**
+*No active milestone. Run `/gsd:new-milestone` to start the next version.*
+
+<details>
+<summary>v1.1 Improved PDF Creation (Shipped 2026-01-25)</summary>
 
 **Goal:** Improve PDF pagination, achieve HTML print parity, and add automated testing for PDF output quality.
 
-**Target features:**
-- Eliminate wasted whitespace in PDF pagination
-- Prevent near-empty last pages (content should fit on previous page when possible)
-- HTML print output indistinguishable from PDF output
-- Visual regression testing for PDF output
-- Text extraction testing (ATS verification)
-- Structural checks (page count, metadata, file size)
+**Delivered:**
+- Eliminated wasted whitespace in PDF pagination
+- Prevented near-empty last pages via two-pass PDF generation
+- HTML print output matches PDF output (print parity verified)
+- Visual regression testing for PDF output (9 tests)
+- Text extraction testing for ATS verification (6 tests)
+- Structural checks: page count, metadata, file size (11 tests)
+
+**Archive:** [v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md) | [v1.1-REQUIREMENTS.md](milestones/v1.1-REQUIREMENTS.md)
+</details>
 
 ### Out of Scope
 
@@ -70,11 +76,13 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 - Avoid multi-column layouts that confuse parsers
 - Clear contact information placement
 
-**Current State (v1.0 shipped):**
-- 7,045 lines of TypeScript
-- Tech stack: Bun, Commander.js, Nunjucks, Puppeteer, docx, Sharp
-- 3 templates: Modern, Minimal, Classic
+**Current State (v1.1 shipped):**
+- ~18,500 lines of TypeScript (+11,500 from v1.0)
+- Tech stack: Bun, Commander.js, Nunjucks, Puppeteer, docx, Sharp, Playwright, unpdf
+- 3 templates: Modern, Minimal, Classic (all with print parity)
 - 4 CLI commands: build, init, validate, list-templates
+- 69 automated tests (visual regression, text extraction, structural, parity)
+- Docker CI infrastructure for consistent test execution
 
 **Post-build:** Author's personal CV created using the tool.
 
@@ -100,4 +108,4 @@ Generate recruiter-ready, ATS-parseable CVs from markdown that score well on iCI
 | Single-column layouts | Multi-column breaks ATS parsing | Good |
 
 ---
-*Last updated: 2026-01-23 after starting v1.1 milestone*
+*Last updated: 2026-01-25 after completing v1.1 milestone*

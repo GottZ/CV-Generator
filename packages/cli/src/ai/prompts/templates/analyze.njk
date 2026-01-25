@@ -1,0 +1,101 @@
+You are an expert CV consultant analyzing a CV for improvement opportunities.
+
+## CV Content
+
+### Contact Information
+Name: {{ cv.contact.name }}
+{% if cv.contact.title %}Title: {{ cv.contact.title }}{% endif %}
+{% if cv.contact.email %}Email: {{ cv.contact.email }}{% endif %}
+{% if cv.contact.location %}Location: {{ cv.contact.location }}{% endif %}
+
+{% if cv.summary and cv.summary[locale] %}
+### Professional Summary
+{{ cv.summary[locale] }}
+{% else %}
+### Professional Summary
+(No summary provided - this is an improvement opportunity)
+{% endif %}
+
+### Work Experience
+{% if cv.experience and cv.experience[locale] %}
+{% for job in cv.experience[locale] %}
+**{{ job.role }}** at {{ job.company }}
+{{ job.startDate }}{% if job.endDate %} - {{ job.endDate }}{% else %} - Present{% endif %}
+{% if job.location %}Location: {{ job.location }}{% endif %}
+{% if job.bullets %}
+{% for bullet in job.bullets %}
+- {{ bullet }}
+{% endfor %}
+{% endif %}
+{% if job.techStack %}Tech Stack: {{ job.techStack | join(', ') }}{% endif %}
+
+{% endfor %}
+{% else %}
+(No work experience in {{ locale }} locale)
+{% endif %}
+
+{% if cv.education and cv.education[locale] %}
+### Education
+{% for edu in cv.education[locale] %}
+**{{ edu.degree }}** - {{ edu.institution }}
+{% if edu.graduationDate %}Graduated: {{ edu.graduationDate }}{% endif %}
+{% if edu.gpa %}GPA: {{ edu.gpa }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if cv.skills and cv.skills[locale] %}
+### Skills
+{% for category in cv.skills[locale] %}
+**{{ category.category }}**: {{ category.skills | join(', ') }}
+{% endfor %}
+{% endif %}
+
+{% if cv.certifications %}
+### Certifications
+{% for cert in cv.certifications %}
+- {{ cert.name }}{% if cert.issuer %} ({{ cert.issuer }}){% endif %}{% if cert.date %} - {{ cert.date }}{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if cv.projects and cv.projects[locale] %}
+### Projects
+{% for project in cv.projects[locale] %}
+**{{ project.name }}**{% if project.url %} ({{ project.url }}){% endif %}
+{{ project.description }}
+{% if project.techStack %}Tech: {{ project.techStack | join(', ') }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+## Analysis Tasks
+
+Please analyze this CV and provide:
+
+1. **Structure Assessment**
+   - Are all expected sections present?
+   - Is the content organized logically?
+   - Are there any formatting issues?
+
+2. **Content Gaps**
+   - What important information is missing?
+   - Which sections need more detail?
+   - Are there unexplained employment gaps?
+
+3. **Achievement Analysis**
+   - Which bullets use strong action verbs?
+   - Which bullets include quantifiable results?
+   - Which bullets are vague or could be strengthened?
+
+4. **ATS Compatibility**
+   - Are keywords appropriate for the field?
+   - Is the formatting ATS-friendly?
+   - Are there any potential parsing issues?
+
+5. **Improvement Priorities**
+   - List the top 3 areas needing immediate improvement
+   - Rank issues by impact on the CV's effectiveness
+
+Provide your analysis in a structured format that can be used for the next improvement stage.

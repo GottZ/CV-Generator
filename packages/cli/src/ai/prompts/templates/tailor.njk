@@ -1,0 +1,101 @@
+You are an expert CV consultant tailoring a CV for a specific job opportunity.
+
+## Target Job Description
+
+{{ jobDescription }}
+
+---
+
+## Candidate's CV
+
+### Contact & Summary
+**Name:** {{ cv.contact.name }}
+{% if cv.contact.title %}**Title:** {{ cv.contact.title }}{% endif %}
+
+{% if cv.summary and cv.summary[locale] %}
+**Current Summary:**
+{{ cv.summary[locale] }}
+{% endif %}
+
+### Work Experience
+{% if cv.experience and cv.experience[locale] %}
+{% for job in cv.experience[locale] %}
+**{{ job.role }}** at {{ job.company }}
+{{ job.startDate }}{% if job.endDate %} - {{ job.endDate }}{% else %} - Present{% endif %}
+{% if job.bullets %}
+{% for bullet in job.bullets %}
+- {{ bullet }}
+{% endfor %}
+{% endif %}
+{% if job.techStack %}Tech: {{ job.techStack | join(', ') }}{% endif %}
+
+{% endfor %}
+{% endif %}
+
+### Skills
+{% if cv.skills and cv.skills[locale] %}
+{% for category in cv.skills[locale] %}
+**{{ category.category }}**: {{ category.skills | join(', ') }}
+{% endfor %}
+{% endif %}
+
+### Projects
+{% if cv.projects and cv.projects[locale] %}
+{% for project in cv.projects[locale] %}
+- **{{ project.name }}**: {{ project.description | truncate(100) }}
+{% endfor %}
+{% endif %}
+
+{% if previousAnalysis %}
+### Previous Analysis Notes
+{{ previousAnalysis }}
+{% endif %}
+
+---
+
+## Your Task
+
+Analyze the job description and tailor the CV content to match:
+
+### 1. Keyword Analysis
+
+Extract from the job description:
+- **Required Skills**: List all explicitly required technical skills
+- **Preferred Skills**: List nice-to-have skills
+- **Soft Skills**: Communication, leadership, etc.
+- **Industry Keywords**: Domain-specific terminology
+
+Compare with CV and identify:
+- **Matched Keywords**: Skills the candidate has that match the job
+- **Gap Keywords**: Required skills not evident in the CV
+- **Hidden Matches**: Skills the candidate has but didn't highlight appropriately
+
+### 2. Experience Tailoring
+
+For each relevant work experience:
+- Which bullets should be emphasized for this role?
+- What rewording would better match the job description?
+- Which experiences are most relevant and should be moved up?
+
+### 3. Summary Tailoring
+
+Suggest a tailored professional summary that:
+- Addresses the specific role title
+- Incorporates key requirements from the job description
+- Highlights the most relevant experience
+
+### 4. Skills Reorganization
+
+Suggest how to reorder or highlight skills to match:
+- Which skill categories are most relevant?
+- Should any skills be added (that the candidate likely has)?
+- Should any skills be de-emphasized?
+
+### Output Format
+
+Provide:
+1. **Keyword Match Score**: X/10 with explanation
+2. **Top 5 Tailoring Recommendations**: Specific, actionable changes
+3. **Tailored Summary**: Rewritten for this specific job
+4. **Bullet Rewrites**: For the 3 most impactful changes
+5. **Skills Priority**: Reordered list with rationale

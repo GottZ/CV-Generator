@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-25
-**Session:** v1.2 ROADMAP CREATED
+**Session:** v1.2 PHASE 14 IN PROGRESS
 
 ## Project Reference
 
@@ -14,21 +14,21 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 14 - AI Foundation (not started)
-**Plan:** Not started
-**Status:** Roadmap complete, ready for phase planning
+**Phase:** 14 - AI Foundation (in progress)
+**Plan:** 02 of 3 complete
+**Status:** In progress
 
 ```
-[                    ] 0% (0/47 requirements)
+[#                   ] 4% (2/47 requirements)
 ```
 
-**Last activity:** 2026-01-25 - Roadmap created with 7 phases (14-20)
+**Last activity:** 2026-01-25 - Completed 14-02 (Prompt Template System)
 
 ## v1.2 Milestone Overview
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 14 | AI Foundation | 2 | Pending |
+| 14 | AI Foundation | 2 | In Progress (1/2) |
 | 15 | Multi-Stage Workflow | 6 | Pending |
 | 16 | AI Content Generation | 5 | Pending |
 | 17 | AI User Control | 4 | Pending |
@@ -78,9 +78,14 @@ v1.2 architecture decisions (from research):
 - Zod for structured LLM outputs
 - Extend existing Nunjucks for prompt templates
 
+v1.2 Phase 14 decisions:
+- Use Nunjucks for prompt templates (same as CV templates)
+- Certifications not localized (access cv.certifications directly)
+- Add nunjucks dependency to cli package for prompt rendering
+
 ### Open TODOs
 
-None - ready for phase planning.
+- Complete Phase 14 Plan 03 (if exists)
 
 ### Blockers
 
@@ -90,8 +95,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Plan Phase 14 (AI Foundation)
-**Resume command:** `/gsd:plan-phase 14`
+**Current step:** Execute Phase 14 Plan 03 (if exists) or proceed to Phase 15
+**Resume command:** `/gsd:execute-plan 14-03` or `/gsd:plan-phase 15`
 
 ### Files to Reference
 
@@ -99,8 +104,9 @@ None.
 - `/workspace/.planning/ROADMAP.md` - v1.2 phases and success criteria
 - `/workspace/.planning/REQUIREMENTS.md` - 47 v1.2 requirements with traceability
 - `/workspace/.planning/research/SUMMARY.md` - Stack recommendations and pitfalls
+- `/workspace/.planning/phases/14-ai-foundation/14-02-SUMMARY.md` - Prompt system summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (v1.2 roadmap created)*
+*Last updated: 2026-01-25 (completed 14-02 prompt template system)*

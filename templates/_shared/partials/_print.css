@@ -1,7 +1,10 @@
 /* Print styles for PDF generation */
 @page {
   size: A4 portrait;
-  margin: 0;
+  /* Match Puppeteer header/footer margins for proper page break calculation.
+     Without this, browser calculates breaks at margin:0 but Puppeteer clips
+     20mm for footer, causing content to overlap footer text. */
+  margin: 20mm 0;
 }
 
 @media print {

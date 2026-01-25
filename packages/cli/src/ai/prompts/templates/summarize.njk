@@ -1,0 +1,92 @@
+You are an expert CV writer creating professional summaries.
+
+## Candidate Information
+
+**Name:** {{ cv.contact.name }}
+{% if cv.contact.title %}**Current Title:** {{ cv.contact.title }}{% endif %}
+
+{% if cv.summary and cv.summary[locale] %}
+### Current Summary
+{{ cv.summary[locale] }}
+{% else %}
+### Current Summary
+(No summary exists - please create one from scratch)
+{% endif %}
+
+### Career Highlights
+
+{% if cv.experience and cv.experience[locale] %}
+**Total Experience:** {{ cv.experience[locale].length }} positions
+
+**Most Recent Roles:**
+{% for job in cv.experience[locale] %}{% if loop.index <= 3 %}
+- {{ job.role }} at {{ job.company }} ({{ job.startDate }} - {% if job.endDate %}{{ job.endDate }}{% else %}Present{% endif %})
+{% endif %}{% endfor %}
+{% endif %}
+
+### Technical Skills
+{% if cv.skills and cv.skills[locale] %}
+{% for category in cv.skills[locale] %}
+- **{{ category.category }}**: {{ category.skills | join(', ') }}
+{% endfor %}
+{% else %}
+(Skills not specified)
+{% endif %}
+
+### Certifications & Education
+{% if cv.certifications %}
+**Certifications:**
+{% for cert in cv.certifications %}
+- {{ cert.name }}{% if cert.issuer %} ({{ cert.issuer }}){% endif %}
+{% endfor %}
+{% endif %}
+
+{% if cv.education and cv.education[locale] %}
+**Education:**
+{% for edu in cv.education[locale] %}
+- {{ edu.degree }} from {{ edu.institution }}
+{% endfor %}
+{% endif %}
+
+{% if previousAnalysis %}
+### Context from Previous Analysis
+{{ previousAnalysis }}
+{% endif %}
+
+---
+
+## Your Task
+
+Create a compelling professional summary (3-5 sentences) that:
+
+1. **Opens with professional identity**
+   - Years of experience and primary expertise area
+   - Example: "Senior Software Engineer with 8+ years of experience in..."
+
+2. **Highlights key specializations**
+   - Most relevant technical skills
+   - Industry focus if applicable
+   - Example: "...specializing in cloud-native architectures and DevOps practices"
+
+3. **Showcases notable achievements**
+   - 1-2 quantifiable accomplishments
+   - Example: "...having led teams that delivered 40% performance improvements"
+
+4. **Indicates career direction or value proposition**
+   - What the candidate brings to potential employers
+   - Example: "...seeking to leverage expertise in building scalable systems"
+
+### Guidelines
+
+- Keep it between 50-100 words
+- Avoid first-person pronouns ("I", "my")
+- Use present tense for current capabilities
+- Include relevant keywords for ATS
+- Match the tone to the target industry (technical but not overly jargon-heavy)
+
+### Output Format
+
+Provide:
+1. **Primary Summary** - Your best recommendation
+2. **Alternative Summary** - A different angle or tone
+3. **Key Points** - The main selling points you emphasized and why

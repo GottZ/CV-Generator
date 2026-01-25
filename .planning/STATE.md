@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 14 - AI Foundation (in progress)
-**Plan:** 02 of 3 complete
+**Plan:** 01 of 3 complete
 **Status:** In progress
 
 ```
-[#                   ] 4% (2/47 requirements)
+[##                  ] 4% (2/47 requirements)
 ```
 
-**Last activity:** 2026-01-25 - Completed 14-02 (Prompt Template System)
+**Last activity:** 2026-01-25 - Completed 14-01 (AI Infrastructure Foundation)
 
 ## v1.2 Milestone Overview
 
@@ -79,12 +79,13 @@ v1.2 architecture decisions (from research):
 - Extend existing Nunjucks for prompt templates
 
 v1.2 Phase 14 decisions:
-- Use Nunjucks for prompt templates (same as CV templates)
-- Certifications not localized (access cv.certifications directly)
+- Use LanguageModel type from AI SDK 6.x (renamed from LanguageModelV1)
 - Add nunjucks dependency to cli package for prompt rendering
+- State persistence in project-level .cvgen-state.json
 
 ### Open TODOs
 
+- Complete Phase 14 Plan 02 (Prompt Template System)
 - Complete Phase 14 Plan 03 (if exists)
 
 ### Blockers
@@ -95,8 +96,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Execute Phase 14 Plan 03 (if exists) or proceed to Phase 15
-**Resume command:** `/gsd:execute-plan 14-03` or `/gsd:plan-phase 15`
+**Current step:** Execute Phase 14 Plan 02 (Prompt Templates)
+**Resume command:** `/gsd:execute-plan 14-02`
 
 ### Files to Reference
 
@@ -104,9 +105,9 @@ None.
 - `/workspace/.planning/ROADMAP.md` - v1.2 phases and success criteria
 - `/workspace/.planning/REQUIREMENTS.md` - 47 v1.2 requirements with traceability
 - `/workspace/.planning/research/SUMMARY.md` - Stack recommendations and pitfalls
-- `/workspace/.planning/phases/14-ai-foundation/14-02-SUMMARY.md` - Prompt system summary
+- `/workspace/.planning/phases/14-ai-foundation/14-01-SUMMARY.md` - AI infrastructure summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (completed 14-02 prompt template system)*
+*Last updated: 2026-01-25 (completed 14-01 AI infrastructure foundation)*

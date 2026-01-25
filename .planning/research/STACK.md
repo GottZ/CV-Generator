@@ -720,3 +720,484 @@ bun add -D unpdf
 - [CSS-Tricks page-break](https://css-tricks.com/almanac/properties/p/page-break/) - CSS property reference
 - [PrintCSS Widows and Orphans](https://printcss.net/articles/widows-and-orphans) - Typography best practices
 - [Puppeteer page break issues](https://github.com/puppeteer/puppeteer/issues/6366) - Known limitations
+
+---
+
+## Addendum: v1.2 LLM Integration, Interactive Wizards, and Template Generation
+
+**Added:** 2026-01-25
+**Context:** Milestone v1.2 - Adding AI-assisted CV writing, interactive CLI wizards, and template scaffolding
+
+### Executive Summary for v1.2
+
+v1.2 adds AI-assisted CV writing, interactive wizards, and template scaffolding to the existing CLI. The recommended approach is:
+
+1. **LLM Integration:** Use **Vercel AI SDK** (`ai` package) as a unified abstraction layer over OpenAI, Anthropic, and Ollama. This provides consistent APIs, streaming support, and future-proofing without vendor lock-in.
+
+2. **Interactive Prompts:** Use **@inquirer/prompts** for interactive CLI wizards. It's the modern, modular rewrite of Inquirer.js with Bun compatibility fixed since v1.0.36.
+
+3. **No New Template Libraries:** The existing Nunjucks engine handles template generation - no changes needed.
+
+4. **Prompt Export Fallback:** Simple Markdown/JSON export using existing fs primitives - no new dependencies.
+
+The stack additions are deliberately minimal: 6 runtime packages (ai, 3 provider packages, @inquirer/prompts, zod) plus Zod which is already used indirectly.
+
+---
+
+### 1. LLM Integration Stack
+
+#### Recommended: Vercel AI SDK as Unified Abstraction
+
+**Package:** `ai` (Vercel AI SDK) + provider packages
+**Version:** `^6.0.49` (AI SDK 6, released October 2025)
+
+**Why AI SDK over direct API calls:**
+
+| Consideration | Direct APIs | AI SDK |
+|---------------|-------------|--------|
+| Code duplication | 3 separate implementations | Single interface |
+| Streaming | Manual SSE handling per provider | Unified streaming API |
+| Error handling | Provider-specific error types | Normalized errors |
+| Provider switching | Requires refactoring | Change one import |
+| Future models | Each requires new implementation | Add provider package |
+| Maintenance | Track 3 API changes | SDK handles abstraction |
+
+**Production experience validates this approach:** "After 6 months running both approaches in production, the recommendation is to start with the SDK. The time you 'save' with direct HTTP calls gets consumed 10x over in error handling, context management, and maintenance." ([DEV Community](https://dev.to/dpelleri/openai-sdk-vs-direct-api-calls-what-6-months-of-building-ai-agents-taught-me-15bd))
+
+#### Provider Packages
+
+| Provider | Package | Version | Purpose |
+|----------|---------|---------|---------|
+| OpenAI | `@ai-sdk/openai` | `^3.0.18` | GPT-4, GPT-5.1 access |
+| Anthropic | `@ai-sdk/anthropic` | `^3.0.23` | Claude Opus 4.5, Sonnet, Haiku |
+| Ollama | `ai-sdk-ollama` | `^3.3.0` | Local models (llama3, mistral, etc.) |
+
+**Important:** `ai-sdk-ollama` v3+ requires AI SDK v6. For AI SDK v5, use `ai-sdk-ollama@^2.2.0`.
+
+#### Structured Outputs with Zod
+
+**Package:** `zod`
+**Version:** `^4.3.6` (already indirectly used, will add as direct dependency)
+
+The AI SDK integrates with Zod for type-safe structured outputs:
+
+```typescript
+import { generateObject } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { z } from 'zod';
+
+const BulletPointsSchema = z.object({
+  bullets: z.array(z.string()).min(3).max(5),
+  improved: z.boolean(),
+});
+
+const result = await generateObject({
+  model: openai('gpt-4o'),
+  schema: BulletPointsSchema,
+  prompt: 'Improve these bullet points for a software engineer CV...',
+});
+// result.object is fully typed as { bullets: string[], improved: boolean }
+```
+
+This gives us:
+- Guaranteed schema-compliant responses
+- TypeScript type inference from schema
+- Validation at runtime
+- Works identically across OpenAI, Anthropic, Ollama
+
+#### Why NOT Direct SDK Calls
+
+**Rejected:** Using `openai`, `@anthropic-ai/sdk`, `ollama` packages directly.
+
+**Reasons:**
+1. **Triple implementation burden** - Each provider has different APIs, streaming patterns, error handling
+2. **No structured output parity** - OpenAI has `zodResponseFormat`, Anthropic has different patterns, Ollama varies by model
+3. **Maintenance nightmare** - API changes ripple through codebase
+4. **Bun compatibility varies** - AI SDK abstracts runtime differences
+
+**Exception consideration:** If a feature is OpenAI-only (like Realtime API), use `openai` package directly for that specific feature. But for text generation, use AI SDK.
+
+---
+
+### 2. CLI Wizard/Prompt Library
+
+#### Recommended: @inquirer/prompts
+
+**Package:** `@inquirer/prompts`
+**Version:** `^8.2.0`
+
+**Why @inquirer/prompts:**
+
+| Library | Bun Compat | Modularity | TypeScript | Active |
+|---------|------------|------------|------------|--------|
+| @inquirer/prompts | Yes (fixed v1.0.36) | Individual imports | Native | Yes |
+| prompts | Yes | Single package | @types | Minimal |
+| bun-promptx | Native Bun | FFI-based | TypeScript | Limited |
+| interactive-commander | Yes | Commander plugin | TypeScript | Yes |
+
+**@inquirer/prompts advantages:**
+1. **Modular imports** - Only import what you use: `import { input, select, confirm } from '@inquirer/prompts'`
+2. **Bun compatibility** - Fixed in Bun v1.0.36 (March 2024), stable since
+3. **TypeScript-first** - Built with TypeScript, excellent type inference
+4. **Active development** - Recent rewrite, frequent updates, 8.2.0 published recently
+5. **Industry standard** - Used by create-react-app, Angular CLI, Yeoman
+
+**Bun compatibility note:** There was a known issue with `@inquirer/prompts` in postinstall hooks, but normal runtime usage works correctly. Test during development.
+
+#### Integration with Commander.js
+
+The existing CLI uses Commander.js v14. Integration pattern:
+
+```typescript
+import { Command } from 'commander';
+import { input, select, confirm } from '@inquirer/prompts';
+
+// Option 1: Wizard as standalone command
+program
+  .command('wizard')
+  .description('Interactive CV creation wizard')
+  .action(async () => {
+    const name = await input({ message: 'Your full name:' });
+    const template = await select({
+      message: 'Choose template:',
+      choices: [
+        { value: 'modern', name: 'Modern - Clean, contemporary design' },
+        { value: 'minimal', name: 'Minimal - Simple, focused layout' },
+        { value: 'classic', name: 'Classic - Traditional, formal style' },
+      ],
+    });
+    // Continue wizard flow...
+  });
+
+// Option 2: Interactive fallback for missing options
+program
+  .command('ai <action>')
+  .description('AI-assisted CV operations')
+  .option('--provider <provider>', 'LLM provider (openai, anthropic, ollama)')
+  .action(async (action, options) => {
+    let provider = options.provider;
+    if (!provider) {
+      provider = await select({
+        message: 'Select LLM provider:',
+        choices: [
+          { value: 'openai', name: 'OpenAI (GPT-4)' },
+          { value: 'anthropic', name: 'Anthropic (Claude)' },
+          { value: 'ollama', name: 'Ollama (Local)' },
+        ],
+      });
+    }
+    // Proceed with action...
+  });
+```
+
+#### Why NOT interactive-commander
+
+**Rejected:** `interactive-commander` v0.6.0
+
+**Reasons:**
+1. **Limited adoption** - 6,222 weekly downloads vs millions for @inquirer/prompts
+2. **Subcommand limitation** - "Interactive options on main command won't be prompted for in interactive mode if no subcommand is invoked"
+3. **Less flexible** - Designed for missing options, not full wizard flows
+4. **Dependency on Inquirer anyway** - Uses Inquirer under the hood
+
+#### Why NOT bun-promptx
+
+**Rejected:** `bun-promptx`
+
+**Reasons:**
+1. **FFI-based** - Uses bun:ffi with bubbles (Go library), adds complexity
+2. **Limited ecosystem** - Bun-only, can't use in Node.js if needed
+3. **Less mature** - Fewer features than Inquirer ecosystem
+4. **Overkill** - We don't need native performance for prompts
+
+#### Why NOT prompts
+
+**Considered but not recommended:** `prompts` v2.4.2
+
+**Reasons:**
+1. **Minimal maintenance** - Last meaningful update years ago
+2. **No native TypeScript** - Requires @types/prompts
+3. **Less feature-rich** - No autocomplete, filepath, etc.
+4. **Would work** - But @inquirer/prompts is better maintained
+
+---
+
+### 3. Template Generation Tools
+
+#### No New Dependencies Needed
+
+The existing template scaffolding uses:
+- `fs/promises` for file operations
+- `sharp` for placeholder image generation
+- Existing markdown template strings in `/packages/cli/src/lib/scaffolder.ts`
+
+For v1.2 template generation features:
+- **AI-generated CV content** goes into existing markdown format
+- **Template selection** uses @inquirer/prompts (added above)
+- **File writing** uses existing scaffolder patterns
+
+#### Extending Existing Scaffolder
+
+```typescript
+// Existing: createExampleMarkdown() returns template string
+// v1.2: Add createAIPopulatedMarkdown(cvData) that takes AI-generated content
+
+export async function createAIPopulatedMarkdown(
+  aiContent: AIGeneratedCVData
+): Promise<string> {
+  // Use same template structure, but with actual content
+  return `---
+name: ${aiContent.name}
+email: ${aiContent.email}
+...
+---
+
+## Summary \`en\`
+${aiContent.summary}
+
+## Experience \`en\`
+${aiContent.experiences.map(exp => formatExperience(exp)).join('\n\n')}
+...
+`;
+}
+```
+
+---
+
+### 4. Prompt Export Fallback
+
+#### No New Dependencies Needed
+
+For users without API keys, export prompts as Markdown/JSON files they can paste into ChatGPT/Claude web interface.
+
+**Implementation using existing fs primitives:**
+
+```typescript
+export async function exportPrompt(
+  promptType: 'improve-bullets' | 'generate-summary' | 'tailor-cv',
+  context: PromptContext
+): Promise<string> {
+  const prompt = buildPrompt(promptType, context);
+  const outputPath = `./prompts/${promptType}-${Date.now()}.md`;
+
+  await writeFile(outputPath, formatAsMarkdown(prompt), 'utf-8');
+
+  return outputPath;
+}
+
+function formatAsMarkdown(prompt: string): string {
+  return `# CV Generation Prompt
+
+Copy and paste this prompt into your preferred AI assistant (ChatGPT, Claude, etc.)
+
+---
+
+${prompt}
+
+---
+
+After receiving the response, save it and run:
+\`cvgen import-ai-response <response-file>\`
+`;
+}
+```
+
+---
+
+### 5. Recommended Stack Additions for v1.2
+
+#### Runtime Dependencies
+
+| Package | Version | Purpose | Size Impact |
+|---------|---------|---------|-------------|
+| `ai` | `^6.0.49` | Vercel AI SDK core | ~150KB |
+| `@ai-sdk/openai` | `^3.0.18` | OpenAI provider | ~50KB |
+| `@ai-sdk/anthropic` | `^3.0.23` | Anthropic provider | ~50KB |
+| `ai-sdk-ollama` | `^3.3.0` | Ollama provider | ~30KB |
+| `@inquirer/prompts` | `^8.2.0` | Interactive CLI prompts | ~100KB |
+| `zod` | `^4.3.6` | Schema validation (already indirect dep) | ~50KB |
+
+**Total addition:** ~430KB (reasonable for CLI tool)
+
+#### Installation Command
+
+```bash
+bun add ai @ai-sdk/openai @ai-sdk/anthropic ai-sdk-ollama @inquirer/prompts zod
+```
+
+#### Optional: Development Dependencies
+
+None new required. Existing TypeScript, Biome, and test setup sufficient.
+
+---
+
+### 6. What NOT to Add for v1.2 (and Why)
+
+| Library | Why Rejected |
+|---------|--------------|
+| `openai` | Direct SDK - use AI SDK abstraction instead |
+| `@anthropic-ai/sdk` | Direct SDK - use AI SDK abstraction instead |
+| `ollama` | Direct SDK - use AI SDK abstraction instead |
+| `langchain` | Over-abstraction, rigid chaining, maintenance burden |
+| `prompts` | Less maintained than @inquirer/prompts |
+| `bun-promptx` | FFI complexity, Bun-only, less mature |
+| `interactive-commander` | Limited adoption, subcommand issues |
+| `inquirer` (legacy) | Use modular @inquirer/prompts instead |
+| `oclif` | Overkill - Commander.js already handles CLI |
+| `vorpal` | Abandoned, not maintained |
+
+#### LangChain Rejection Rationale
+
+Specifically rejecting LangChain despite its popularity:
+
+1. **Over-abstraction** - "LangChain's abstractions began to limit ability to customize workflows. One specific challenge was handling custom data extraction tasks that required tight integration between LLM outputs and custom code." ([Medium](https://johnchildseddy.medium.com/typescript-llms-lessons-learned-from-9-months-in-production-4910485e3272))
+
+2. **Maintenance burden** - Frequent breaking changes, complex dependency tree
+
+3. **Not needed** - Our use case is straightforward text generation, not RAG or complex chains
+
+4. **AI SDK is sufficient** - Provides the abstraction we need without the complexity
+
+---
+
+### 7. Integration Points with Existing Codebase
+
+#### File Structure Addition
+
+```
+packages/cli/src/
+  commands/
+    ai.ts          # NEW: cv-gen ai <action> command
+    wizard.ts      # NEW: cv-gen wizard command
+  lib/
+    ai/
+      index.ts         # NEW: AI module orchestration
+      providers.ts     # NEW: Provider configuration
+      prompts/
+        improve.ts     # NEW: Bullet point improvement prompts
+        summarize.ts   # NEW: Summary generation prompts
+        tailor.ts      # NEW: Job-tailored CV prompts
+      export.ts        # NEW: Prompt export for fallback
+    wizard/
+      index.ts         # NEW: Wizard flow orchestration
+      steps/
+        personal.ts    # NEW: Personal info step
+        experience.ts  # NEW: Experience step
+        skills.ts      # NEW: Skills step
+```
+
+#### Commander.js Integration
+
+Extend existing `/packages/cli/src/index.ts`:
+
+```typescript
+// Existing commands
+program.command('build')...
+program.command('init')...
+program.command('validate')...
+program.command('list-templates')...
+
+// NEW v1.2 commands
+import { aiAction } from './commands/ai.ts';
+import { wizardAction } from './commands/wizard.ts';
+
+program
+  .command('ai <action>')
+  .description('AI-assisted CV operations')
+  .argument('<action>', 'Action: improve, summarize, tailor, export-prompt')
+  .option('--provider <provider>', 'LLM provider (openai, anthropic, ollama)')
+  .option('--model <model>', 'Specific model to use')
+  .option('--export-only', 'Export prompt without calling API')
+  .action(aiAction);
+
+program
+  .command('wizard')
+  .description('Interactive CV creation wizard')
+  .option('--use-ai', 'Use AI to help write content')
+  .option('--provider <provider>', 'LLM provider if using AI')
+  .action(wizardAction);
+```
+
+#### Configuration Management
+
+Add to existing config patterns:
+
+```typescript
+// ~/.cvgen/config.json or .cvgenrc
+interface CVGenConfig {
+  // Existing
+  defaultTemplate?: string;
+  peopleDir?: string;
+
+  // NEW v1.2
+  ai?: {
+    defaultProvider?: 'openai' | 'anthropic' | 'ollama';
+    openai?: {
+      apiKey?: string;  // Can also use OPENAI_API_KEY env
+      model?: string;   // Default: gpt-4o
+    };
+    anthropic?: {
+      apiKey?: string;  // Can also use ANTHROPIC_API_KEY env
+      model?: string;   // Default: claude-sonnet-4-5
+    };
+    ollama?: {
+      host?: string;    // Default: http://127.0.0.1:11434
+      model?: string;   // Default: llama3.1
+    };
+  };
+}
+```
+
+#### Environment Variables
+
+Support standard env vars (AI SDK reads these automatically):
+
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+# Ollama doesn't need API key for local
+```
+
+---
+
+### 8. Confidence Assessment for v1.2
+
+| Component | Confidence | Verification |
+|-----------|------------|--------------|
+| AI SDK version/API | HIGH | npm view, official docs |
+| @inquirer/prompts Bun compat | MEDIUM | Known fixed in v1.0.36, but test recommended |
+| Provider packages | HIGH | npm view, official docs |
+| Zod integration | HIGH | Official OpenAI/AI SDK documentation |
+| No new template libs needed | HIGH | Reviewed existing scaffolder.ts |
+| Commander.js integration | HIGH | Already using v14, pattern established |
+
+#### Recommended Verification Steps
+
+1. **Before implementation:** Create spike/POC testing @inquirer/prompts with Bun runtime
+2. **During implementation:** Test AI SDK streaming with Bun
+3. **Integration testing:** Verify Ollama provider works with local instance
+
+---
+
+### v1.2 Sources
+
+#### AI SDK and LLM Integration
+- [Vercel AI SDK 6 Announcement](https://vercel.com/blog/ai-sdk-6)
+- [AI SDK GitHub](https://github.com/vercel/ai)
+- [ai-sdk-ollama Provider](https://github.com/jagreehal/ai-sdk-ollama)
+- [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs)
+- [Zod for TypeScript AI Development](https://workos.com/blog/zod-for-typescript)
+
+#### CLI Prompts
+- [@inquirer/prompts npm](https://www.npmjs.com/package/@inquirer/prompts)
+- [Bun Inquirer Compatibility Fix](https://bun.com/blog/bun-v1.0.36)
+- [interactive-commander npm](https://www.npmjs.com/package/interactive-commander)
+
+#### LLM Integration Best Practices
+- [OpenAI SDK vs Direct API Calls](https://dev.to/dpelleri/openai-sdk-vs-direct-api-calls-what-6-months-of-building-ai-agents-taught-me-15bd)
+- [TypeScript and LLMs Production Lessons](https://johnchildseddy.medium.com/typescript-llms-lessons-learned-from-9-months-in-production-4910485e3272)
+- [Unified AI Interfaces with Vercel SDK](https://blog.logrocket.com/unified-ai-interfaces-vercel-sdk/)
+
+#### Bun Compatibility
+- [Bun Runtime on Vercel](https://vercel.com/blog/bun-runtime-on-vercel-functions)
+- [Bun v1.3.5 PTY Support](https://bun.com/blog/bun-v1.3.5)

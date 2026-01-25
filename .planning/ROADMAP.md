@@ -166,6 +166,13 @@ Plans:
 - Render at higher DPI, compare at lower resolution to reduce noise
 - Mock dates and dynamic content to avoid flaky tests
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 13-01-PLAN.md - Text Extraction Helper and Tests (unpdf, ATS verification - TEST-02)
+- [ ] 13-02-PLAN.md - Structural Tests (page count, metadata, file size - TEST-03, TEST-04, TEST-05)
+- [ ] 13-03-PLAN.md - Artifact Management and Puppeteer Docs (TEST-01 enhancement, TEST-08)
+
 ---
 
 ## Progress

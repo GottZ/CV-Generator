@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-25
-**Session:** Phase 13 Plan 02 Complete
+**Session:** Phase 13 Plan 01 Complete
 
 ## Project Reference
 
@@ -16,7 +16,7 @@ See: .planning/PROJECT.md (updated 2026-01-23)
 **Phase:** 13 - Full Test Suite (IN PROGRESS)
 **Plan:** 2 of 3 complete
 **Status:** In progress
-**Last activity:** 2026-01-25 - Completed 13-02-PLAN.md (Structural Tests)
+**Last activity:** 2026-01-25 - Completed 13-01-PLAN.md (ATS Text Extraction Tests)
 
 **Progress:**
 ```
@@ -38,10 +38,10 @@ v1.1 Improved PDF Creation [████████░-] 85%
 │   ├── 12-01: Print Parity Test Infrastructure [x]
 │   ├── 12-02: Run Parity Tests [x] 6/6 PASS
 │   └── 12-03: PRINTING.md Documentation [x]
-└── Phase 13: Full Test Suite                [██--] TEST-03, TEST-04, TEST-05 VERIFIED
-    ├── 13-01: Test Utilities Enhancement [ ]
+└── Phase 13: Full Test Suite                [███-] TEST-02, TEST-03, TEST-04, TEST-05 VERIFIED
+    ├── 13-01: ATS Text Extraction Tests [x] 6/6 PASS
     ├── 13-02: Structural Tests [x] 11/11 PASS
-    └── 13-03: Text Extraction Tests [ ]
+    └── 13-03: Visual Regression Tests [ ]
 ```
 
 ## Performance Metrics
@@ -52,7 +52,7 @@ v1.1 Improved PDF Creation [████████░-] 85%
 | Requirements (v1.1) | 20 |
 | Plans Created | 16 |
 | Plans Completed | 14 |
-| Requirements Delivered | 17/20 |
+| Requirements Delivered | 18/20 |
 | Blockers Encountered | 5 |
 | Blockers Resolved | 5 |
 
@@ -101,6 +101,10 @@ Phase 12-03 decisions:
 - Chrome/Chromium browsers recommended for printing (matches Puppeteer)
 - Three known differences documented: footer, ATS CSS, two-pass optimization
 
+Phase 13-01 decisions:
+- unpdf@1.4.0 for PDF text extraction (serverless-optimized, Bun-compatible)
+- Test ligature words with fi sequences (Proficient, notification) to verify font-variant-ligatures:none
+
 Phase 13-02 decisions:
 - Centralized structural tests in single spec file for maintainability
 - Pre-fetch all PDF metadata in beforeAll hook for performance
@@ -126,7 +130,7 @@ None.
 
 ### For Next Session
 
-**Current step:** Ready for 13-03 (Text Extraction Tests)
+**Current step:** Ready for 13-03 (Visual Regression Tests)
 **Resume file:** None
 
 ### Files to Reference
@@ -141,4 +145,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (Phase 13 Plan 02 Complete)*
+*Last updated: 2026-01-25 (Phase 13 Plan 01 Complete)*

@@ -36,6 +36,7 @@
         "fuse.js": "^7.0.0",
         "lodash.debounce": "^4.0.8",
         "mime-types": "^2.1.0",
+        "nunjucks": "^3.2.4",
         "ollama-ai-provider-v2": "^3.0.2",
         "ora": "^9.1.0",
         "pdf-lib": "^1.17.1",
@@ -47,6 +48,7 @@
         "@types/chokidar": "^2.1.7",
         "@types/lodash.debounce": "^4.0.9",
         "@types/mime-types": "^2.1.4",
+        "@types/nunjucks": "^3.2.6",
       },
     },
     "packages/core": {

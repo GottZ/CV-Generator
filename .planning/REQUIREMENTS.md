@@ -123,17 +123,55 @@
 
 ## Traceability
 
-| Requirement | Phase | Plan |
-|-------------|-------|------|
-| AI-01 to AI-05 | TBD | — |
-| AI-06 to AI-14 | TBD | — |
-| AI-15 to AI-18 | TBD | — |
-| WIZ-01 to WIZ-06 | TBD | — |
-| WIZ-07 to WIZ-14 | TBD | — |
-| WIZ-15 to WIZ-18 | TBD | — |
-| WIZ-19 to WIZ-20 | TBD | — |
-| TPL-01 to TPL-05 | TBD | — |
-| TPL-06 to TPL-09 | TBD | — |
+| Requirement | Phase | Plan | Status |
+|-------------|-------|------|--------|
+| AI-01 | Phase 14 | - | Pending |
+| AI-02 | Phase 14 | - | Pending |
+| AI-03 | Phase 15 | - | Pending |
+| AI-04 | Phase 15 | - | Pending |
+| AI-05 | Phase 15 | - | Pending |
+| AI-06 | Phase 16 | - | Pending |
+| AI-07 | Phase 16 | - | Pending |
+| AI-08 | Phase 16 | - | Pending |
+| AI-09 | Phase 16 | - | Pending |
+| AI-10 | Phase 16 | - | Pending |
+| AI-11 | Phase 17 | - | Pending |
+| AI-12 | Phase 17 | - | Pending |
+| AI-13 | Phase 17 | - | Pending |
+| AI-14 | Phase 17 | - | Pending |
+| AI-15 | Phase 15 | - | Pending |
+| AI-16 | Phase 15 | - | Pending |
+| AI-17 | Phase 15 | - | Pending |
+| AI-18 | Phase 15 | - | Pending |
+| WIZ-01 | Phase 18 | - | Pending |
+| WIZ-02 | Phase 18 | - | Pending |
+| WIZ-03 | Phase 18 | - | Pending |
+| WIZ-04 | Phase 18 | - | Pending |
+| WIZ-05 | Phase 18 | - | Pending |
+| WIZ-06 | Phase 18 | - | Pending |
+| WIZ-07 | Phase 18 | - | Pending |
+| WIZ-08 | Phase 18 | - | Pending |
+| WIZ-09 | Phase 18 | - | Pending |
+| WIZ-10 | Phase 18 | - | Pending |
+| WIZ-11 | Phase 18 | - | Pending |
+| WIZ-12 | Phase 18 | - | Pending |
+| WIZ-13 | Phase 18 | - | Pending |
+| WIZ-14 | Phase 18 | - | Pending |
+| WIZ-15 | Phase 19 | - | Pending |
+| WIZ-16 | Phase 19 | - | Pending |
+| WIZ-17 | Phase 19 | - | Pending |
+| WIZ-18 | Phase 19 | - | Pending |
+| WIZ-19 | Phase 19 | - | Pending |
+| WIZ-20 | Phase 19 | - | Pending |
+| TPL-01 | Phase 20 | - | Pending |
+| TPL-02 | Phase 20 | - | Pending |
+| TPL-03 | Phase 20 | - | Pending |
+| TPL-04 | Phase 20 | - | Pending |
+| TPL-05 | Phase 20 | - | Pending |
+| TPL-06 | Phase 20 | - | Pending |
+| TPL-07 | Phase 20 | - | Pending |
+| TPL-08 | Phase 20 | - | Pending |
+| TPL-09 | Phase 20 | - | Pending |
 
 ---
 

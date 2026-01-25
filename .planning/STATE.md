@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-25
-**Session:** v1.2 MILESTONE STARTED
+**Session:** v1.2 ROADMAP CREATED
 
 ## Project Reference
 
@@ -13,9 +13,31 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 ## Current Position
 
-**Phase:** Not started (defining requirements)
-**Status:** Defining requirements
-**Last activity:** 2026-01-25 — Milestone v1.2 started
+**Milestone:** v1.2
+**Phase:** 14 - AI Foundation (not started)
+**Plan:** Not started
+**Status:** Roadmap complete, ready for phase planning
+
+```
+[                    ] 0% (0/47 requirements)
+```
+
+**Last activity:** 2026-01-25 - Roadmap created with 7 phases (14-20)
+
+## v1.2 Milestone Overview
+
+| Phase | Name | Requirements | Status |
+|-------|------|--------------|--------|
+| 14 | AI Foundation | 2 | Pending |
+| 15 | Multi-Stage Workflow | 6 | Pending |
+| 16 | AI Content Generation | 5 | Pending |
+| 17 | AI User Control | 4 | Pending |
+| 18 | Wizard Foundation | 14 | Pending |
+| 19 | Wizard Non-Interactive & Integration | 6 | Pending |
+| 20 | Template Scaffolding | 9 | Pending |
+
+**Critical path:** 14 -> 15 -> 16 -> 17
+**Parallel track:** 14 -> 18 -> 19/20
 
 ## Shipped Milestones
 
@@ -45,13 +67,20 @@ v1.1 decisions:
 
 v1.2 scope decisions:
 - AI content generation is top priority
-- New subcommands (cv-gen ai, cv-gen wizard) over flags
+- New subcommands (cvgen ai, cvgen wizard) over flags
 - Support API keys, local models, AND prompt export fallback
-- Minimal new dependencies
+- Minimal new dependencies (~430KB for AI + wizard stack)
+- Provider abstraction FIRST (critical pitfall prevention)
+
+v1.2 architecture decisions (from research):
+- Vercel AI SDK for multi-provider abstraction
+- @inquirer/prompts for interactive wizards
+- Zod for structured LLM outputs
+- Extend existing Nunjucks for prompt templates
 
 ### Open TODOs
 
-None - requirements being defined.
+None - ready for phase planning.
 
 ### Blockers
 
@@ -61,18 +90,17 @@ None.
 
 ### For Next Session
 
-**Current step:** Defining requirements for v1.2
-**Resume file:** None
+**Current step:** Plan Phase 14 (AI Foundation)
+**Resume command:** `/gsd:plan-phase 14`
 
 ### Files to Reference
 
 - `/workspace/.planning/PROJECT.md` - Core value and constraints
-- `/workspace/.planning/ROADMAP.md` - Milestone history
-- `/workspace/.planning/MILESTONES.md` - Milestone summaries
-- `/workspace/.planning/milestones/v1.1-ROADMAP.md` - v1.1 archive
-- `/workspace/.planning/milestones/v1.1-REQUIREMENTS.md` - v1.1 requirements archive
+- `/workspace/.planning/ROADMAP.md` - v1.2 phases and success criteria
+- `/workspace/.planning/REQUIREMENTS.md` - 47 v1.2 requirements with traceability
+- `/workspace/.planning/research/SUMMARY.md` - Stack recommendations and pitfalls
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (v1.2 started)*
+*Last updated: 2026-01-25 (v1.2 roadmap created)*

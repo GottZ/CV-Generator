@@ -19,11 +19,11 @@ Requirements for improved PDF pagination, HTML print parity, and automated testi
 
 ### Print CSS Parity
 
-- [ ] **PRINT-01**: HTML prints with same pagination as PDF output
+- [x] **PRINT-01**: HTML prints with same pagination as PDF output
 - [x] **PRINT-02**: Unified @media print stylesheet (single source of truth)
 - [x] **PRINT-03**: @page rules match Puppeteer PDF settings
 - [x] **PRINT-04**: Print-specific layout adjustments do not affect screen display
-- [ ] **PRINT-05**: All 3 templates (Modern, Minimal, Classic) have print parity
+- [x] **PRINT-05**: All 3 templates (Modern, Minimal, Classic) have print parity
 
 ### Automated Testing
 
@@ -75,11 +75,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAG-05 | Phase 11 | Complete |
 | PAG-06 | Phase 11 | Complete |
 | PAG-07 | Phase 11 | Complete |
-| PRINT-01 | Phase 12 | Pending |
+| PRINT-01 | Phase 12 | Complete |
 | PRINT-02 | Phase 10 | Complete |
 | PRINT-03 | Phase 10 | Complete |
 | PRINT-04 | Phase 10 | Complete |
-| PRINT-05 | Phase 12 | Pending |
+| PRINT-05 | Phase 12 | Complete |
 | TEST-01 | Phase 13 | Pending |
 | TEST-02 | Phase 13 | Pending |
 | TEST-03 | Phase 13 | Pending |
@@ -93,8 +93,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 - v1.1 requirements: 20 total
 - Mapped to phases: 20
 - Unmapped: 0
-- Complete: 12/20
+- Complete: 14/20
 
 ---
 *Requirements defined: 2026-01-23*
-*Last updated: 2026-01-25 (Phase 11 requirements complete)*
+*Last updated: 2026-01-25 (Phase 12 requirements complete)*

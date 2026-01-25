@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 import { Command } from 'commander';
+import { aiCommand } from './commands/ai.ts';
 import { buildAction } from './commands/build.ts';
 import { initAction } from './commands/init.ts';
 import { listTemplatesAction } from './commands/list-templates.ts';
@@ -106,6 +107,9 @@ Examples:
 `,
 	)
 	.action(listTemplatesAction);
+
+// AI command group
+program.addCommand(aiCommand);
 
 // Parse and run
 program.parseAsync(process.argv).catch((err) => {

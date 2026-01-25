@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-25
-**Session:** v1.2 PHASE 14 IN PROGRESS
+**Session:** v1.2 PHASE 14 COMPLETE
 
 ## Project Reference
 
@@ -14,21 +14,21 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 14 - AI Foundation (in progress)
-**Plan:** 01 of 3 complete
-**Status:** In progress
+**Phase:** 14 - AI Foundation (complete)
+**Plan:** 03 of 3 complete
+**Status:** Phase complete, ready for Phase 15
 
 ```
 [##                  ] 4% (2/47 requirements)
 ```
 
-**Last activity:** 2026-01-25 - Completed 14-01 (AI Infrastructure Foundation)
+**Last activity:** 2026-01-25 - Completed 14-03 (AI CLI Commands)
 
 ## v1.2 Milestone Overview
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 14 | AI Foundation | 2 | In Progress (1/2) |
+| 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Pending |
 | 16 | AI Content Generation | 5 | Pending |
 | 17 | AI User Control | 4 | Pending |
@@ -82,11 +82,12 @@ v1.2 Phase 14 decisions:
 - Use LanguageModel type from AI SDK 6.x (renamed from LanguageModelV1)
 - Add nunjucks dependency to cli package for prompt rendering
 - State persistence in project-level .cvgen-state.json
+- Commander subcommand groups for ai commands
+- Prompt export works without API key (AI-02 requirement)
 
 ### Open TODOs
 
-- Complete Phase 14 Plan 02 (Prompt Template System)
-- Complete Phase 14 Plan 03 (if exists)
+- Start Phase 15 (Multi-Stage Workflow)
 
 ### Blockers
 
@@ -96,8 +97,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Execute Phase 14 Plan 02 (Prompt Templates)
-**Resume command:** `/gsd:execute-plan 14-02`
+**Current step:** Start Phase 15 (Multi-Stage Workflow)
+**Resume command:** `/gsd:execute-phase 15`
 
 ### Files to Reference
 
@@ -106,8 +107,10 @@ None.
 - `/workspace/.planning/REQUIREMENTS.md` - 47 v1.2 requirements with traceability
 - `/workspace/.planning/research/SUMMARY.md` - Stack recommendations and pitfalls
 - `/workspace/.planning/phases/14-ai-foundation/14-01-SUMMARY.md` - AI infrastructure summary
+- `/workspace/.planning/phases/14-ai-foundation/14-02-SUMMARY.md` - Prompt templates summary
+- `/workspace/.planning/phases/14-ai-foundation/14-03-SUMMARY.md` - CLI commands summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (completed 14-01 AI infrastructure foundation)*
+*Last updated: 2026-01-25 (completed Phase 14 - AI Foundation)*

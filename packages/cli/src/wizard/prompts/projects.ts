@@ -4,7 +4,7 @@
  */
 
 import type { Project, ProjectLink } from '@gottz/cv-core';
-import { confirm, input, select } from '@inquirer/prompts';
+import { confirm, input, Separator, select } from '@inquirer/prompts';
 import pc from 'picocolors';
 
 import type { WizardMode } from '../types.ts';
@@ -21,6 +21,11 @@ const LINK_TYPES = [
 	{ value: 'website', name: 'Website' },
 	{ value: 'other', name: 'Other' },
 ] as const;
+
+/**
+ * Back/cancel option for select menus.
+ */
+const BACK_CHOICE = { value: 'back' as const, name: '\u2190 Back (cancel)' };
 
 /**
  * Project type options for detailed mode.
@@ -52,13 +57,18 @@ function validateUrl(value: string): true | string {
 
 /**
  * Collect a single project link.
- * @returns Promise resolving to project link
+ * @returns Promise resolving to project link, or null if user cancels
  */
-async function collectSingleProjectLink(): Promise<ProjectLink> {
+async function collectSingleProjectLink(): Promise<ProjectLink | null> {
 	const type = await select({
 		message: 'Link type:',
-		choices: LINK_TYPES,
+		choices: [BACK_CHOICE, new Separator(), ...LINK_TYPES],
 	});
+
+	// Handle back/cancel
+	if (type === 'back') {
+		return null;
+	}
 
 	const url = await input({
 		message: 'URL *:',
@@ -99,16 +109,25 @@ async function collectProjectLinks(
 		}
 	}
 
-	// Collect new links
-	let addMore = true;
-	while (addMore) {
-		const link = await collectSingleProjectLink();
-		links.push(link);
+	// Collect first link
+	const firstLink = await collectSingleProjectLink();
+	if (firstLink) {
+		links.push(firstLink);
+	}
 
-		addMore = await confirm({
+	// Loop for additional links (only if first link was added)
+	while (links.length > 0) {
+		const addMore = await confirm({
 			message: 'Add another link?',
 			default: false,
 		});
+
+		if (!addMore) break;
+
+		const link = await collectSingleProjectLink();
+		if (link) {
+			links.push(link);
+		}
 	}
 
 	return links;

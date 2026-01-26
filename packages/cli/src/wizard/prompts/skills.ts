@@ -4,7 +4,7 @@
  */
 
 import type { Skill, SkillCategory } from '@gottz/cv-core';
-import { confirm, input, select } from '@inquirer/prompts';
+import { confirm, input, Separator, select } from '@inquirer/prompts';
 import pc from 'picocolors';
 
 import type { WizardMode } from '../types.ts';
@@ -18,7 +18,13 @@ type CommonCategoryValue =
 	| 'Databases'
 	| 'Cloud'
 	| 'Tools'
-	| 'custom';
+	| 'custom'
+	| 'back';
+
+/**
+ * Back/cancel option for select menus.
+ */
+const BACK_CHOICE = { value: 'back' as const, name: '\u2190 Back (cancel)' };
 
 /**
  * Common skill categories for quick selection.
@@ -81,7 +87,9 @@ export async function collectSkills(
 
 	// Collect first category
 	const firstCategory = await collectSingleSkillCategory(mode);
-	categories.push(firstCategory);
+	if (firstCategory) {
+		categories.push(firstCategory);
+	}
 
 	// Loop for additional categories
 	addMore = await confirm({
@@ -91,7 +99,9 @@ export async function collectSkills(
 
 	while (addMore) {
 		const category = await collectSingleSkillCategory(mode);
-		categories.push(category);
+		if (category) {
+			categories.push(category);
+		}
 
 		addMore = await confirm({
 			message: 'Add another skills category?',
@@ -106,25 +116,30 @@ export async function collectSkills(
  * Collect a single skill category.
  * @param mode - Wizard mode (quick or detailed)
  * @param existing - Existing skill category for editing (optional)
- * @returns Skill category with name and skills
+ * @returns Skill category with name and skills, or null if user cancels
  */
 export async function collectSingleSkillCategory(
 	mode: WizardMode,
 	existing?: SkillCategory,
-): Promise<SkillCategory> {
+): Promise<SkillCategory | null> {
 	let categoryName: string;
 
 	if (mode === 'quick') {
-		// Quick mode: select from common categories
+		// Quick mode: select from common categories with back option
 		// Find if existing name matches a known category
 		const existingValue = COMMON_CATEGORIES.find(
 			(c) => c.value === existing?.name,
 		)?.value;
 		const selection = await select({
 			message: 'Category:',
-			choices: COMMON_CATEGORIES,
+			choices: [BACK_CHOICE, new Separator(), ...COMMON_CATEGORIES],
 			default: existingValue,
 		});
+
+		// Handle back/cancel
+		if (selection === 'back') {
+			return null;
+		}
 
 		if (selection === 'custom') {
 			categoryName = await input({
@@ -139,19 +154,33 @@ export async function collectSingleSkillCategory(
 			categoryName = selection;
 		}
 	} else {
-		// Detailed mode: allow custom input with suggestions
-		const existingName = existing?.name ?? '';
-		categoryName = await input({
-			message: 'Category name *:',
-			default: existingName,
-			validate: (value) => {
-				if (!value.trim()) return 'Category name is required';
-				return true;
-			},
+		// Detailed mode: select from common categories with back option, then allow custom
+		const existingValue = COMMON_CATEGORIES.find(
+			(c) => c.value === existing?.name,
+		)?.value;
+		const selection = await select({
+			message: 'Category:',
+			choices: [BACK_CHOICE, new Separator(), ...COMMON_CATEGORIES],
+			default: existingValue,
 		});
-		console.log(
-			pc.dim('  Common: Languages, Frameworks, Databases, Cloud, Tools'),
-		);
+
+		// Handle back/cancel
+		if (selection === 'back') {
+			return null;
+		}
+
+		if (selection === 'custom') {
+			categoryName = await input({
+				message: 'Custom category name *:',
+				default: existing?.name,
+				validate: (value) => {
+					if (!value.trim()) return 'Category name is required';
+					return true;
+				},
+			});
+		} else {
+			categoryName = selection;
+		}
 	}
 
 	// Collect skills in category

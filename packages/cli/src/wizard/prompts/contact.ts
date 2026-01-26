@@ -4,7 +4,7 @@
  */
 
 import type { Contact, Link } from '@gottz/cv-core';
-import { confirm, input, select } from '@inquirer/prompts';
+import { confirm, input, Separator, select } from '@inquirer/prompts';
 import pc from 'picocolors';
 
 import type { WizardMode } from '../types.ts';
@@ -20,6 +20,11 @@ const LINK_TYPES = [
 	{ value: 'twitter', name: 'Twitter/X' },
 	{ value: 'other', name: 'Other' },
 ] as const;
+
+/**
+ * Back/cancel option for select menus.
+ */
+const BACK_CHOICE = { value: 'back' as const, name: '\u2190 Back (cancel)' };
 
 /**
  * Basic URL validation.
@@ -67,14 +72,19 @@ function normalizeUrl(url: string): string {
 
 /**
  * Collect a single link entry.
- * @returns Promise resolving to a Link object
+ * @returns Promise resolving to a Link object, or null if user cancels
  */
-async function collectSingleLink(): Promise<Link> {
-	// Select link type
+export async function collectSingleLink(): Promise<Link | null> {
+	// Select link type with back option
 	const type = await select({
 		message: 'Link type:',
-		choices: LINK_TYPES,
+		choices: [BACK_CHOICE, new Separator(), ...LINK_TYPES],
 	});
+
+	// Handle back/cancel
+	if (type === 'back') {
+		return null;
+	}
 
 	// Collect URL with validation
 	const url = await createValidatingInput({
@@ -126,7 +136,9 @@ export async function collectLinks(existing?: Link[]): Promise<Link[]> {
 
 	// Collect first link
 	const firstLink = await collectSingleLink();
-	links.push(firstLink);
+	if (firstLink) {
+		links.push(firstLink);
+	}
 
 	// Loop for additional links
 	while (true) {
@@ -138,7 +150,9 @@ export async function collectLinks(existing?: Link[]): Promise<Link[]> {
 		if (!addAnother) break;
 
 		const link = await collectSingleLink();
-		links.push(link);
+		if (link) {
+			links.push(link);
+		}
 	}
 
 	return links;

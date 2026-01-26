@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 18 IN PROGRESS (plan 04 complete)
+**Session:** v1.2 PHASE 18 COMPLETE
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 18 - Wizard Foundation (in progress)
-**Plan:** 04 of 5 complete
-**Status:** In progress
+**Phase:** 18 - Wizard Foundation (complete)
+**Plan:** 05 of 5 complete
+**Status:** Phase complete
 
 ```
-[##################  ] 45% (21/47 requirements)
+[###################  ] 47% (22/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-04-PLAN.md (Projects and Certifications Prompts)
+**Last activity:** 2026-01-26 - Completed 18-05-PLAN.md (Summary and Output)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | In Progress (4/5 plans) |
+| 18 | Wizard Foundation | 14 | Complete (5/5 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -193,9 +193,15 @@ v1.2 Phase 18 decisions (18-04):
 - Certification date earned validation disallows "present" value
 - Logo field skipped in wizard - users can add manually to cv.md
 
+v1.2 Phase 18 decisions (18-05):
+- Unicode warning symbol for inline validation issues
+- Missing section warnings at end of summary (Skills, Experience/Education)
+- Certifications section not localized per schema
+- generateMarkdown matches scaffolder.ts format exactly
+
 ### Open TODOs
 
-- Continue Phase 18 (plan 05 pending)
+- Start Phase 19 (Wizard Non-Interactive & Integration)
 
 ### Blockers
 
@@ -205,8 +211,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 plan 04 complete
-**Resume command:** Execute 18-05-PLAN.md (Wizard Flow Orchestration)
+**Current step:** Phase 18 complete
+**Resume command:** Execute 19-01-PLAN.md (Wizard Non-Interactive Mode)
 
 ### Files to Reference
 
@@ -237,8 +243,9 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-02-SUMMARY.md` - Contact and Experience Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-03-SUMMARY.md` - Education and Skills Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-04-SUMMARY.md` - Projects and Certifications Prompts summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-05-SUMMARY.md` - Summary and Output summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-04 Projects and Certifications Prompts)*
+*Last updated: 2026-01-26 (completed 18-05 Summary and Output)*

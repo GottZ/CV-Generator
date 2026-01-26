@@ -3,6 +3,8 @@
  * Provides interactive prompts for accept/edit/skip/regenerate actions.
  */
 
+// CV content updater for applying reviewed changes
+export { applyReviewedChanges } from './cv-updater.js';
 // Editor integration for editing suggestions in $EDITOR
 export { type EditorResult, openInEditor } from './editor-integration.js';
 export type { ChangeSummary, WriteResult } from './file-writer.js';

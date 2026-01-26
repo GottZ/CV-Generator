@@ -121,12 +121,12 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Weak bullets are highlighted with specific feedback (e.g., "lacks quantification", "missing outcome")
 5. User can accept all, skip all, or review one-by-one
 
-**Plans:** 5 plans
-- [ ] 17-01-PLAN.md - Review prompt and weak bullet detector (Wave 1)
-- [ ] 17-02-PLAN.md - Editor integration and regeneration (Wave 1)
-- [ ] 17-03-PLAN.md - File writer and TTY detection (Wave 1)
-- [ ] 17-04-PLAN.md - Review session orchestrator (Wave 2)
-- [ ] 17-05-PLAN.md - Improve command integration (Wave 3)
+**Plans:** 5 plans (complete)
+- [x] 17-01-PLAN.md - Review prompt and weak bullet detector (Wave 1)
+- [x] 17-02-PLAN.md - Editor integration and regeneration (Wave 1)
+- [x] 17-03-PLAN.md - File writer and TTY detection (Wave 1)
+- [x] 17-04-PLAN.md - Review session orchestrator (Wave 2)
+- [x] 17-05-PLAN.md - Improve command integration (Wave 3)
 
 **Research flags:** None - established UI patterns
 
@@ -231,7 +231,7 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 | 14 | AI Foundation | 2 | Complete | 100% |
 | 15 | Multi-Stage Workflow | 6 | Complete | 100% |
 | 16 | AI Content Generation | 5 | Complete | 100% |
-| 17 | AI User Control | 4 | Pending | 0% |
+| 17 | AI User Control | 4 | Complete | 100% |
 | 18 | Wizard Foundation | 14 | Pending | 0% |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending | 0% |
 | 20 | Template Scaffolding | 9 | Pending | 0% |

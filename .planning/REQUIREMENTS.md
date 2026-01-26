@@ -25,10 +25,10 @@
 - [x] **AI-10**: User can tailor CV to specific job description using `cvgen ai tailor [name] --job [file|url]`
 
 **User Control:**
-- [ ] **AI-11**: User previews all AI suggestions before accepting (never auto-write)
-- [ ] **AI-12**: User sees before/after diff view for all suggested changes
-- [ ] **AI-13**: User can accept, edit, skip, or regenerate each suggestion individually
-- [ ] **AI-14**: System detects weak bullets (lacking impact/metrics) and flags for improvement
+- [x] **AI-11**: User previews all AI suggestions before accepting (never auto-write)
+- [x] **AI-12**: User sees before/after diff view for all suggested changes
+- [x] **AI-13**: User can accept, edit, skip, or regenerate each suggestion individually
+- [x] **AI-14**: System detects weak bullets (lacking impact/metrics) and flags for improvement
 
 **Staged Workflow:**
 - [x] **AI-15**: Stage 1 "Analyze" extracts CV structure, identifies sections, gaps, and improvement opportunities
@@ -135,10 +135,10 @@
 | AI-08 | Phase 16 | 16-05 | Complete |
 | AI-09 | Phase 16 | 16-06 | Complete |
 | AI-10 | Phase 16 | 16-07 | Complete |
-| AI-11 | Phase 17 | - | Pending |
-| AI-12 | Phase 17 | - | Pending |
-| AI-13 | Phase 17 | - | Pending |
-| AI-14 | Phase 17 | - | Pending |
+| AI-11 | Phase 17 | 17-03, 17-05 | Complete |
+| AI-12 | Phase 17 | 17-04 | Complete |
+| AI-13 | Phase 17 | 17-01, 17-02, 17-04 | Complete |
+| AI-14 | Phase 17 | 17-01 | Complete |
 | AI-15 | Phase 15 | 15-02 | Complete |
 | AI-16 | Phase 15 | 15-02 | Complete |
 | AI-17 | Phase 15 | 15-03 | Complete |

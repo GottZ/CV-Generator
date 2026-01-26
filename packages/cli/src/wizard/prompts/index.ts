@@ -6,5 +6,10 @@
 // Contact information prompts
 export { collectContact, collectLinks } from './contact.ts';
 
-// Education prompts
-export { collectEducation, collectSingleEducation } from './education.ts';
+// Work experience prompts
+export {
+	collectBullets,
+	collectExperience,
+	collectSingleExperience,
+	collectTechStack,
+} from './experience.ts';

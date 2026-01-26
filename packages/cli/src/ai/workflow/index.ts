@@ -3,6 +3,16 @@
  * Provides multi-stage CV improvement workflow infrastructure.
  */
 
+// Runner infrastructure
+export {
+	type CVLoadResult,
+	checkStagePrerequisites,
+	getPreviousResults,
+	isStageComplete,
+	loadCVForStage,
+	type StageResult,
+	type StageRunnerOptions,
+} from './runner.ts';
 // Schemas
 export {
 	type AnalyzeOutput,

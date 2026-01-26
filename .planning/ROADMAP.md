@@ -59,11 +59,11 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Each stage produces structured output that feeds into the next stage
 5. Stage 4 (Tailor) is skippable when no job description is provided
 
-**Plans:** 4 plans
-- [ ] 15-01-PLAN.md - Workflow Types & State Management (Wave 1)
-- [ ] 15-02-PLAN.md - Stage Commands: Analyze & Improve (Wave 2)
-- [ ] 15-03-PLAN.md - Stage Commands: Summarize & Tailor (Wave 2)
-- [ ] 15-04-PLAN.md - Status & Context Commands (Wave 3)
+**Plans:** 4 plans (complete)
+- [x] 15-01-PLAN.md - Workflow Types & State Management (Wave 1)
+- [x] 15-02-PLAN.md - Stage Commands: Analyze & Improve (Wave 2)
+- [x] 15-03-PLAN.md - Stage Commands: Summarize & Tailor (Wave 2)
+- [x] 15-04-PLAN.md - Status & Context Commands (Wave 3)
 
 **Research flags:** Prompt engineering iteration needed
 
@@ -217,7 +217,7 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 | Phase | Name | Requirements | Status | Completion |
 |-------|------|--------------|--------|------------|
 | 14 | AI Foundation | 2 | Complete | 100% |
-| 15 | Multi-Stage Workflow | 6 | Planned | 0% |
+| 15 | Multi-Stage Workflow | 6 | Complete | 100% |
 | 16 | AI Content Generation | 5 | Pending | 0% |
 | 17 | AI User Control | 4 | Pending | 0% |
 | 18 | Wizard Foundation | 14 | Pending | 0% |

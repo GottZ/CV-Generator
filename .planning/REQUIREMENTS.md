@@ -13,9 +13,9 @@
 **Core Infrastructure:**
 - [x] **AI-01**: User can configure LLM provider (OpenAI, Anthropic, Ollama) via environment variables or config file
 - [x] **AI-02**: User can export AI prompts to clipboard/file for manual LLM use when no API key is configured
-- [ ] **AI-03**: System uses multi-stage prompt workflow with progression state stored in `/people/[name]/output/.ai-state.json`
-- [ ] **AI-04**: User can view current stage and resume from any point after context reset via `cvgen ai status [name]`
-- [ ] **AI-05**: User can lookup context details (CV sections, previous stage results) via `cvgen ai context [name] [section]`
+- [x] **AI-03**: System uses multi-stage prompt workflow with progression state stored in `/people/[name]/output/.ai-state.json`
+- [x] **AI-04**: User can view current stage and resume from any point after context reset via `cvgen ai status [name]`
+- [x] **AI-05**: User can lookup context details (CV sections, previous stage results) via `cvgen ai context [name] [section]`
 
 **Content Generation:**
 - [ ] **AI-06**: User can generate achievement bullets from job descriptions using `cvgen ai bullets [name]`
@@ -31,10 +31,10 @@
 - [ ] **AI-14**: System detects weak bullets (lacking impact/metrics) and flags for improvement
 
 **Staged Workflow:**
-- [ ] **AI-15**: Stage 1 "Analyze" extracts CV structure, identifies sections, gaps, and improvement opportunities
-- [ ] **AI-16**: Stage 2 "Improve" generates better bullets with STAR method and quantification
-- [ ] **AI-17**: Stage 3 "Summarize" generates professional summary from improved content
-- [ ] **AI-18**: Stage 4 "Tailor" adapts content for specific job descriptions (optional, requires job input)
+- [x] **AI-15**: Stage 1 "Analyze" extracts CV structure, identifies sections, gaps, and improvement opportunities
+- [x] **AI-16**: Stage 2 "Improve" generates better bullets with STAR method and quantification
+- [x] **AI-17**: Stage 3 "Summarize" generates professional summary from improved content
+- [x] **AI-18**: Stage 4 "Tailor" adapts content for specific job descriptions (optional, requires job input)
 
 ### CLI Wizard (WIZ-*)
 
@@ -127,9 +127,9 @@
 |-------------|-------|------|--------|
 | AI-01 | Phase 14 | 14-01, 14-03 | Complete |
 | AI-02 | Phase 14 | 14-02, 14-03 | Complete |
-| AI-03 | Phase 15 | - | Pending |
-| AI-04 | Phase 15 | - | Pending |
-| AI-05 | Phase 15 | - | Pending |
+| AI-03 | Phase 15 | 15-01, 15-02, 15-03 | Complete |
+| AI-04 | Phase 15 | 15-04 | Complete |
+| AI-05 | Phase 15 | 15-04 | Complete |
 | AI-06 | Phase 16 | - | Pending |
 | AI-07 | Phase 16 | - | Pending |
 | AI-08 | Phase 16 | - | Pending |
@@ -139,10 +139,10 @@
 | AI-12 | Phase 17 | - | Pending |
 | AI-13 | Phase 17 | - | Pending |
 | AI-14 | Phase 17 | - | Pending |
-| AI-15 | Phase 15 | - | Pending |
-| AI-16 | Phase 15 | - | Pending |
-| AI-17 | Phase 15 | - | Pending |
-| AI-18 | Phase 15 | - | Pending |
+| AI-15 | Phase 15 | 15-02 | Complete |
+| AI-16 | Phase 15 | 15-02 | Complete |
+| AI-17 | Phase 15 | 15-03 | Complete |
+| AI-18 | Phase 15 | 15-03 | Complete |
 | WIZ-01 | Phase 18 | - | Pending |
 | WIZ-02 | Phase 18 | - | Pending |
 | WIZ-03 | Phase 18 | - | Pending |

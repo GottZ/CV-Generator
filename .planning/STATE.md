@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 17 COMPLETE
+**Session:** v1.2 PHASE 18 IN PROGRESS
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 17 - AI User Control (complete)
-**Plan:** 05 of 5 complete
-**Status:** Phase complete
+**Phase:** 18 - Wizard Foundation (in progress)
+**Plan:** 01 of 5 complete
+**Status:** In progress
 
 ```
-[################    ] 36% (17/47 requirements)
+[################    ] 38% (18/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 17-05-PLAN.md (Review Integration)
+**Last activity:** 2026-01-26 - Completed 18-01-PLAN.md (Wizard Infrastructure)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | Pending |
+| 18 | Wizard Foundation | 14 | In Progress (1/5 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -170,9 +170,15 @@ v1.2 Phase 17 decisions (17-05):
 - Only first occurrence replaced for duplicate safety
 - generateFn captures provider and locale in closure for regeneration
 
+v1.2 Phase 18 decisions (18-01):
+- SectionStatus 'partial' for incomplete entries (experience with 0 bullets, education missing fields)
+- Contact is 'partial' if name exists but no contact details (encourages adding email/phone)
+- Unicode menu icons: checkmark U+2713, half-circle U+25D0, circle U+25CB, X U+2717
+- Re-prompt validation pattern: warn and continue on second attempt with same invalid value
+
 ### Open TODOs
 
-- Begin Phase 18 (Wizard Foundation)
+- Continue Phase 18 (plans 02-05 pending)
 
 ### Blockers
 
@@ -182,8 +188,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 17 complete
-**Resume command:** Begin Phase 18 planning
+**Current step:** Phase 18 plan 01 complete
+**Resume command:** Execute 18-02-PLAN.md (Contact and Experience prompts)
 
 ### Files to Reference
 
@@ -210,8 +216,9 @@ None.
 - `/workspace/.planning/phases/17-ai-user-control/17-03-SUMMARY.md` - File Writer and TTY Detection summary
 - `/workspace/.planning/phases/17-ai-user-control/17-04-SUMMARY.md` - Review Session Orchestrator summary
 - `/workspace/.planning/phases/17-ai-user-control/17-05-SUMMARY.md` - Review Integration summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-01-SUMMARY.md` - Wizard Infrastructure summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 17-05 Review Integration - Phase 17 complete)*
+*Last updated: 2026-01-26 (completed 18-01 Wizard Infrastructure)*

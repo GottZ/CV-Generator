@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 20 IN PROGRESS (Plan 03 Complete)
+**Session:** v1.2 PHASE 20 IN PROGRESS (Plan 04 Complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 20 - Template Scaffolding (in progress)
-**Plan:** 3 of 5 complete
+**Plan:** 4 of 5 complete
 **Status:** In progress
 
 ```
-[##############################] 87% (41/47 requirements)
+[##############################] 89% (42/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 20-03-PLAN.md (Template Customization Prompts)
+**Last activity:** 2026-01-26 - Completed 20-04-PLAN.md (Template Wizard Orchestrator)
 
 ## v1.2 Milestone Overview
 
@@ -34,7 +34,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
 | 19 | Wizard Non-Interactive & Integration | 7 | Complete (7/7) |
-| 20 | Template Scaffolding | 9 | In Progress (3/5 plans) |
+| 20 | Template Scaffolding | 9 | In Progress (4/5 plans) |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
 **Parallel track:** 14 -> 18 -> 19 (COMPLETE) -> 20
@@ -263,9 +263,15 @@ v1.2 Phase 20 decisions (20-03):
 - Margins use named sizes (narrow/normal/wide), cv-templates resolves to mm
 - Sections checkbox defaults all optional sections to visible
 
+v1.2 Phase 20 decisions (20-04):
+- discoverTemplates already filters private templates, no additional filtering needed
+- Confirmation step required before template creation for safe UX
+- Section visibility stored in config.sections, not config.style
+- Validation warnings shown but don't block template creation
+
 ### Open TODOs
 
-- Continue Phase 20: Template Scaffolding (Plans 04-05)
+- Complete Phase 20: Template Scaffolding (Plan 05 - CLI command integration)
 
 ### Blockers
 
@@ -275,8 +281,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 20 in progress, Plan 03 complete
-**Resume command:** `/gsd:execute-plan .planning/phases/20-template-scaffolding/20-04-PLAN.md`
+**Current step:** Phase 20 in progress, Plan 04 complete
+**Resume command:** `/gsd:execute-plan .planning/phases/20-template-scaffolding/20-05-PLAN.md`
 
 ### Files to Reference
 
@@ -320,8 +326,9 @@ None.
 - `/workspace/.planning/phases/20-template-scaffolding/20-01-SUMMARY.md` - TDD Copier and Validator summary
 - `/workspace/.planning/phases/20-template-scaffolding/20-02-SUMMARY.md` - Types and Constants summary
 - `/workspace/.planning/phases/20-template-scaffolding/20-03-SUMMARY.md` - Template Customization Prompts summary
+- `/workspace/.planning/phases/20-template-scaffolding/20-04-SUMMARY.md` - Template Wizard Orchestrator summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 20-03 Template Customization Prompts)*
+*Last updated: 2026-01-26 (completed 20-04 Template Wizard Orchestrator)*

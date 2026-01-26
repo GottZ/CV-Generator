@@ -1,0 +1,35 @@
+# Improve CV Content
+
+Analyze the CV and suggest improvements for weak content.
+
+## CV Content
+{{ cv_content }}
+
+## Instructions
+
+For each section of the CV:
+1. Identify weak bullets (lacking impact, metrics, or specificity)
+2. Generate improved versions using STAR method
+3. Assign priority based on impact potential
+4. Provide specific feedback on why each bullet needs improvement
+
+## Priority Levels
+- High: Critical issues - vague responsibilities, no outcomes, passive voice
+- Medium: Good but improvable - could add metrics or specificity
+- Low: Minor polish - style or wording tweaks
+
+## Weak Bullet Indicators
+- Lacks quantification ("improved efficiency" vs "improved efficiency by 40%")
+- Missing outcome ("worked on project" vs "delivered project reducing costs by $50K")
+- Too generic ("responsible for" vs "led team of 5 engineers")
+- Passive voice ("was assigned" vs "took ownership")
+
+## Output Requirements
+For each suggestion:
+- Original text
+- Improved text
+- Reasoning (specific feedback)
+- Priority level
+- Metrics extracted or suggested
+
+CRITICAL: Only use metrics from the CV. If suggesting new metrics, clearly mark as "estimated" or "example".

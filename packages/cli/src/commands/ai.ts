@@ -11,6 +11,7 @@ import { configAction } from './ai/config.ts';
 import { improveAction } from './ai/improve.ts';
 import { promptAction } from './ai/prompt.ts';
 import { summarizeAction } from './ai/summarize.ts';
+import { tailorAction } from './ai/tailor.ts';
 import { validateAction } from './ai/validate.ts';
 
 /**
@@ -157,6 +158,31 @@ Examples:
 `,
 		)
 		.action(summarizeAction);
+
+	// Tailor subcommand - Stage 4: Adapt CV for job description (optional)
+	ai.command('tailor <name>')
+		.description(
+			'Stage 4: Adapt CV content for a specific job description (optional)',
+		)
+		.requiredOption('--job <file>', 'Path to job description file')
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--force', 'Re-run even if stage is complete')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai tailor johndoe --job posting.txt
+  $ cvgen ai tailor johndoe --job job.md --provider openai
+  $ cvgen ai tailor johndoe --job posting.txt --force
+  $ cvgen ai tailor johndoe --job posting.txt --json
+`,
+		)
+		.action(tailorAction);
 
 	return ai;
 }

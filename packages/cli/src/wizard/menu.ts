@@ -3,7 +3,7 @@
  * Displays section progress with checkmark-style indicators.
  */
 
-import { Separator, select } from '@inquirer/prompts';
+import { input, Separator, select } from '@inquirer/prompts';
 import pc from 'picocolors';
 
 import { getArrayCount, getSectionStatus, isSectionOptional } from './state.ts';
@@ -161,4 +161,45 @@ export async function selectMode(): Promise<WizardMode> {
 			},
 		],
 	});
+}
+
+/**
+ * Locale options for CV language selection.
+ */
+const LOCALE_CHOICES = [
+	{ value: 'en', name: 'English' },
+	{ value: 'de', name: 'German (Deutsch)' },
+	{ value: 'fr', name: 'French (Fran\u00E7ais)' },
+	{ value: 'es', name: 'Spanish (Espa\u00F1ol)' },
+	{ value: 'custom', name: 'Other...' },
+] as const;
+
+/**
+ * Prompt user to select the CV language/locale.
+ * Per CONTEXT.md: "Wizard prompts for locale at start"
+ * @returns Selected locale code (e.g., 'en', 'de', or custom code)
+ */
+export async function selectLocale(): Promise<string> {
+	const selection = await select({
+		message: 'What language will this CV be in?',
+		choices: LOCALE_CHOICES,
+		default: 'en',
+	});
+
+	if (selection === 'custom') {
+		const customLocale = await input({
+			message: 'Enter locale code (e.g., pt, it, nl):',
+			validate: (value) => {
+				const trimmed = value.trim();
+				if (!trimmed) return 'Locale code is required';
+				if (!/^[a-z]{2}(-[A-Z]{2})?$/.test(trimmed)) {
+					return 'Please enter a valid locale code (e.g., pt, it, nl, or pt-BR)';
+				}
+				return true;
+			},
+		});
+		return customLocale.trim();
+	}
+
+	return selection;
 }

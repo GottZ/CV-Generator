@@ -7,7 +7,12 @@
 export { generateMarkdown, writeWizardOutput } from './markdown-writer.ts';
 export type { MenuChoice } from './menu.ts';
 // Menu navigation
-export { formatMenuItem, selectMode, showMainMenu } from './menu.ts';
+export {
+	formatMenuItem,
+	selectLocale,
+	selectMode,
+	showMainMenu,
+} from './menu.ts';
 // Runner - wizard orchestration
 export type { WizardOptions } from './runner.ts';
 export { runAddSection, runWizard } from './runner.ts';

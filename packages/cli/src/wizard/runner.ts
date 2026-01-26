@@ -11,7 +11,7 @@ import pc from 'picocolors';
 
 import { ensureInteractiveMode } from '../ai/review/tty-check.ts';
 import { writeWizardOutput } from './markdown-writer.ts';
-import { selectMode, showMainMenu } from './menu.ts';
+import { selectLocale, selectMode, showMainMenu } from './menu.ts';
 import {
 	collectCertifications,
 	collectContact,
@@ -142,7 +142,7 @@ async function runWizardLoop(state: WizardState): Promise<WizardState> {
  * @param options - Wizard options including person directory and locale
  */
 export async function runWizard(options: WizardOptions): Promise<void> {
-	const { personDir, personName, locale = 'en' } = options;
+	const { personDir, personName } = options;
 
 	// Ensure we're in an interactive terminal (WIZ-18 prep for Phase 19)
 	ensureInteractiveMode();
@@ -151,16 +151,21 @@ export async function runWizard(options: WizardOptions): Promise<void> {
 	setupCleanExit();
 
 	let state: WizardState;
+	let locale: string;
 
 	// Try to load existing CV
-	const existingState = await loadExistingCV(personDir, locale);
+	const existingLocale = options.locale ?? 'en';
+	const existingState = await loadExistingCV(personDir, existingLocale);
 
 	if (existingState) {
 		console.log(pc.cyan(`Editing existing CV for ${personName}`));
 		state = existingState;
+		// For existing CVs, use existing locale or prompt
+		locale = existingLocale;
 	} else {
 		console.log(pc.cyan(`Creating new CV for ${personName}`));
 		const mode = await selectMode();
+		locale = await selectLocale();
 		state = createInitialState(mode);
 	}
 
@@ -216,7 +221,7 @@ export async function runAddSection(
 	section: string,
 	options: WizardOptions,
 ): Promise<void> {
-	const { personDir, personName, locale = 'en' } = options;
+	const { personDir, personName } = options;
 
 	// Ensure we're in an interactive terminal
 	ensureInteractiveMode();
@@ -228,6 +233,7 @@ export async function runAddSection(
 	const cvPath = path.join(personDir, 'cv.md');
 
 	let existingState: WizardState | null = null;
+	let locale = options.locale ?? 'en';
 
 	try {
 		await access(cvPath);
@@ -236,6 +242,10 @@ export async function runAddSection(
 
 		if (result.data) {
 			const mode = await selectMode();
+			// Prompt for locale if not provided in options
+			if (!options.locale) {
+				locale = await selectLocale();
+			}
 			existingState = createStateFromExisting(result.data, mode, locale);
 		}
 	} catch {

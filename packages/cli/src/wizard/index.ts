@@ -3,10 +3,11 @@
  * Exports types, state management, menu, and validation utilities.
  */
 
+// Markdown writer
+export { generateMarkdown, writeWizardOutput } from './markdown-writer.ts';
 export type { MenuChoice } from './menu.ts';
 // Menu navigation
 export { formatMenuItem, selectMode, showMainMenu } from './menu.ts';
-
 // State management
 export {
 	createInitialState,

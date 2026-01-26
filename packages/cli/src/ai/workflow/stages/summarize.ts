@@ -3,16 +3,16 @@
  * Stage 3: Generate professional summary from CV content and previous analysis.
  */
 
+import type { CVData } from '@gottz/cv-core';
 import { generateText, Output } from 'ai';
 import { renderPrompt } from '../../prompts/index.ts';
+import type { AIProvider } from '../../providers/types.ts';
 import {
-	SummarizeOutputSchema,
-	type SummarizeOutput,
 	type AnalyzeOutput,
 	type ImproveOutput,
+	type SummarizeOutput,
+	SummarizeOutputSchema,
 } from '../schemas/index.ts';
-import type { AIProvider } from '../../providers/types.ts';
-import type { CVData } from '@gottz/cv-core';
 
 /**
  * Input for the Summarize stage.

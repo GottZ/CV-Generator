@@ -3,17 +3,17 @@
  * Stage 4: Adapt CV content for a specific job description.
  */
 
+import type { CVData } from '@gottz/cv-core';
 import { generateText, Output } from 'ai';
 import { renderPrompt } from '../../prompts/index.ts';
+import type { AIProvider } from '../../providers/types.ts';
 import {
-	TailorOutputSchema,
-	type TailorOutput,
 	type AnalyzeOutput,
 	type ImproveOutput,
 	type SummarizeOutput,
+	type TailorOutput,
+	TailorOutputSchema,
 } from '../schemas/index.ts';
-import type { AIProvider } from '../../providers/types.ts';
-import type { CVData } from '@gottz/cv-core';
 
 /**
  * Input for the Tailor stage.

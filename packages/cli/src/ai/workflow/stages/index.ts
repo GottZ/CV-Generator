@@ -3,7 +3,7 @@
  * Central import point for workflow stage runners.
  */
 
-export { runSummarizeStage } from './summarize.ts';
 export type { SummarizeStageInput } from './summarize.ts';
-export { runTailorStage } from './tailor.ts';
+export { runSummarizeStage } from './summarize.ts';
 export type { TailorStageInput } from './tailor.ts';
+export { runTailorStage } from './tailor.ts';

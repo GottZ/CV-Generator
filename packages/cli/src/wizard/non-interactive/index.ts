@@ -6,11 +6,23 @@
 // JSON input reading
 export { parseJsonContent, readJsonInput } from './input-reader.ts';
 // Mode detection
-export type { WizardModeOptions } from './mode-detector.ts';
+export type {
+	WizardExecutionMode,
+	WizardModeOptions,
+} from './mode-detector.ts';
 export {
 	detectMode,
 	ensureNonInteractiveRequirements,
 } from './mode-detector.ts';
+
+// Output formatting
+export type { ErrorDetails, ExitCode } from './output-formatter.ts';
+export {
+	EXIT_CODES,
+	exitWithError,
+	output,
+	progress,
+} from './output-formatter.ts';
 
 // Schema export
 export type { SchemaCommand } from './schema-export.ts';

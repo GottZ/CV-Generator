@@ -24,6 +24,17 @@ export {
 	type TailorOutput,
 	TailorOutputSchema,
 } from './schemas/index.ts';
+// Stages
+export {
+	type AnalyzeStageInput,
+	type ImproveStageInput,
+	runAnalyzeStage,
+	runImproveStage,
+	runSummarizeStage,
+	runTailorStage,
+	type SummarizeStageInput,
+	type TailorStageInput,
+} from './stages/index.ts';
 // State persistence
 export {
 	createInitialState,

@@ -31,4 +31,14 @@ export type {
 export { validateTemplate } from './validator.ts';
 // Note: ValidationResult also exported from validator.ts but prefer types.ts export
 
-// Note: prompts and wizard exports added by Plans 03-04
+// Prompts
+export {
+	selectAccentColor,
+	selectBodyFont,
+	selectFonts,
+	selectHeadingFont,
+	selectMargins,
+	selectVisibleSections,
+} from './prompts/index.ts';
+
+// Note: wizard exports added by Plans 04-05

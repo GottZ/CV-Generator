@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 15 IN PROGRESS
+**Session:** v1.2 PHASE 15 IN PROGRESS (15-02 complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 15 - Multi-Stage Workflow (in progress)
-**Plan:** 01 of 3 complete
+**Plan:** 02 of 3 complete
 **Status:** In progress
 
 ```
-[##                  ] 4% (2/47 requirements)
+[###                 ] 6% (3/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 15-01 (Workflow Foundation)
+**Last activity:** 2026-01-26 - Completed 15-02 (Stage Commands)
 
 ## v1.2 Milestone Overview
 
@@ -92,9 +92,14 @@ v1.2 Phase 15 decisions (15-01):
 - Atomic writes using temp file + rename pattern
 - Version field in state for future schema migration
 
+v1.2 Phase 15 decisions (15-02):
+- Type annotations for uninitialized variables (CVLoadResult, AIProvider)
+- String type for provider option in StageRunnerOptions (cast at call site)
+- Double prerequisite checking in improve (checkStagePrerequisites + explicit state check)
+
 ### Open TODOs
 
-- Continue Phase 15 (15-02: Stage Commands, 15-03: Status/Context Commands)
+- Continue Phase 15 (15-03: Status/Context Commands)
 
 ### Blockers
 
@@ -104,7 +109,7 @@ None.
 
 ### For Next Session
 
-**Current step:** Execute Phase 15 Plan 02 (Stage Commands)
+**Current step:** Execute Phase 15 Plan 03 (Status/Context Commands)
 **Resume command:** `/gsd:execute-phase 15`
 
 ### Files to Reference
@@ -117,8 +122,9 @@ None.
 - `/workspace/.planning/phases/14-ai-foundation/14-02-SUMMARY.md` - Prompt templates summary
 - `/workspace/.planning/phases/14-ai-foundation/14-03-SUMMARY.md` - CLI commands summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-01-SUMMARY.md` - Workflow foundation summary
+- `/workspace/.planning/phases/15-multi-stage-workflow/15-02-SUMMARY.md` - Stage commands summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 15-01 Workflow Foundation)*
+*Last updated: 2026-01-26 (completed 15-02 Stage Commands)*

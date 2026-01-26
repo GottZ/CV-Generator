@@ -103,6 +103,37 @@ export function renderPrompt(
 }
 
 /**
+ * Raw context for standalone generators (not part of workflow).
+ */
+export interface RawPromptContext {
+	[key: string]: unknown;
+}
+
+/**
+ * Render a prompt template with raw context (for standalone generators).
+ * Does not validate CV or locale - caller is responsible for context.
+ */
+export function renderRawPrompt(
+	promptName: string,
+	context: RawPromptContext,
+): string {
+	const metadata = getPromptByName(promptName);
+	if (!metadata) {
+		throw new PromptError(promptName, `Unknown prompt: ${promptName}`);
+	}
+
+	const env = getPromptEnvironment();
+	try {
+		return env.render(metadata.templateFile, context);
+	} catch (error) {
+		throw new PromptError(
+			promptName,
+			`Failed to render: ${error instanceof Error ? error.message : 'Unknown error'}`,
+		);
+	}
+}
+
+/**
  * Validate that required context is provided.
  */
 function validatePromptContext(

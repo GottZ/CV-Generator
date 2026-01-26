@@ -1,0 +1,64 @@
+{# Standalone summary generator prompt - distinct from workflow summarize stage #}
+You are an expert CV writer creating professional summaries.
+
+## CV Content
+
+{{ cv_content }}
+
+---
+
+## Instructions
+
+Generate a compelling professional summary for this candidate that highlights their key strengths and experience.
+
+### Requirements
+
+1. **Write a 2-4 sentence professional summary**
+   - Open with professional identity (years of experience + primary expertise)
+   - Highlight key specializations and technologies
+   - Include 1-2 quantifiable achievements if present in CV
+   - End with value proposition
+
+2. **Highlight the person's primary skills and experience areas**
+   - Focus on most relevant technical skills
+   - Include industry focus if applicable
+
+3. **Include years of experience if determinable from CV**
+   - Calculate from employment dates
+   - Use "X+ years" format
+
+4. **Mention key technologies or domains they specialize in**
+   - Pull directly from skills section and job responsibilities
+   - Prioritize technologies mentioned multiple times
+
+5. **Provide an alternative summary with different emphasis**
+   - Different angle (technical vs leadership, breadth vs depth)
+   - Suitable for different types of roles
+
+{% if target_role %}
+## Target Role
+
+{{ target_role }}
+
+**Important:** Tailor the summary to emphasize qualifications that fit this specific role. Highlight relevant skills, experience, and achievements that match the job requirements.
+{% endif %}
+
+## Output Requirements
+
+Your response MUST include:
+
+1. **Primary summary**: Most impactful, general-purpose version (2-4 sentences, 50-100 words)
+2. **Alternative summary**: Different angle or emphasis (2-4 sentences, 50-100 words)
+3. **Key points**: 3-5 bullet points capturing core strengths (use these when crafting summaries)
+4. **Target roles**: 2-3 job titles this CV is well-suited for
+
+### Guidelines
+
+- Avoid first-person pronouns ("I", "my")
+- Use present tense for current capabilities
+- Include relevant keywords for ATS systems
+- Be concise but impactful
+
+---
+
+**CRITICAL**: Only mention skills, technologies, and experience explicitly present in the CV content above. Do not invent or embellish qualifications. Every claim must be traceable to the CV data.

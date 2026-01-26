@@ -7,9 +7,11 @@
 
 import { Command } from 'commander';
 import { analyzeAction } from './ai/analyze.ts';
+import { bulletsAction } from './ai/bullets.ts';
 import { configAction } from './ai/config.ts';
 import { contextAction } from './ai/context.ts';
 import { improveAction } from './ai/improve.ts';
+import { keywordsAction } from './ai/keywords.ts';
 import { promptAction } from './ai/prompt.ts';
 import { statusAction } from './ai/status.ts';
 import { summarizeAction } from './ai/summarize.ts';
@@ -161,26 +163,28 @@ Examples:
 		)
 		.action(summarizeAction);
 
-	// Tailor subcommand - Stage 4: Adapt CV for job description (optional)
+	// Tailor subcommand - Adapt CV for job description (AI-10)
 	ai.command('tailor <name>')
-		.description(
-			'Stage 4: Adapt CV content for a specific job description (optional)',
+		.description('Tailor CV content for a specific job description')
+		.requiredOption(
+			'--job <source>',
+			'Job description source (file path, URL, or - for stdin)',
 		)
-		.requiredOption('--job <file>', 'Path to job description file')
 		.option(
 			'--provider <provider>',
 			'AI provider to use (openai, anthropic, ollama)',
 		)
-		.option('--force', 'Re-run even if stage is complete')
+		.option('--output <file>', 'Write tailored summary to cv.md file')
 		.option('--quiet', 'Suppress non-error output')
 		.option('--json', 'Output as JSON')
 		.addHelpText(
 			'after',
 			`
 Examples:
-  $ cvgen ai tailor johndoe --job posting.txt
-  $ cvgen ai tailor johndoe --job job.md --provider openai
-  $ cvgen ai tailor johndoe --job posting.txt --force
+  $ cvgen ai tailor johndoe --job posting.txt           # From file
+  $ cvgen ai tailor johndoe --job https://jobs.co/123   # From URL
+  $ cat posting.txt | cvgen ai tailor johndoe --job -   # From stdin
+  $ cvgen ai tailor johndoe --job posting.txt --output tailored-summary.md
   $ cvgen ai tailor johndoe --job posting.txt --json
 `,
 		)
@@ -218,6 +222,58 @@ Examples:
 `,
 		)
 		.action(contextAction);
+
+	// Keywords subcommand - ATS keyword analysis (AI-08)
+	ai.command('keywords <name>')
+		.description('Analyze ATS keywords and suggest placements')
+		.requiredOption('--job <file>', 'Path to job description file')
+		.option('--exact', 'Use exact matching instead of fuzzy matching')
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai keywords jane --job posting.txt
+  $ cvgen ai keywords jane --job job.md --exact
+  $ cvgen ai keywords jane --job posting.txt --provider openai
+  $ cvgen ai keywords jane --job posting.txt --json
+`,
+		)
+		.action(keywordsAction);
+
+	// Bullets subcommand - Generate achievement bullets (AI-06)
+	ai.command('bullets <name>')
+		.description(
+			'Generate STAR-formatted achievement bullets for work experience',
+		)
+		.option('--show-star', 'Include STAR breakdown in output')
+		.option('--tailored', 'Use job description context for tailoring')
+		.option('--job <source>', 'Job description source (file path or URL)')
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--output <file>', 'Write bullets to file instead of stdout')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai bullets jane                                # Generate bullets
+  $ cvgen ai bullets jane --show-star                    # Show STAR breakdown
+  $ cvgen ai bullets jane --tailored --job posting.txt   # Tailored to job
+  $ cvgen ai bullets jane --output bullets.md            # Write to file
+  $ cvgen ai bullets jane --provider openai              # Use specific provider
+  $ cvgen ai bullets jane --json                         # Output as JSON
+`,
+		)
+		.action(bulletsAction);
 
 	return ai;
 }

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 16 IN PROGRESS (16-06 complete)
+**Session:** v1.2 PHASE 16 COMPLETE
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 16 - AI Content Generation (in progress)
-**Plan:** 06 of 7 complete
-**Status:** In progress
+**Phase:** 16 - AI Content Generation (complete)
+**Plan:** 07 of 7 complete
+**Status:** Phase complete
 
 ```
-[#########           ] 20% (10/47 requirements)
+[###########         ] 28% (13/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 16-06 (Standalone Improve Generator)
+**Last activity:** 2026-01-26 - Completed 16-04 (Summary Generation Command)
 
 ## v1.2 Milestone Overview
 
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 |-------|------|--------------|--------|
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
-| 16 | AI Content Generation | 5 | In progress (5/5) |
+| 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Pending |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
@@ -132,6 +132,11 @@ v1.2 Phase 16 decisions (16-05):
 - KeywordsOutputSchema with byCategory (required/preferred) and bySection grouping
 - highCoverage boolean flag for >90% celebration mode
 
+v1.2 Phase 16 decisions (16-04):
+- renderRawPrompt for standalone generators with arbitrary context
+- Reuse SummarizeOutputSchema for summary generator consistency
+- Distinct 'summary' command from 'summarize' workflow stage
+
 v1.2 Phase 16 decisions (16-06):
 - Priority-based grouping for improvements (High/Medium/Low)
 - Weakness type categorization (lacks_quantification, missing_outcome, too_generic, passive_voice)
@@ -140,7 +145,7 @@ v1.2 Phase 16 decisions (16-06):
 
 ### Open TODOs
 
-- Continue Phase 16 (AI Content Generation) - remaining plans
+- Start Phase 17 (AI User Control)
 
 ### Blockers
 
@@ -150,9 +155,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 16 plan 06 complete (6 of 7 plans done)
-**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-04-PLAN.md`
-**Note:** 16-04 is the only remaining plan in Phase 16
+**Current step:** Phase 16 complete (all 7 plans done)
+**Resume command:** Start Phase 17 - AI User Control
 
 ### Files to Reference
 
@@ -170,6 +174,7 @@ None.
 - `/workspace/.planning/phases/16-ai-content-generation/16-01-SUMMARY.md` - Core Utility Infrastructure summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-02-SUMMARY.md` - Display Utilities and Keyword Matcher summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-03-SUMMARY.md` - Bullets Generation Command summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-04-SUMMARY.md` - Summary Generation Command summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-05-SUMMARY.md` - Keywords Analysis Command summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-06-SUMMARY.md` - Standalone Improve Generator summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-07-SUMMARY.md` - Standalone Tailor Generator summary
@@ -177,4 +182,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 16-06 Standalone Improve Generator)*
+*Last updated: 2026-01-26 (completed Phase 16 AI Content Generation)*

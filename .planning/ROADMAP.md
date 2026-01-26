@@ -196,16 +196,16 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Experience wizard prompts for Situation, Task, Action, Result to build strong bullets
 5. User can add `--enhance` flag to wizard commands to get AI suggestions for entered content
 
-**Plans:** 7 plans
+**Plans:** 7 plans (complete)
 
 Plans:
-- [ ] 19-01-PLAN.md - Non-interactive infrastructure (mode detector, output formatter)
-- [ ] 19-02-PLAN.md - JSON input schemas and validation (Zod, stdin)
-- [ ] 19-03-PLAN.md - State builder from flags and JSON (conflict detection)
-- [ ] 19-04-PLAN.md - STAR-method prompting for experience bullets
-- [ ] 19-05-PLAN.md - AI enhancement integration (section enhancer)
-- [ ] 19-06-PLAN.md - Non-interactive runner and dry-run mode
-- [ ] 19-07-PLAN.md - CLI command updates with all flags
+- [x] 19-01-PLAN.md - Non-interactive infrastructure (mode detector, output formatter)
+- [x] 19-02-PLAN.md - JSON input schemas and validation (Zod, stdin)
+- [x] 19-03-PLAN.md - State builder from flags and JSON (conflict detection)
+- [x] 19-04-PLAN.md - STAR-method prompting for experience bullets
+- [x] 19-05-PLAN.md - AI enhancement integration (section enhancer)
+- [x] 19-06-PLAN.md - Non-interactive runner and dry-run mode
+- [x] 19-07-PLAN.md - CLI command updates with all flags
 
 **Research flags:** None - standard CLI patterns
 
@@ -250,10 +250,10 @@ Plans:
 | 16 | AI Content Generation | 5 | Complete | 100% |
 | 17 | AI User Control | 4 | Complete | 100% |
 | 18 | Wizard Foundation | 13 | Complete | 100% |
-| 19 | Wizard Non-Interactive & Integration | 7 | Pending | 0% |
+| 19 | Wizard Non-Interactive & Integration | 7 | Complete | 100% |
 | 20 | Template Scaffolding | 9 | Pending | 0% |
 
-**Total:** 47 requirements mapped
+**Total:** 47 requirements mapped (38 complete, 9 pending)
 
 ---
 

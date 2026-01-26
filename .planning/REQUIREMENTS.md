@@ -51,20 +51,20 @@
 - [x] **WIZ-08**: Wizard provides sensible defaults for all optional fields
 - [x] **WIZ-09**: User can exit wizard cleanly with Ctrl+C (no partial state saved)
 - [x] **WIZ-10**: Wizard shows summary of all inputs before committing changes
-- [ ] **WIZ-11**: API keys and sensitive inputs are masked during entry (deferred to Phase 19)
+- [x] **WIZ-11**: API keys and sensitive inputs are masked during entry
 - [x] **WIZ-12**: Wizard supports arrow key navigation for selections
 - [x] **WIZ-13**: Wizard shows progress indication during long operations
 - [x] **WIZ-14**: Each prompt includes inline help text
 
 **Non-Interactive Support:**
-- [ ] **WIZ-15**: All wizard commands support `--no-input` flag for non-interactive use
-- [ ] **WIZ-16**: All wizard commands accept values via flags (e.g., `--company "Acme"`)
-- [ ] **WIZ-17**: All wizard commands accept JSON input via `--json-input [file]`
-- [ ] **WIZ-18**: Wizard detects non-TTY environment and fails gracefully with helpful message
+- [x] **WIZ-15**: All wizard commands support `--no-input` flag for non-interactive use
+- [x] **WIZ-16**: All wizard commands accept values via flags (e.g., `--company "Acme"`)
+- [x] **WIZ-17**: All wizard commands accept JSON input via `--json-input [file]`
+- [x] **WIZ-18**: Wizard detects non-TTY environment and fails gracefully with helpful message
 
 **Guided Content:**
-- [ ] **WIZ-19**: Experience wizard asks STAR-method questions to craft achievement bullets
-- [ ] **WIZ-20**: Wizard can optionally invoke AI to enhance entered content (if API configured)
+- [x] **WIZ-19**: Experience wizard asks STAR-method questions to craft achievement bullets
+- [x] **WIZ-20**: Wizard can optionally invoke AI to enhance entered content (if API configured)
 
 ### Template Scaffolding (TPL-*)
 
@@ -153,16 +153,16 @@
 | WIZ-08 | Phase 18 | 18-01, 18-08 | Complete |
 | WIZ-09 | Phase 18 | 18-06 | Complete |
 | WIZ-10 | Phase 18 | 18-05 | Complete |
-| WIZ-11 | Phase 19 | - | Pending |
+| WIZ-11 | Phase 19 | 19-05 | Complete |
 | WIZ-12 | Phase 18 | 18-01, 18-08 | Complete |
 | WIZ-13 | Phase 18 | 18-05 | Complete |
 | WIZ-14 | Phase 18 | 18-02, 18-03, 18-04 | Complete |
-| WIZ-15 | Phase 19 | - | Pending |
-| WIZ-16 | Phase 19 | - | Pending |
-| WIZ-17 | Phase 19 | - | Pending |
-| WIZ-18 | Phase 19 | - | Pending |
-| WIZ-19 | Phase 19 | - | Pending |
-| WIZ-20 | Phase 19 | - | Pending |
+| WIZ-15 | Phase 19 | 19-01, 19-07 | Complete |
+| WIZ-16 | Phase 19 | 19-03, 19-07 | Complete |
+| WIZ-17 | Phase 19 | 19-02, 19-06, 19-07 | Complete |
+| WIZ-18 | Phase 19 | 19-01 | Complete |
+| WIZ-19 | Phase 19 | 19-04 | Complete |
+| WIZ-20 | Phase 19 | 19-05, 19-07 | Complete |
 | TPL-01 | Phase 20 | - | Pending |
 | TPL-02 | Phase 20 | - | Pending |
 | TPL-03 | Phase 20 | - | Pending |

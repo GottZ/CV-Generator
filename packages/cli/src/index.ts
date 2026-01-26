@@ -4,6 +4,7 @@ import { aiCommand } from './commands/ai.ts';
 import { buildAction } from './commands/build.ts';
 import { initAction } from './commands/init.ts';
 import { listTemplatesAction } from './commands/list-templates.ts';
+import { templateCommand } from './commands/template.ts';
 import { validateAction } from './commands/validate.ts';
 import { wizardCommand } from './commands/wizard.ts';
 
@@ -111,6 +112,9 @@ Examples:
 
 // AI command group
 program.addCommand(aiCommand);
+
+// Template command group
+program.addCommand(templateCommand);
 
 // Wizard command group
 program.addCommand(wizardCommand);

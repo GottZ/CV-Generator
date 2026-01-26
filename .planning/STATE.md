@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 18 COMPLETE
+**Session:** v1.2 PHASE 19 IN PROGRESS
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 18 - Wizard Foundation (complete)
-**Plan:** 8 of 8 complete
-**Status:** Complete — verified ✓
+**Phase:** 19 - Wizard Non-Interactive & Integration (in progress)
+**Plan:** 4 of 7
+**Status:** In progress
 
 ```
-[#######################] 57% (27/47 requirements)
+[########################] 60% (28/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Phase 18 complete (Wizard Foundation)
+**Last activity:** 2026-01-26 - Completed 19-04-PLAN.md (STAR Method Prompts)
 
 ## v1.2 Milestone Overview
 
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
-| 19 | Wizard Non-Interactive & Integration | 7 | Pending |
+| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (4/7) |
 | 20 | Template Scaffolding | 9 | Pending |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
@@ -210,9 +210,15 @@ v1.2 Phase 18 decisions (18-08):
 - Null return pattern allows parent collectors to skip cancelled entries
 - Empty URL provides second escape path from nested prompts
 
+v1.2 Phase 19 decisions (19-04):
+- Combined prompt with STAR hints (not separate STAR questions)
+- Show 1 example before each bullet prompt, cycling through 3 per role
+- Role detection via keyword matching on job title
+- 30-char minimum bullet length for quality enforcement
+
 ### Open TODOs
 
-- Plan and execute Phase 19 (Wizard Non-Interactive & Integration)
+- Continue Phase 19 (plans 05-07 remaining)
 
 ### Blockers
 
@@ -222,8 +228,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 complete
-**Resume command:** `/gsd:discuss-phase 19` or `/gsd:plan-phase 19`
+**Current step:** Phase 19, plan 04 complete
+**Resume command:** `/gsd:execute-phase 19-05`
 
 ### Files to Reference
 
@@ -257,8 +263,9 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-05-SUMMARY.md` - Summary and Output summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-06-SUMMARY.md` - Runner and CLI Commands summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-08-SUMMARY.md` - Gap Closure summary
+- `/workspace/.planning/phases/19-wizard-non-interactive/19-04-SUMMARY.md` - STAR Method Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-08 Gap Closure)*
+*Last updated: 2026-01-26 (completed 19-04 STAR Method Prompts)*

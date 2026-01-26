@@ -50,6 +50,40 @@ export const PROMPTS: Record<string, PromptMetadata> = {
 		requiresJobDescription: true,
 		templateFile: 'tailor.njk',
 	},
+	'summary-gen': {
+		name: 'summary-gen',
+		description: 'Standalone summary generator (AI-07) - not part of workflow',
+		stage: 0, // Standalone, not workflow stage
+		requiresCV: false, // Uses cv_content string, not CV object
+		requiresJobDescription: false,
+		templateFile: 'summary-gen.njk',
+	},
+	keywords: {
+		name: 'keywords',
+		description: 'Analyze ATS keywords and suggest placements (AI-08)',
+		stage: 0, // Standalone, not workflow stage
+		requiresCV: true,
+		requiresJobDescription: true,
+		templateFile: 'keywords.njk',
+	},
+	bullets: {
+		name: 'bullets',
+		description:
+			'Generate STAR-formatted achievement bullets for work experience (AI-06)',
+		stage: 0, // Standalone generator, not part of workflow stages
+		requiresCV: true,
+		requiresJobDescription: false,
+		templateFile: 'bullets.njk',
+	},
+	'improve-standalone': {
+		name: 'improve-standalone',
+		description:
+			'Standalone improvement analyzer (AI-09) - not part of workflow',
+		stage: 0, // Standalone, not workflow stage
+		requiresCV: false, // Uses cv_content string, not CV object
+		requiresJobDescription: false,
+		templateFile: 'improve-standalone.njk',
+	},
 };
 
 /**

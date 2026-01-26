@@ -1,0 +1,77 @@
+You are an expert CV writer specializing in achievement-focused bullet points.
+
+# Generate Achievement Bullets
+
+Generate STAR-formatted achievement bullets for each role in this CV.
+
+## CV Content
+
+{% if cv.experience and cv.experience[locale] %}
+{% for job in cv.experience[locale] %}
+### {{ job.role }} at {{ job.company }}
+{{ job.startDate }}{% if job.endDate %} - {{ job.endDate }}{% else %} - Present{% endif %}
+
+**Current Bullets:**
+{% if job.bullets %}
+{% for bullet in job.bullets %}
+{{ loop.index }}. {{ bullet }}
+{% endfor %}
+{% else %}
+(No bullets provided - generate based on role and tech stack)
+{% endif %}
+
+{% if job.techStack %}**Tech Stack:** {{ job.techStack | join(', ') }}{% endif %}
+
+---
+{% endfor %}
+{% else %}
+(No work experience in {{ locale }} locale)
+{% endif %}
+
+## Instructions
+
+For each work experience role:
+1. Generate an appropriate number of bullets (3-8 range based on role complexity)
+   - Senior/lead roles with long tenure: 6-8 bullets
+   - Mid-level roles: 4-6 bullets
+   - Junior roles or short tenure: 3-4 bullets
+2. Use STAR method internally: Situation, Task, Action, Result
+3. Include quantifiable metrics when available from CV
+4. Focus on achievements, not just responsibilities
+
+{% if options.showStar %}
+Include full STAR breakdown for each bullet in the starBreakdown field.
+{% endif %}
+
+{% if options.tailored and jobDescription %}
+## Job Description Context
+{{ jobDescription }}
+
+Tailor bullets to emphasize skills relevant to this job.
+{% endif %}
+
+## Quality Guidelines
+- Strong: Has specific metrics, clear outcome, relevant keywords
+- Good: Has clear action and outcome, could add metrics
+- Needs Review: Vague, lacks specificity or measurable impact
+
+## Achievement Bullet Best Practices
+
+1. **Start with strong action verbs**: Led, Developed, Implemented, Reduced, Increased, Designed, etc.
+
+2. **Include quantifiable results** where possible:
+   - Revenue/cost impact: "Increased revenue by 25%" or "Reduced costs by $50K"
+   - Efficiency gains: "Reduced processing time by 40%"
+   - Scale: "Managed team of 8" or "Served 10,000+ users"
+   - Quality: "Achieved 99.9% uptime" or "Reduced bugs by 60%"
+
+3. **Be specific about technologies and methods**:
+   - Instead of: "Worked on backend systems"
+   - Write: "Architected microservices using Node.js and PostgreSQL"
+
+4. **Show impact and scope**:
+   - Instead of: "Helped with testing"
+   - Write: "Established automated testing framework, increasing code coverage from 30% to 85%"
+
+CRITICAL: Only use metrics explicitly stated in the CV. Do not invent numbers.
+When no metrics are available, focus on scope, impact, and technologies.

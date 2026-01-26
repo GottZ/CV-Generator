@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 18 COMPLETE
+**Session:** v1.2 PHASE 18 IN PROGRESS (6 of 7 plans complete)
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 18 - Wizard Foundation (complete)
-**Plan:** 05 of 5 complete
-**Status:** Phase complete
+**Phase:** 18 - Wizard Foundation (in progress)
+**Plan:** 06 of 7 complete
+**Status:** In progress
 
 ```
 [###################  ] 47% (22/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-05-PLAN.md (Summary and Output)
+**Last activity:** 2026-01-26 - Completed 18-06-PLAN.md (Runner and CLI Commands)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | Complete (5/5 plans) |
+| 18 | Wizard Foundation | 14 | In Progress (6/7 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -199,9 +199,14 @@ v1.2 Phase 18 decisions (18-05):
 - Certifications section not localized per schema
 - generateMarkdown matches scaffolder.ts format exactly
 
+v1.2 Phase 18 decisions (18-06):
+- ExitPromptError caught via process.on('uncaughtException') with exit code 130
+- runAddSection recursively calls itself when user selects 'edit' after add
+- ParseResult uses data field not success field for cv-core compatibility
+
 ### Open TODOs
 
-- Start Phase 19 (Wizard Non-Interactive & Integration)
+- Execute Phase 18 plan 07 (E2E Tests)
 
 ### Blockers
 
@@ -211,8 +216,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 complete
-**Resume command:** Execute 19-01-PLAN.md (Wizard Non-Interactive Mode)
+**Current step:** Phase 18 plan 06 complete
+**Resume command:** Execute 18-07-PLAN.md (E2E Tests)
 
 ### Files to Reference
 
@@ -244,8 +249,9 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-03-SUMMARY.md` - Education and Skills Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-04-SUMMARY.md` - Projects and Certifications Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-05-SUMMARY.md` - Summary and Output summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-06-SUMMARY.md` - Runner and CLI Commands summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-05 Summary and Output)*
+*Last updated: 2026-01-26 (completed 18-06 Runner and CLI Commands)*

@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 19 - Wizard Non-Interactive & Integration (in progress)
-**Plan:** 4 of 7
+**Plan:** 2 of 7 (01 and 04 complete)
 **Status:** In progress
 
 ```
 [########################] 60% (28/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 19-04-PLAN.md (STAR Method Prompts)
+**Last activity:** 2026-01-26 - Completed 19-01-PLAN.md (Non-Interactive Mode Infrastructure)
 
 ## v1.2 Milestone Overview
 
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
-| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (4/7) |
+| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (2/7 - 01,04 done) |
 | 20 | Template Scaffolding | 9 | Pending |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
@@ -210,6 +210,12 @@ v1.2 Phase 18 decisions (18-08):
 - Null return pattern allows parent collectors to skip cancelled entries
 - Empty URL provides second escape path from nested prompts
 
+v1.2 Phase 19 decisions (19-01):
+- Exit code 2 for validation errors (per CONTEXT.md)
+- Progress to stderr, output to stdout (Unix convention)
+- JSON mode skips progress messages for clean parsing
+- --force-interactive as escape hatch for non-TTY environments
+
 v1.2 Phase 19 decisions (19-04):
 - Combined prompt with STAR hints (not separate STAR questions)
 - Show 1 example before each bullet prompt, cycling through 3 per role
@@ -218,7 +224,7 @@ v1.2 Phase 19 decisions (19-04):
 
 ### Open TODOs
 
-- Continue Phase 19 (plans 05-07 remaining)
+- Continue Phase 19 (plans 02, 03, 05, 06, 07 remaining)
 
 ### Blockers
 
@@ -228,8 +234,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 19, plan 04 complete
-**Resume command:** `/gsd:execute-phase 19-05`
+**Current step:** Phase 19, plans 01 and 04 complete
+**Resume command:** `/gsd:execute-phase 19-02`
 
 ### Files to Reference
 
@@ -263,9 +269,10 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-05-SUMMARY.md` - Summary and Output summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-06-SUMMARY.md` - Runner and CLI Commands summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-08-SUMMARY.md` - Gap Closure summary
+- `/workspace/.planning/phases/19-wizard-non-interactive/19-01-SUMMARY.md` - Non-Interactive Mode Infrastructure summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-04-SUMMARY.md` - STAR Method Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 19-04 STAR Method Prompts)*
+*Last updated: 2026-01-26 (completed 19-01 Non-Interactive Mode Infrastructure)*

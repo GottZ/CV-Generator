@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 15 - Multi-Stage Workflow (complete)
-**Plan:** 03 of 3 complete
+**Plan:** 04 of 4 complete
 **Status:** Phase complete
 
 ```
 [####                ] 8% (4/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 15-03 (Summarize/Tailor Stages)
+**Last activity:** 2026-01-26 - Completed 15-04 (Status/Context Commands)
 
 ## v1.2 Milestone Overview
 
@@ -102,6 +102,12 @@ v1.2 Phase 15 decisions (15-03):
 - Color-coded match score in tailor output (green >75%, yellow >50%, red below)
 - Commander requiredOption for --job enforcement with helpful error messages
 
+v1.2 Phase 15 decisions (15-04):
+- Terminal table via cli-table3 for consistent status display
+- Case-insensitive section matching for better UX
+- Three output formats (terminal, JSON, markdown) for flexibility
+- Verbose mode shows full stage history
+
 ### Open TODOs
 
 - Start Phase 16 (AI Content Generation)
@@ -129,8 +135,9 @@ None.
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-01-SUMMARY.md` - Workflow foundation summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-02-SUMMARY.md` - Stage commands summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-03-SUMMARY.md` - Summarize/Tailor stages summary
+- `/workspace/.planning/phases/15-multi-stage-workflow/15-04-SUMMARY.md` - Status/Context commands summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 15-03 Summarize/Tailor Stages)*
+*Last updated: 2026-01-26 (completed 15-04 Status/Context Commands)*

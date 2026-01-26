@@ -3,6 +3,8 @@
  * Exports types, state management, menu, and validation utilities.
  */
 
+// Enhancement module (WIZ-19, WIZ-20)
+export * from './enhance/index.ts';
 // Markdown writer
 export { generateMarkdown, writeWizardOutput } from './markdown-writer.ts';
 export type { MenuChoice } from './menu.ts';
@@ -13,6 +15,8 @@ export {
 	selectMode,
 	showMainMenu,
 } from './menu.ts';
+// Non-interactive module (WIZ-15 through WIZ-18)
+export * from './non-interactive/index.ts';
 // Runner - wizard orchestration
 export type { WizardOptions } from './runner.ts';
 export { runAddSection, runWizard } from './runner.ts';

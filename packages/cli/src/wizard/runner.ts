@@ -1,7 +1,7 @@
 /**
  * Wizard orchestration module.
  * Coordinates the wizard flow with menu navigation and Ctrl+C handling.
- * Implements WIZ-01 through WIZ-06 and WIZ-09.
+ * Implements WIZ-01 through WIZ-06, WIZ-09, and WIZ-20.
  */
 
 import { access, readFile } from 'node:fs/promises';
@@ -10,6 +10,10 @@ import { parseCV } from '@gottz/cv-core';
 import pc from 'picocolors';
 
 import { ensureInteractiveMode } from '../ai/review/tty-check.ts';
+import {
+	type EnhanceOptions,
+	enhanceSection,
+} from './enhance/section-enhancer.ts';
 import { writeWizardOutput } from './markdown-writer.ts';
 import { selectLocale, selectMode, showMainMenu } from './menu.ts';
 import {
@@ -38,6 +42,12 @@ export interface WizardOptions {
 	personName: string;
 	/** Locale for localized sections (default: 'en') */
 	locale?: string;
+	/** Enable AI enhancement for content (WIZ-20) */
+	enhance?: boolean;
+	/** AI provider name (openai, anthropic, ollama) */
+	provider?: string;
+	/** Job description file path for tailored enhancement */
+	job?: string;
 }
 
 /**
@@ -84,11 +94,48 @@ async function loadExistingCV(
 }
 
 /**
- * Run the main wizard loop.
+ * Read job description file if provided.
+ */
+async function loadJobDescription(
+	jobPath: string | undefined,
+): Promise<string | undefined> {
+	if (!jobPath) return undefined;
+
+	try {
+		return await readFile(jobPath, 'utf-8');
+	} catch {
+		console.log(
+			pc.yellow(`Warning: Could not read job description from ${jobPath}`),
+		);
+		return undefined;
+	}
+}
+
+/**
+ * Run the main wizard loop with optional enhancement.
  * @param state - Current wizard state
+ * @param options - Wizard options including enhancement settings
  * @returns Final wizard state after all edits
  */
-async function runWizardLoop(state: WizardState): Promise<WizardState> {
+async function runWizardLoop(
+	state: WizardState,
+	options: WizardOptions,
+): Promise<WizardState> {
+	// Load job description once for all enhancement calls
+	const jobDescription = options.enhance
+		? await loadJobDescription(options.job)
+		: undefined;
+
+	// Build enhancement options
+	const enhanceOpts: EnhanceOptions | undefined = options.enhance
+		? {
+				provider: options.provider,
+				jobDescription,
+				nonInteractive: false, // Interactive mode allows user review
+				jsonOutput: false,
+			}
+		: undefined;
+
 	while (true) {
 		const selection = await showMainMenu(state);
 
@@ -102,6 +149,15 @@ async function runWizardLoop(state: WizardState): Promise<WizardState> {
 					state.mode,
 					state.experience,
 				);
+				// Apply enhancement after collecting experience (WIZ-20)
+				if (enhanceOpts && state.experience.length > 0) {
+					console.log(pc.cyan('\nEnhancing experience bullets with AI...'));
+					state.experience = await enhanceSection(
+						'experience',
+						state.experience,
+						enhanceOpts,
+					);
+				}
 				break;
 
 			case 'education':
@@ -169,8 +225,15 @@ export async function runWizard(options: WizardOptions): Promise<void> {
 		state = createInitialState(mode);
 	}
 
+	// Show enhancement status if enabled
+	if (options.enhance) {
+		console.log(
+			pc.cyan('AI enhancement enabled. Content will be enhanced after entry.'),
+		);
+	}
+
 	// Main wizard loop
-	state = await runWizardLoop(state);
+	state = await runWizardLoop(state, options);
 
 	// Check minimum viable CV
 	if (!isMinimumViable(state)) {
@@ -179,14 +242,14 @@ export async function runWizard(options: WizardOptions): Promise<void> {
 		console.log(pc.yellow('  - Education'));
 		console.log(pc.yellow('  - Skills'));
 		console.log(pc.yellow('\nReturning to menu...'));
-		state = await runWizardLoop(state);
+		state = await runWizardLoop(state, options);
 	}
 
 	// Confirm and save
 	let action = await confirmSave(state);
 
 	while (action === 'edit') {
-		state = await runWizardLoop(state);
+		state = await runWizardLoop(state, options);
 
 		if (!isMinimumViable(state)) {
 			console.log(
@@ -196,7 +259,7 @@ export async function runWizard(options: WizardOptions): Promise<void> {
 			console.log(pc.yellow('  - Education'));
 			console.log(pc.yellow('  - Skills'));
 			console.log(pc.yellow('\nReturning to menu...'));
-			state = await runWizardLoop(state);
+			state = await runWizardLoop(state, options);
 		}
 
 		action = await confirmSave(state);
@@ -261,10 +324,34 @@ export async function runAddSection(
 	console.log(pc.cyan(`Adding ${section} to CV for ${personName}`));
 	const state = existingState;
 
+	// Load job description for enhancement
+	const jobDescription = options.enhance
+		? await loadJobDescription(options.job)
+		: undefined;
+
+	// Build enhancement options
+	const enhanceOpts: EnhanceOptions | undefined = options.enhance
+		? {
+				provider: options.provider,
+				jobDescription,
+				nonInteractive: false,
+				jsonOutput: false,
+			}
+		: undefined;
+
 	// Call appropriate collector based on section
 	switch (section) {
 		case 'experience':
 			state.experience = await collectExperience(state.mode, state.experience);
+			// Apply enhancement after collecting (WIZ-20)
+			if (enhanceOpts && state.experience.length > 0) {
+				console.log(pc.cyan('\nEnhancing experience bullets with AI...'));
+				state.experience = await enhanceSection(
+					'experience',
+					state.experience,
+					enhanceOpts,
+				);
+			}
 			break;
 
 		case 'skills':

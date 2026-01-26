@@ -161,9 +161,16 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Before saving, user sees a formatted summary of all entered data and confirms
 5. Arrow keys navigate select lists, passwords are masked, progress spinners show during file writes
 
-**Plans:** (created by /gsd:plan-phase)
+**Plans:** 7 plans
+- [ ] 18-01-PLAN.md — Wizard infrastructure (types, state, menu, validation)
+- [ ] 18-02-PLAN.md — Contact and Experience prompts
+- [ ] 18-03-PLAN.md — Education and Skills prompts
+- [ ] 18-04-PLAN.md — Projects and Certifications prompts
+- [ ] 18-05-PLAN.md — Summary display and markdown writer
+- [ ] 18-06-PLAN.md — CLI commands (wizard init, wizard add)
+- [ ] 18-07-PLAN.md — Verification checkpoint
 
-**Research flags:** Bun compatibility spike for @inquirer/prompts
+**Research flags:** Bun compatibility spike for @inquirer/prompts (verified in 18-RESEARCH.md)
 
 ---
 

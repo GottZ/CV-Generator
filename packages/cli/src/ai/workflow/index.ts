@@ -3,6 +3,15 @@
  * Provides multi-stage CV improvement workflow infrastructure.
  */
 
+// Display helpers
+export {
+	formatSectionContext,
+	formatSectionContextJson,
+	formatSectionContextMarkdown,
+	formatSectionList,
+	formatStatus,
+	formatStatusJson,
+} from './display.ts';
 // Runner infrastructure
 export {
 	type CVLoadResult,

@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
-| 17 | AI User Control | 4 | In Progress (2/5) |
+| 17 | AI User Control | 4 | In Progress (3/5) |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
@@ -157,7 +157,7 @@ v1.2 Phase 17 decisions (17-02):
 
 ### Open TODOs
 
-- Continue Phase 17 (plans 03-05)
+- Continue Phase 17 (plans 04-05)
 
 ### Blockers
 
@@ -167,8 +167,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 17 plan 02 complete
-**Resume command:** Execute 17-03-PLAN.md
+**Current step:** Phase 17 plan 03 complete
+**Resume command:** Execute 17-04-PLAN.md
 
 ### Files to Reference
 
@@ -190,10 +190,11 @@ None.
 - `/workspace/.planning/phases/16-ai-content-generation/16-05-SUMMARY.md` - Keywords Analysis Command summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-06-SUMMARY.md` - Standalone Improve Generator summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-07-SUMMARY.md` - Standalone Tailor Generator summary
-
+- `/workspace/.planning/phases/17-ai-user-control/17-01-SUMMARY.md` - Review Prompt Infrastructure summary
 - `/workspace/.planning/phases/17-ai-user-control/17-02-SUMMARY.md` - Editor Integration and Regeneration summary
+- `/workspace/.planning/phases/17-ai-user-control/17-03-SUMMARY.md` - File Writer and TTY Detection summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 17-02 Editor Integration and Regeneration)*
+*Last updated: 2026-01-26 (completed 17-03 File Writer and TTY Detection)*

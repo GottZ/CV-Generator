@@ -6,8 +6,11 @@
  */
 
 import { Command } from 'commander';
+import { analyzeAction } from './ai/analyze.ts';
 import { configAction } from './ai/config.ts';
+import { improveAction } from './ai/improve.ts';
 import { promptAction } from './ai/prompt.ts';
+import { summarizeAction } from './ai/summarize.ts';
 import { validateAction } from './ai/validate.ts';
 
 /**
@@ -84,6 +87,76 @@ Examples:
 `,
 		)
 		.action(validateAction);
+
+	// Analyze subcommand - Stage 1: Analyze CV structure
+	ai.command('analyze <name>')
+		.description(
+			'Stage 1: Analyze CV structure and identify improvement opportunities',
+		)
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--force', 'Re-run even if stage is complete')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai analyze johndoe
+  $ cvgen ai analyze johndoe --provider openai
+  $ cvgen ai analyze johndoe --force  # Re-run even if complete
+  $ cvgen ai analyze johndoe --json   # Output as JSON
+`,
+		)
+		.action(analyzeAction);
+
+	// Improve subcommand - Stage 2: Generate improved bullets
+	ai.command('improve <name>')
+		.description(
+			'Stage 2: Generate improved achievement bullets using STAR method',
+		)
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--force', 'Re-run even if stage is complete')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai improve johndoe
+  $ cvgen ai improve johndoe --provider openai
+  $ cvgen ai improve johndoe --force  # Re-run even if complete
+  $ cvgen ai improve johndoe --json   # Output as JSON
+`,
+		)
+		.action(improveAction);
+
+	// Summarize subcommand - Stage 3: Generate professional summary
+	ai.command('summarize <name>')
+		.description('Stage 3: Generate professional summary from CV content')
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--force', 'Re-run even if stage is complete')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai summarize johndoe
+  $ cvgen ai summarize johndoe --provider openai
+  $ cvgen ai summarize johndoe --force  # Re-run even if complete
+  $ cvgen ai summarize johndoe --json   # Output as JSON
+`,
+		)
+		.action(summarizeAction);
 
 	return ai;
 }

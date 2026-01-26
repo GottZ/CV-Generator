@@ -5,7 +5,6 @@
 
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
-// Note: readdir removed - unused in test helpers
 import path from 'node:path';
 import { validateTemplate } from '../validator.ts';
 

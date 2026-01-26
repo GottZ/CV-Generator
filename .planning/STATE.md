@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
-**Last Updated:** 2026-01-25
-**Session:** v1.2 PHASE 14 COMPLETE
+**Last Updated:** 2026-01-26
+**Session:** v1.2 PHASE 15 IN PROGRESS
 
 ## Project Reference
 
@@ -14,22 +14,22 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 14 - AI Foundation (complete)
-**Plan:** 03 of 3 complete
-**Status:** Phase complete, ready for Phase 15
+**Phase:** 15 - Multi-Stage Workflow (in progress)
+**Plan:** 01 of 3 complete
+**Status:** In progress
 
 ```
 [##                  ] 4% (2/47 requirements)
 ```
 
-**Last activity:** 2026-01-25 - Completed 14-03 (AI CLI Commands)
+**Last activity:** 2026-01-26 - Completed 15-01 (Workflow Foundation)
 
 ## v1.2 Milestone Overview
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
 | 14 | AI Foundation | 2 | Complete (2/2) |
-| 15 | Multi-Stage Workflow | 6 | Pending |
+| 15 | Multi-Stage Workflow | 6 | In Progress (0/6) |
 | 16 | AI Content Generation | 5 | Pending |
 | 17 | AI User Control | 4 | Pending |
 | 18 | Wizard Foundation | 14 | Pending |
@@ -85,9 +85,16 @@ v1.2 Phase 14 decisions:
 - Commander subcommand groups for ai commands
 - Prompt export works without API key (AI-02 requirement)
 
+v1.2 Phase 15 decisions (15-01):
+- Zod 4.3.6 for structured LLM outputs (14x faster than Zod 3)
+- Discriminated union state machine vs XState (right-sized for 4-stage linear workflow)
+- Per-person workflow state at `/people/[name]/output/.ai-state.json`
+- Atomic writes using temp file + rename pattern
+- Version field in state for future schema migration
+
 ### Open TODOs
 
-- Start Phase 15 (Multi-Stage Workflow)
+- Continue Phase 15 (15-02: Stage Commands, 15-03: Status/Context Commands)
 
 ### Blockers
 
@@ -97,8 +104,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Plan Phase 15 (Multi-Stage Workflow)
-**Resume command:** `/gsd:discuss-phase 15`
+**Current step:** Execute Phase 15 Plan 02 (Stage Commands)
+**Resume command:** `/gsd:execute-phase 15`
 
 ### Files to Reference
 
@@ -109,8 +116,9 @@ None.
 - `/workspace/.planning/phases/14-ai-foundation/14-01-SUMMARY.md` - AI infrastructure summary
 - `/workspace/.planning/phases/14-ai-foundation/14-02-SUMMARY.md` - Prompt templates summary
 - `/workspace/.planning/phases/14-ai-foundation/14-03-SUMMARY.md` - CLI commands summary
+- `/workspace/.planning/phases/15-multi-stage-workflow/15-01-SUMMARY.md` - Workflow foundation summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-25 (completed Phase 14 - AI Foundation)*
+*Last updated: 2026-01-26 (completed 15-01 Workflow Foundation)*

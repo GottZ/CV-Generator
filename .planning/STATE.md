@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 15 COMPLETE
+**Session:** v1.2 PHASE 16 IN PROGRESS
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 15 - Multi-Stage Workflow (complete)
-**Plan:** 04 of 4 complete
-**Status:** Phase complete
+**Phase:** 16 - AI Content Generation (in progress)
+**Plan:** 01 of 7 complete
+**Status:** In progress
 
 ```
-[####                ] 8% (4/47 requirements)
+[#####               ] 10% (5/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 15-04 (Status/Context Commands)
+**Last activity:** 2026-01-26 - Completed 16-01 (Core Utility Infrastructure)
 
 ## v1.2 Milestone Overview
 
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 |-------|------|--------------|--------|
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
-| 16 | AI Content Generation | 5 | Pending |
+| 16 | AI Content Generation | 5 | In progress (1/5) |
 | 17 | AI User Control | 4 | Pending |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
@@ -108,9 +108,15 @@ v1.2 Phase 15 decisions (15-04):
 - Three output formats (terminal, JSON, markdown) for flexibility
 - Verbose mode shows full stage history
 
+v1.2 Phase 16 decisions (16-01):
+- Exponential backoff formula: baseDelay * 2^(attempt-1) capped at maxDelay
+- Dynamic unpdf import to avoid bundling issues
+- Simple regex HTML extraction sufficient for job postings
+- STAR breakdown as markdown comments (hidden by default)
+
 ### Open TODOs
 
-- Start Phase 16 (AI Content Generation)
+- Continue Phase 16 (AI Content Generation) - 16-02 next
 
 ### Blockers
 
@@ -120,8 +126,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 15 complete, ready for Phase 16
-**Resume command:** `/gsd:execute-phase 16`
+**Current step:** Phase 16 plan 01 complete, continue with 16-02
+**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-02-PLAN.md`
 
 ### Files to Reference
 
@@ -136,8 +142,9 @@ None.
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-02-SUMMARY.md` - Stage commands summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-03-SUMMARY.md` - Summarize/Tailor stages summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-04-SUMMARY.md` - Status/Context commands summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-01-SUMMARY.md` - Core Utility Infrastructure summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 15-04 Status/Context Commands)*
+*Last updated: 2026-01-26 (completed 16-01 Core Utility Infrastructure)*

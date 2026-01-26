@@ -3,16 +3,16 @@
  * Per WIZ-20: AI enhancement via --enhance flag with review flow.
  */
 
+import type { WorkExperience } from '@gottz/cv-core';
 import { confirm } from '@inquirer/prompts';
 import { generateText } from 'ai';
 import pc from 'picocolors';
-import {
-	runReviewSession,
-	type ReviewItem,
-} from '../../ai/review/review-session.js';
-import type { AIProvider } from '../../ai/providers/types.js';
 import { createProvider, loadAIConfig } from '../../ai/index.js';
-import type { WorkExperience } from '@gottz/cv-core';
+import type { AIProvider } from '../../ai/providers/types.js';
+import {
+	type ReviewItem,
+	runReviewSession,
+} from '../../ai/review/review-session.js';
 
 /**
  * Options for AI enhancement.
@@ -31,7 +31,11 @@ export interface EnhanceOptions {
 /**
  * Sections that can be enhanced.
  */
-export type EnhanceableSection = 'experience' | 'skills' | 'education' | 'projects';
+export type EnhanceableSection =
+	| 'experience'
+	| 'skills'
+	| 'education'
+	| 'projects';
 
 /**
  * Try to create AI provider, return null if unavailable.
@@ -116,7 +120,9 @@ async function enhanceExperienceBullets(
 	const provider = await tryGetProvider(options.provider);
 	if (!provider) {
 		if (!options.nonInteractive) {
-			console.log(pc.yellow('AI provider not available. Skipping enhancement.'));
+			console.log(
+				pc.yellow('AI provider not available. Skipping enhancement.'),
+			);
 		}
 		return experience;
 	}
@@ -129,9 +135,7 @@ async function enhanceExperienceBullets(
 
 		// Show progress
 		if (!options.nonInteractive && !options.jsonOutput) {
-			console.log(
-				pc.cyan(`\nEnhancing: ${exp.role} at ${exp.company}`),
-			);
+			console.log(pc.cyan(`\nEnhancing: ${exp.role} at ${exp.company}`));
 		}
 
 		// Generate initial improvements for each bullet
@@ -169,7 +173,7 @@ async function enhanceExperienceBullets(
 						});
 					},
 				});
-			} catch (error) {
+			} catch {
 				// If individual bullet fails, skip it
 				if (!options.nonInteractive && !options.jsonOutput) {
 					console.log(
@@ -183,7 +187,7 @@ async function enhanceExperienceBullets(
 
 		if (options.nonInteractive) {
 			// Auto-accept all in non-interactive mode per CONTEXT.md
-			const finalBullets = exp.bullets.map((original, idx) => {
+			const finalBullets = exp.bullets.map((original) => {
 				const item = reviewItems.find((r) => r.original === original);
 				return item ? item.suggested : original;
 			});

@@ -31,6 +31,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 3. Provider abstraction interface exists (validates architecture before integration)
 4. Configuration cascade includes `ai` section extending existing pattern
 
+**Plans:** 3 plans (complete)
+
 **Research flags:** None - standard SDK patterns
 
 ---
@@ -57,6 +59,12 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Each stage produces structured output that feeds into the next stage
 5. Stage 4 (Tailor) is skippable when no job description is provided
 
+**Plans:** 4 plans
+- [ ] 15-01-PLAN.md - Workflow Types & State Management (Wave 1)
+- [ ] 15-02-PLAN.md - Stage Commands: Analyze & Improve (Wave 2)
+- [ ] 15-03-PLAN.md - Stage Commands: Summarize & Tailor (Wave 2)
+- [ ] 15-04-PLAN.md - Status & Context Commands (Wave 3)
+
 **Research flags:** Prompt engineering iteration needed
 
 ---
@@ -81,6 +89,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. User can run `cvgen ai improve jane` and receive suggestions for strengthening weak content
 5. User can run `cvgen ai tailor jane --job posting.txt` and receive role-specific content adaptations
 
+**Plans:** (created by /gsd:plan-phase)
+
 **Research flags:** Prompt engineering for CV-specific use cases
 
 ---
@@ -103,6 +113,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 3. User can press `a` to accept, `e` to edit, `s` to skip, `r` to regenerate for each suggestion
 4. Weak bullets are highlighted with specific feedback (e.g., "lacks quantification", "missing outcome")
 5. User can accept all, skip all, or review one-by-one
+
+**Plans:** (created by /gsd:plan-phase)
 
 **Research flags:** None - established UI patterns
 
@@ -137,6 +149,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Before saving, user sees a formatted summary of all entered data and confirms
 5. Arrow keys navigate select lists, passwords are masked, progress spinners show during file writes
 
+**Plans:** (created by /gsd:plan-phase)
+
 **Research flags:** Bun compatibility spike for @inquirer/prompts
 
 ---
@@ -161,6 +175,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 3. Running wizard in non-TTY (e.g., piped input) shows error with instructions to use `--no-input`
 4. Experience wizard prompts for Situation, Task, Action, Result to build strong bullets
 5. User can add `--enhance` flag to wizard commands to get AI suggestions for entered content
+
+**Plans:** (created by /gsd:plan-phase)
 
 **Research flags:** None - standard CLI patterns
 
@@ -190,6 +206,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. User can run `cvgen template wizard` and create a new template through guided prompts
 5. Generated templates pass validation and produce working PDF/HTML/DOCX output
 
+**Plans:** (created by /gsd:plan-phase)
+
 **Research flags:** None - extends existing scaffolder patterns
 
 ---
@@ -199,7 +217,7 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 | Phase | Name | Requirements | Status | Completion |
 |-------|------|--------------|--------|------------|
 | 14 | AI Foundation | 2 | Complete | 100% |
-| 15 | Multi-Stage Workflow | 6 | Pending | 0% |
+| 15 | Multi-Stage Workflow | 6 | Planned | 0% |
 | 16 | AI Content Generation | 5 | Pending | 0% |
 | 17 | AI User Control | 4 | Pending | 0% |
 | 18 | Wizard Foundation | 14 | Pending | 0% |

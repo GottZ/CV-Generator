@@ -18,11 +18,11 @@
 - [x] **AI-05**: User can lookup context details (CV sections, previous stage results) via `cvgen ai context [name] [section]`
 
 **Content Generation:**
-- [ ] **AI-06**: User can generate achievement bullets from job descriptions using `cvgen ai bullets [name]`
-- [ ] **AI-07**: User can generate professional summary from CV data using `cvgen ai summary [name]`
-- [ ] **AI-08**: User can get keyword optimization suggestions for ATS using `cvgen ai keywords [name]`
-- [ ] **AI-09**: User can improve existing CV content with suggestions using `cvgen ai improve [name]`
-- [ ] **AI-10**: User can tailor CV to specific job description using `cvgen ai tailor [name] --job [file|url]`
+- [x] **AI-06**: User can generate achievement bullets from job descriptions using `cvgen ai bullets [name]`
+- [x] **AI-07**: User can generate professional summary from CV data using `cvgen ai summary [name]`
+- [x] **AI-08**: User can get keyword optimization suggestions for ATS using `cvgen ai keywords [name]`
+- [x] **AI-09**: User can improve existing CV content with suggestions using `cvgen ai improve [name]`
+- [x] **AI-10**: User can tailor CV to specific job description using `cvgen ai tailor [name] --job [file|url]`
 
 **User Control:**
 - [ ] **AI-11**: User previews all AI suggestions before accepting (never auto-write)
@@ -130,11 +130,11 @@
 | AI-03 | Phase 15 | 15-01, 15-02, 15-03 | Complete |
 | AI-04 | Phase 15 | 15-04 | Complete |
 | AI-05 | Phase 15 | 15-04 | Complete |
-| AI-06 | Phase 16 | - | Pending |
-| AI-07 | Phase 16 | - | Pending |
-| AI-08 | Phase 16 | - | Pending |
-| AI-09 | Phase 16 | - | Pending |
-| AI-10 | Phase 16 | - | Pending |
+| AI-06 | Phase 16 | 16-03 | Complete |
+| AI-07 | Phase 16 | 16-04 | Complete |
+| AI-08 | Phase 16 | 16-05 | Complete |
+| AI-09 | Phase 16 | 16-06 | Complete |
+| AI-10 | Phase 16 | 16-07 | Complete |
 | AI-11 | Phase 17 | - | Pending |
 | AI-12 | Phase 17 | - | Pending |
 | AI-13 | Phase 17 | - | Pending |

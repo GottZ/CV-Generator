@@ -89,14 +89,14 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. User can run `cvgen ai improve jane` and receive suggestions for strengthening weak content
 5. User can run `cvgen ai tailor jane --job posting.txt` and receive role-specific content adaptations
 
-**Plans:** 7 plans
-- [ ] 16-01-PLAN.md - Core utilities (retry, job loading, cv.md formatter)
-- [ ] 16-02-PLAN.md - Display utilities (diff, quality labels, keyword matcher)
-- [ ] 16-03-PLAN.md - Bullets generator and command (AI-06)
-- [ ] 16-04-PLAN.md - Summary generator and command (AI-07)
-- [ ] 16-05-PLAN.md - Keywords generator and command (AI-08)
-- [ ] 16-06-PLAN.md - Improve standalone with diff display (AI-09)
-- [ ] 16-07-PLAN.md - Tailor with multi-source job input (AI-10)
+**Plans:** 7 plans (complete)
+- [x] 16-01-PLAN.md - Core utilities (retry, job loading, cv.md formatter)
+- [x] 16-02-PLAN.md - Display utilities (diff, quality labels, keyword matcher)
+- [x] 16-03-PLAN.md - Bullets generator and command (AI-06)
+- [x] 16-04-PLAN.md - Summary generator and command (AI-07)
+- [x] 16-05-PLAN.md - Keywords generator and command (AI-08)
+- [x] 16-06-PLAN.md - Improve standalone with diff display (AI-09)
+- [x] 16-07-PLAN.md - Tailor with multi-source job input (AI-10)
 
 **Research flags:** Prompt engineering for CV-specific use cases
 
@@ -225,7 +225,7 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 |-------|------|--------------|--------|------------|
 | 14 | AI Foundation | 2 | Complete | 100% |
 | 15 | Multi-Stage Workflow | 6 | Complete | 100% |
-| 16 | AI Content Generation | 5 | Pending | 0% |
+| 16 | AI Content Generation | 5 | Complete | 100% |
 | 17 | AI User Control | 4 | Pending | 0% |
 | 18 | Wizard Foundation | 14 | Pending | 0% |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending | 0% |

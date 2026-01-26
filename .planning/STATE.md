@@ -155,6 +155,12 @@ v1.2 Phase 17 decisions (17-02):
 - Temperature starts at 0.7, bumps 0.1 per attempt, capped at 1.0
 - REGENERATE_SIGNAL constant for signaling regeneration from history
 
+v1.2 Phase 17 decisions (17-03):
+- Default confirmation is false (safe default per CONTEXT.md)
+- Timestamped backup when .bak already exists prevents overwrite
+- TTY check exits with helpful alternatives rather than crashing
+- Force bypass option for ensureInteractiveMode in testing
+
 ### Open TODOs
 
 - Continue Phase 17 (plans 04-05)

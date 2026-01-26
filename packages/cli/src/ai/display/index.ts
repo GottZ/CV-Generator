@@ -8,3 +8,12 @@ export {
 	displayInlineDiff,
 	displaySideBySide,
 } from './diff-display.ts';
+
+// Quality labels
+export {
+	formatKeywordScore,
+	formatMatchScore,
+	formatPriority,
+	formatQualityLabel,
+	type Quality,
+} from './quality-labels.ts';

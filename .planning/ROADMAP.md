@@ -161,14 +161,15 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. Before saving, user sees a formatted summary of all entered data and confirms
 5. Arrow keys navigate select lists, passwords are masked, progress spinners show during file writes
 
-**Plans:** 7 plans
-- [ ] 18-01-PLAN.md — Wizard infrastructure (types, state, menu, validation)
-- [ ] 18-02-PLAN.md — Contact and Experience prompts
-- [ ] 18-03-PLAN.md — Education and Skills prompts
-- [ ] 18-04-PLAN.md — Projects and Certifications prompts
-- [ ] 18-05-PLAN.md — Summary display and markdown writer
-- [ ] 18-06-PLAN.md — CLI commands (wizard init, wizard add)
-- [ ] 18-07-PLAN.md — Verification checkpoint
+**Plans:** 8 plans (complete)
+- [x] 18-01-PLAN.md — Wizard infrastructure (types, state, menu, validation)
+- [x] 18-02-PLAN.md — Contact and Experience prompts
+- [x] 18-03-PLAN.md — Education and Skills prompts
+- [x] 18-04-PLAN.md — Projects and Certifications prompts
+- [x] 18-05-PLAN.md — Summary display and markdown writer
+- [x] 18-06-PLAN.md — CLI commands (wizard init, wizard add)
+- [x] 18-07-PLAN.md — E2E Tests (skipped - human verification only)
+- [x] 18-08-PLAN.md — Gap closure (back navigation, locale selection)
 
 **Research flags:** Bun compatibility spike for @inquirer/prompts (verified in 18-RESEARCH.md)
 
@@ -239,8 +240,8 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 | 15 | Multi-Stage Workflow | 6 | Complete | 100% |
 | 16 | AI Content Generation | 5 | Complete | 100% |
 | 17 | AI User Control | 4 | Complete | 100% |
-| 18 | Wizard Foundation | 14 | Pending | 0% |
-| 19 | Wizard Non-Interactive & Integration | 6 | Pending | 0% |
+| 18 | Wizard Foundation | 13 | Complete | 100% |
+| 19 | Wizard Non-Interactive & Integration | 7 | Pending | 0% |
 | 20 | Template Scaffolding | 9 | Pending | 0% |
 
 **Total:** 47 requirements mapped

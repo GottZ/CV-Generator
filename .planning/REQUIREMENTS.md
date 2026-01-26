@@ -39,22 +39,22 @@
 ### CLI Wizard (WIZ-*)
 
 **Wizard Infrastructure:**
-- [ ] **WIZ-01**: User can create full CV from scratch via `cvgen wizard init [name]`
-- [ ] **WIZ-02**: User can add work experience via `cvgen wizard add experience [name]`
-- [ ] **WIZ-03**: User can add skills via `cvgen wizard add skills [name]`
-- [ ] **WIZ-04**: User can add projects via `cvgen wizard add project [name]`
-- [ ] **WIZ-05**: User can add certifications via `cvgen wizard add certification [name]`
-- [ ] **WIZ-06**: User can add education via `cvgen wizard add education [name]`
+- [x] **WIZ-01**: User can create full CV from scratch via `cvgen wizard init [name]`
+- [x] **WIZ-02**: User can add work experience via `cvgen wizard add experience [name]`
+- [x] **WIZ-03**: User can add skills via `cvgen wizard add skills [name]`
+- [x] **WIZ-04**: User can add projects via `cvgen wizard add project [name]`
+- [x] **WIZ-05**: User can add certifications via `cvgen wizard add certification [name]`
+- [x] **WIZ-06**: User can add education via `cvgen wizard add education [name]`
 
 **Wizard UX:**
-- [ ] **WIZ-07**: Wizard validates input as-you-go with clear error messages
-- [ ] **WIZ-08**: Wizard provides sensible defaults for all optional fields
-- [ ] **WIZ-09**: User can exit wizard cleanly with Ctrl+C (no partial state saved)
-- [ ] **WIZ-10**: Wizard shows summary of all inputs before committing changes
-- [ ] **WIZ-11**: API keys and sensitive inputs are masked during entry
-- [ ] **WIZ-12**: Wizard supports arrow key navigation for selections
-- [ ] **WIZ-13**: Wizard shows progress indication during long operations
-- [ ] **WIZ-14**: Each prompt includes inline help text
+- [x] **WIZ-07**: Wizard validates input as-you-go with clear error messages
+- [x] **WIZ-08**: Wizard provides sensible defaults for all optional fields
+- [x] **WIZ-09**: User can exit wizard cleanly with Ctrl+C (no partial state saved)
+- [x] **WIZ-10**: Wizard shows summary of all inputs before committing changes
+- [ ] **WIZ-11**: API keys and sensitive inputs are masked during entry (deferred to Phase 19)
+- [x] **WIZ-12**: Wizard supports arrow key navigation for selections
+- [x] **WIZ-13**: Wizard shows progress indication during long operations
+- [x] **WIZ-14**: Each prompt includes inline help text
 
 **Non-Interactive Support:**
 - [ ] **WIZ-15**: All wizard commands support `--no-input` flag for non-interactive use
@@ -143,20 +143,20 @@
 | AI-16 | Phase 15 | 15-02 | Complete |
 | AI-17 | Phase 15 | 15-03 | Complete |
 | AI-18 | Phase 15 | 15-03 | Complete |
-| WIZ-01 | Phase 18 | - | Pending |
-| WIZ-02 | Phase 18 | - | Pending |
-| WIZ-03 | Phase 18 | - | Pending |
-| WIZ-04 | Phase 18 | - | Pending |
-| WIZ-05 | Phase 18 | - | Pending |
-| WIZ-06 | Phase 18 | - | Pending |
-| WIZ-07 | Phase 18 | - | Pending |
-| WIZ-08 | Phase 18 | - | Pending |
-| WIZ-09 | Phase 18 | - | Pending |
-| WIZ-10 | Phase 18 | - | Pending |
-| WIZ-11 | Phase 18 | - | Pending |
-| WIZ-12 | Phase 18 | - | Pending |
-| WIZ-13 | Phase 18 | - | Pending |
-| WIZ-14 | Phase 18 | - | Pending |
+| WIZ-01 | Phase 18 | 18-01, 18-06 | Complete |
+| WIZ-02 | Phase 18 | 18-02, 18-06 | Complete |
+| WIZ-03 | Phase 18 | 18-03, 18-06 | Complete |
+| WIZ-04 | Phase 18 | 18-04, 18-06 | Complete |
+| WIZ-05 | Phase 18 | 18-04, 18-06 | Complete |
+| WIZ-06 | Phase 18 | 18-03, 18-06 | Complete |
+| WIZ-07 | Phase 18 | 18-01 | Complete |
+| WIZ-08 | Phase 18 | 18-01, 18-08 | Complete |
+| WIZ-09 | Phase 18 | 18-06 | Complete |
+| WIZ-10 | Phase 18 | 18-05 | Complete |
+| WIZ-11 | Phase 19 | - | Pending |
+| WIZ-12 | Phase 18 | 18-01, 18-08 | Complete |
+| WIZ-13 | Phase 18 | 18-05 | Complete |
+| WIZ-14 | Phase 18 | 18-02, 18-03, 18-04 | Complete |
 | WIZ-15 | Phase 19 | - | Pending |
 | WIZ-16 | Phase 19 | - | Pending |
 | WIZ-17 | Phase 19 | - | Pending |

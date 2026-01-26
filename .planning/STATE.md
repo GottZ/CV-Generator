@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 16 COMPLETE
+**Session:** v1.2 PHASE 17 IN PROGRESS
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 16 - AI Content Generation (complete)
-**Plan:** 07 of 7 complete
-**Status:** Phase complete
+**Phase:** 17 - AI User Control (in progress)
+**Plan:** 03 of 5 complete
+**Status:** In progress
 
 ```
-[###########         ] 28% (13/47 requirements)
+[#############       ] 32% (15/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 16-04 (Summary Generation Command)
+**Last activity:** 2026-01-26 - Completed 17-03-PLAN.md (File Writer and TTY Detection)
 
 ## v1.2 Milestone Overview
 
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
-| 17 | AI User Control | 4 | Pending |
+| 17 | AI User Control | 4 | In Progress (2/5) |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
@@ -143,9 +143,21 @@ v1.2 Phase 16 decisions (16-06):
 - Enhance existing improve command with diff display rather than separate command
 - Use displayComparison from 16-02 for terminal-width-adaptive diff display
 
+v1.2 Phase 17 decisions (17-01):
+- Use lowercase keys for expand prompt (y/n for accept/skip all instead of A/S) - API constraint
+- @inquirer/prompts expand for git-add-p style single-key interaction
+- Jaccard word-level similarity for regeneration deduplication
+- Four weakness categories: lacks_quantification, missing_outcome, too_generic, passive_voice
+
+v1.2 Phase 17 decisions (17-02):
+- external-editor handles $VISUAL/$EDITOR/vi fallback automatically
+- Word-level Jaccard similarity with 0.8 threshold for similarity warning
+- Temperature starts at 0.7, bumps 0.1 per attempt, capped at 1.0
+- REGENERATE_SIGNAL constant for signaling regeneration from history
+
 ### Open TODOs
 
-- Start Phase 17 (AI User Control)
+- Continue Phase 17 (plans 03-05)
 
 ### Blockers
 
@@ -155,8 +167,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 16 complete (all 7 plans done)
-**Resume command:** Start Phase 17 - AI User Control
+**Current step:** Phase 17 plan 02 complete
+**Resume command:** Execute 17-03-PLAN.md
 
 ### Files to Reference
 
@@ -179,7 +191,9 @@ None.
 - `/workspace/.planning/phases/16-ai-content-generation/16-06-SUMMARY.md` - Standalone Improve Generator summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-07-SUMMARY.md` - Standalone Tailor Generator summary
 
+- `/workspace/.planning/phases/17-ai-user-control/17-02-SUMMARY.md` - Editor Integration and Regeneration summary
+
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed Phase 16 AI Content Generation)*
+*Last updated: 2026-01-26 (completed 17-02 Editor Integration and Regeneration)*

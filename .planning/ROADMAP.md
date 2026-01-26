@@ -235,7 +235,14 @@ Plans:
 4. User can run `cvgen template wizard` and create a new template through guided prompts
 5. Generated templates pass validation and produce working PDF/HTML/DOCX output
 
-**Plans:** (created by /gsd:plan-phase)
+**Plans:** 5 plans
+
+Plans:
+- [ ] 20-01-PLAN.md — Template copy and validation (TDD) (Wave 1)
+- [ ] 20-02-PLAN.md — Types and constants (Wave 1)
+- [ ] 20-03-PLAN.md — Customization prompts (colors, fonts, margins, sections) (Wave 2)
+- [ ] 20-04-PLAN.md — Template wizard orchestrator (Wave 3)
+- [ ] 20-05-PLAN.md — CLI commands integration (Wave 4)
 
 **Research flags:** None - extends existing scaffolder patterns
 

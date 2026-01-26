@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 18 - Wizard Foundation (in progress)
-**Plan:** 01 of 5 complete
+**Plan:** 02 of 5 complete
 **Status:** In progress
 
 ```
-[################    ] 38% (18/47 requirements)
+[################    ] 40% (19/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-01-PLAN.md (Wizard Infrastructure)
+**Last activity:** 2026-01-26 - Completed 18-02-PLAN.md (Contact and Experience Prompts)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | In Progress (1/5 plans) |
+| 18 | Wizard Foundation | 14 | In Progress (2/5 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -176,9 +176,15 @@ v1.2 Phase 18 decisions (18-01):
 - Unicode menu icons: checkmark U+2713, half-circle U+25D0, circle U+25CB, X U+2717
 - Re-prompt validation pattern: warn and continue on second attempt with same invalid value
 
+v1.2 Phase 18 decisions (18-02):
+- URL validation accepts various formats, normalizes to https://
+- Links preserve existing when user declines to add new ones
+- Bullets require minimum 1 with re-prompt on empty
+- End date defaults to 'present' for current positions
+
 ### Open TODOs
 
-- Continue Phase 18 (plans 02-05 pending)
+- Continue Phase 18 (plans 03-05 pending)
 
 ### Blockers
 
@@ -188,8 +194,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 plan 01 complete
-**Resume command:** Execute 18-02-PLAN.md (Contact and Experience prompts)
+**Current step:** Phase 18 plan 02 complete
+**Resume command:** Execute 18-03-PLAN.md (Education and Skills prompts)
 
 ### Files to Reference
 
@@ -217,8 +223,9 @@ None.
 - `/workspace/.planning/phases/17-ai-user-control/17-04-SUMMARY.md` - Review Session Orchestrator summary
 - `/workspace/.planning/phases/17-ai-user-control/17-05-SUMMARY.md` - Review Integration summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-01-SUMMARY.md` - Wizard Infrastructure summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-02-SUMMARY.md` - Contact and Experience Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-01 Wizard Infrastructure)*
+*Last updated: 2026-01-26 (completed 18-02 Contact and Experience Prompts)*

@@ -16,7 +16,8 @@ export {
 	isMinimumViable,
 	isSectionOptional,
 } from './state.ts';
-
+// Summary display
+export { confirmSave, displaySummary, formatInlineIssue } from './summary.ts';
 // Types
 export type {
 	SectionStatus,

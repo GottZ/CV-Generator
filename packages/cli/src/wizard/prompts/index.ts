@@ -16,13 +16,11 @@ export {
 	collectSingleExperience,
 	collectTechStack,
 } from './experience.ts';
-
+// Projects prompts
+export { collectProjects, collectSingleProject } from './projects.ts';
 // Skills prompts
 export {
 	collectSingleSkillCategory,
 	collectSkills,
 	collectSkillsInCategory,
 } from './skills.ts';
-
-// Projects prompts
-export { collectProjects, collectSingleProject } from './projects.ts';

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 19 IN PROGRESS
+**Session:** v1.2 PHASE 19 Wave 2 IN PROGRESS
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 19 - Wizard Non-Interactive & Integration (in progress)
-**Plan:** 4 of 7 (01, 02, 03, 04 complete)
+**Plan:** 5 of 7 (01, 02, 03, 04, 05 complete)
 **Status:** In progress
 
 ```
-[##########################] 64% (30/47 requirements)
+[###########################] 66% (31/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 19-03-PLAN.md (Flag Collector and State Builder)
+**Last activity:** 2026-01-26 - Completed 19-05-PLAN.md (AI Enhancement Integration)
 
 ## v1.2 Milestone Overview
 
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
-| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (4/7 - 01,02,03,04 done) |
+| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (5/7 - 01,02,03,04,05 done) |
 | 20 | Template Scaffolding | 9 | Pending |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
@@ -234,9 +234,15 @@ v1.2 Phase 19 decisions (19-03):
 - mergeContactFlags allows flags to supplement JSON when no overlap
 - Flag builder pattern: buildXFromFlags returns typed object or null if required fields missing
 
+v1.2 Phase 19 decisions (19-05):
+- Focus on experience bullets as primary AI enhancement target (other sections deferred)
+- Use generateText directly for single bullet improvement (not workflow improve stage)
+- Capture provider and context in closure for regeneration support
+- tryGetProvider pattern for graceful AI degradation
+
 ### Open TODOs
 
-- Continue Phase 19 (plans 05, 06, 07 remaining)
+- Continue Phase 19 (plans 06, 07 remaining)
 
 ### Blockers
 
@@ -246,8 +252,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 19, plans 01, 02, 03, and 04 complete
-**Resume command:** `/gsd:execute-phase 19-05`
+**Current step:** Phase 19, plans 01, 02, 03, 04, and 05 complete
+**Resume command:** `/gsd:execute-phase 19-06`
 
 ### Files to Reference
 
@@ -285,8 +291,9 @@ None.
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-02-SUMMARY.md` - Zod Schemas and JSON Input summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-03-SUMMARY.md` - Flag Collector and State Builder summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-04-SUMMARY.md` - STAR Method Prompts summary
+- `/workspace/.planning/phases/19-wizard-non-interactive/19-05-SUMMARY.md` - AI Enhancement Integration summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 19-03 Flag Collector and State Builder)*
+*Last updated: 2026-01-26 (completed 19-05 AI Enhancement Integration)*

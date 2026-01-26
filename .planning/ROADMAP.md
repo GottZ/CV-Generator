@@ -89,7 +89,14 @@ This roadmap delivers AI-assisted content generation, interactive CLI wizards, a
 4. User can run `cvgen ai improve jane` and receive suggestions for strengthening weak content
 5. User can run `cvgen ai tailor jane --job posting.txt` and receive role-specific content adaptations
 
-**Plans:** (created by /gsd:plan-phase)
+**Plans:** 7 plans
+- [ ] 16-01-PLAN.md - Core utilities (retry, job loading, cv.md formatter)
+- [ ] 16-02-PLAN.md - Display utilities (diff, quality labels, keyword matcher)
+- [ ] 16-03-PLAN.md - Bullets generator and command (AI-06)
+- [ ] 16-04-PLAN.md - Summary generator and command (AI-07)
+- [ ] 16-05-PLAN.md - Keywords generator and command (AI-08)
+- [ ] 16-06-PLAN.md - Improve standalone with diff display (AI-09)
+- [ ] 16-07-PLAN.md - Tailor with multi-source job input (AI-10)
 
 **Research flags:** Prompt engineering for CV-specific use cases
 

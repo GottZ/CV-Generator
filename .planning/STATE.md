@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 18 IN PROGRESS
+**Session:** v1.2 PHASE 18 IN PROGRESS (plan 04 complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 18 - Wizard Foundation (in progress)
-**Plan:** 03 of 5 complete
+**Plan:** 04 of 5 complete
 **Status:** In progress
 
 ```
-[#################   ] 43% (20/47 requirements)
+[##################  ] 45% (21/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-03-PLAN.md (Education and Skills Prompts)
+**Last activity:** 2026-01-26 - Completed 18-04-PLAN.md (Projects and Certifications Prompts)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | In Progress (3/5 plans) |
+| 18 | Wizard Foundation | 14 | In Progress (4/5 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -188,9 +188,14 @@ v1.2 Phase 18 decisions (18-03):
 - Proficiency levels optional and only in detailed mode
 - CommonCategoryValue type for type-safe category selection
 
+v1.2 Phase 18 decisions (18-04):
+- Project link types predefined: github, demo, npm, docs, website, other
+- Certification date earned validation disallows "present" value
+- Logo field skipped in wizard - users can add manually to cv.md
+
 ### Open TODOs
 
-- Continue Phase 18 (plans 04-05 pending)
+- Continue Phase 18 (plan 05 pending)
 
 ### Blockers
 
@@ -200,8 +205,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 plan 03 complete
-**Resume command:** Execute 18-04-PLAN.md (Projects and Certifications prompts)
+**Current step:** Phase 18 plan 04 complete
+**Resume command:** Execute 18-05-PLAN.md (Wizard Flow Orchestration)
 
 ### Files to Reference
 
@@ -231,8 +236,9 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-01-SUMMARY.md` - Wizard Infrastructure summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-02-SUMMARY.md` - Contact and Experience Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-03-SUMMARY.md` - Education and Skills Prompts summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-04-SUMMARY.md` - Projects and Certifications Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-03 Education and Skills Prompts)*
+*Last updated: 2026-01-26 (completed 18-04 Projects and Certifications Prompts)*

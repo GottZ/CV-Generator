@@ -41,4 +41,9 @@ export {
 	selectVisibleSections,
 } from './prompts/index.ts';
 
-// Note: wizard exports added by Plans 04-05
+// Wizard
+export {
+	applyCustomizations,
+	runTemplateWizard,
+	selectBaseTemplate,
+} from './wizard.ts';

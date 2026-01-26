@@ -3,6 +3,9 @@
  * Provides JSON input validation, stdin reading, and schema export.
  */
 
+// Dry-run mode
+export type { DryRunResult } from './dry-run.ts';
+export { runDryRun } from './dry-run.ts';
 // Flag collector
 export type {
 	AddCertificationFlagOptions,
@@ -39,6 +42,13 @@ export {
 	output,
 	progress,
 } from './output-formatter.ts';
+// Non-interactive runner
+export type {
+	AddableSection,
+	NonInteractiveOptions,
+	NonInteractiveResult,
+} from './runner.ts';
+export { runNonInteractiveAdd, runNonInteractiveWizard } from './runner.ts';
 // Schema export
 export type { SchemaCommand } from './schema-export.ts';
 export {
@@ -90,7 +100,6 @@ export {
 	// Full wizard schemas
 	WizardInitInputSchema,
 } from './schemas.ts';
-
 // State builder
 export type { ConflictDetails } from './state-builder.ts';
 export {

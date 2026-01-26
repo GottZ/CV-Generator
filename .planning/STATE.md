@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 16 IN PROGRESS (16-05 complete)
+**Session:** v1.2 PHASE 16 IN PROGRESS (16-06 complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 16 - AI Content Generation (in progress)
-**Plan:** 05 of 7 complete
+**Plan:** 06 of 7 complete
 **Status:** In progress
 
 ```
-[########            ] 18% (9/47 requirements)
+[#########           ] 20% (10/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 16-05 (Keywords Analysis Command)
+**Last activity:** 2026-01-26 - Completed 16-06 (Standalone Improve Generator)
 
 ## v1.2 Milestone Overview
 
@@ -132,6 +132,12 @@ v1.2 Phase 16 decisions (16-05):
 - KeywordsOutputSchema with byCategory (required/preferred) and bySection grouping
 - highCoverage boolean flag for >90% celebration mode
 
+v1.2 Phase 16 decisions (16-06):
+- Priority-based grouping for improvements (High/Medium/Low)
+- Weakness type categorization (lacks_quantification, missing_outcome, too_generic, passive_voice)
+- Enhance existing improve command with diff display rather than separate command
+- Use displayComparison from 16-02 for terminal-width-adaptive diff display
+
 ### Open TODOs
 
 - Continue Phase 16 (AI Content Generation) - remaining plans
@@ -144,8 +150,9 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 16 plan 05 complete
-**Resume command:** Continue with remaining Phase 16 plans or start Phase 17
+**Current step:** Phase 16 plan 06 complete (6 of 7 plans done)
+**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-04-PLAN.md`
+**Note:** 16-04 is the only remaining plan in Phase 16
 
 ### Files to Reference
 
@@ -164,8 +171,10 @@ None.
 - `/workspace/.planning/phases/16-ai-content-generation/16-02-SUMMARY.md` - Display Utilities and Keyword Matcher summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-03-SUMMARY.md` - Bullets Generation Command summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-05-SUMMARY.md` - Keywords Analysis Command summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-06-SUMMARY.md` - Standalone Improve Generator summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-07-SUMMARY.md` - Standalone Tailor Generator summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 16-05 Keywords Analysis Command)*
+*Last updated: 2026-01-26 (completed 16-06 Standalone Improve Generator)*

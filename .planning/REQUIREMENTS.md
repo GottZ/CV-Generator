@@ -69,17 +69,17 @@
 ### Template Scaffolding (TPL-*)
 
 **Template Operations:**
-- [ ] **TPL-01**: User can copy/fork existing template via `cvgen template copy [source] [target]`
-- [ ] **TPL-02**: User can customize template colors via config or wizard
-- [ ] **TPL-03**: User can customize template fonts (ATS-safe options) via config or wizard
-- [ ] **TPL-04**: User can customize template margins via config or wizard
-- [ ] **TPL-05**: User can validate custom template structure via `cvgen template validate [name]`
+- [x] **TPL-01**: User can copy/fork existing template via `cvgen template copy [source] [target]`
+- [x] **TPL-02**: User can customize template colors via config or wizard
+- [x] **TPL-03**: User can customize template fonts (ATS-safe options) via config or wizard
+- [x] **TPL-04**: User can customize template margins via config or wizard
+- [x] **TPL-05**: User can validate custom template structure via `cvgen template validate [name]`
 
 **Template Wizard:**
-- [ ] **TPL-06**: User can create customized template via `cvgen template wizard`
-- [ ] **TPL-07**: Template wizard allows selecting base template to customize
-- [ ] **TPL-08**: Template wizard allows setting section visibility (show/hide optional sections)
-- [ ] **TPL-09**: Template wizard generates valid template files in `/templates/[name]/`
+- [x] **TPL-06**: User can create customized template via `cvgen template wizard`
+- [x] **TPL-07**: Template wizard allows selecting base template to customize
+- [x] **TPL-08**: Template wizard allows setting section visibility (show/hide optional sections)
+- [x] **TPL-09**: Template wizard generates valid template files in `/templates/[name]/`
 
 ---
 
@@ -163,15 +163,15 @@
 | WIZ-18 | Phase 19 | 19-01 | Complete |
 | WIZ-19 | Phase 19 | 19-04 | Complete |
 | WIZ-20 | Phase 19 | 19-05, 19-07 | Complete |
-| TPL-01 | Phase 20 | - | Pending |
-| TPL-02 | Phase 20 | - | Pending |
-| TPL-03 | Phase 20 | - | Pending |
-| TPL-04 | Phase 20 | - | Pending |
-| TPL-05 | Phase 20 | - | Pending |
-| TPL-06 | Phase 20 | - | Pending |
-| TPL-07 | Phase 20 | - | Pending |
-| TPL-08 | Phase 20 | - | Pending |
-| TPL-09 | Phase 20 | - | Pending |
+| TPL-01 | Phase 20 | 20-01, 20-05 | Complete |
+| TPL-02 | Phase 20 | 20-03, 20-04 | Complete |
+| TPL-03 | Phase 20 | 20-02, 20-03, 20-04 | Complete |
+| TPL-04 | Phase 20 | 20-03, 20-04 | Complete |
+| TPL-05 | Phase 20 | 20-01, 20-05 | Complete |
+| TPL-06 | Phase 20 | 20-04, 20-05 | Complete |
+| TPL-07 | Phase 20 | 20-04 | Complete |
+| TPL-08 | Phase 20 | 20-03, 20-04 | Complete |
+| TPL-09 | Phase 20 | 20-01, 20-04 | Complete |
 
 ---
 

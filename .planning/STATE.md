@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 20 IN PROGRESS (Plan 04 Complete)
+**Session:** v1.2 MILESTONE COMPLETE
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 20 - Template Scaffolding (in progress)
-**Plan:** 4 of 5 complete
-**Status:** In progress
+**Phase:** 20 - Template Scaffolding (complete)
+**Plan:** 5 of 5 complete
+**Status:** Complete — verified ✓
 
 ```
-[##############################] 89% (42/47 requirements)
+[################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 20-04-PLAN.md (Template Wizard Orchestrator)
+**Last activity:** 2026-01-26 - Phase 20 complete (Template Scaffolding) - MILESTONE COMPLETE
 
 ## v1.2 Milestone Overview
 
@@ -34,10 +34,10 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
 | 19 | Wizard Non-Interactive & Integration | 7 | Complete (7/7) |
-| 20 | Template Scaffolding | 9 | In Progress (4/5 plans) |
+| 20 | Template Scaffolding | 9 | Complete (9/9) |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
-**Parallel track:** 14 -> 18 -> 19 (COMPLETE) -> 20
+**Parallel track:** 14 -> 18 -> 19 -> 20 (COMPLETE)
 
 ## Shipped Milestones
 
@@ -269,9 +269,15 @@ v1.2 Phase 20 decisions (20-04):
 - Section visibility stored in config.sections, not config.style
 - Validation warnings shown but don't block template creation
 
+v1.2 Phase 20 decisions (20-05):
+- Exit code 130 for Ctrl+C (standard Unix convention)
+- Exit code 1 for validation failures
+- --json flag for validate command for CI/CD integration
+- Default templates-dir is ./templates (relative to cwd)
+
 ### Open TODOs
 
-- Complete Phase 20: Template Scaffolding (Plan 05 - CLI command integration)
+- Run `/gsd:audit-milestone` to verify v1.2 requirements and cross-phase integration
 
 ### Blockers
 
@@ -281,8 +287,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 20 in progress, Plan 04 complete
-**Resume command:** `/gsd:execute-plan .planning/phases/20-template-scaffolding/20-05-PLAN.md`
+**Current step:** Milestone v1.2 complete, ready for audit
+**Resume command:** `/gsd:audit-milestone`
 
 ### Files to Reference
 
@@ -327,8 +333,9 @@ None.
 - `/workspace/.planning/phases/20-template-scaffolding/20-02-SUMMARY.md` - Types and Constants summary
 - `/workspace/.planning/phases/20-template-scaffolding/20-03-SUMMARY.md` - Template Customization Prompts summary
 - `/workspace/.planning/phases/20-template-scaffolding/20-04-SUMMARY.md` - Template Wizard Orchestrator summary
+- `/workspace/.planning/phases/20-template-scaffolding/20-05-SUMMARY.md` - CLI Commands Integration summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 20-04 Template Wizard Orchestrator)*
+*Last updated: 2026-01-26 (completed 20-05 CLI Commands Integration - v1.2 MILESTONE COMPLETE)*

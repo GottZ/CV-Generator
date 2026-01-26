@@ -5,6 +5,7 @@ import { buildAction } from './commands/build.ts';
 import { initAction } from './commands/init.ts';
 import { listTemplatesAction } from './commands/list-templates.ts';
 import { validateAction } from './commands/validate.ts';
+import { wizardCommand } from './commands/wizard.ts';
 
 const program = new Command();
 
@@ -110,6 +111,9 @@ Examples:
 
 // AI command group
 program.addCommand(aiCommand);
+
+// Wizard command group
+program.addCommand(wizardCommand);
 
 // Parse and run
 program.parseAsync(process.argv).catch((err) => {

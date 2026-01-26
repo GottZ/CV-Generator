@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 17 IN PROGRESS
+**Session:** v1.2 PHASE 17 COMPLETE
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 17 - AI User Control (in progress)
-**Plan:** 04 of 5 complete
-**Status:** In progress
+**Phase:** 17 - AI User Control (complete)
+**Plan:** 05 of 5 complete
+**Status:** Phase complete
 
 ```
-[##############      ] 34% (16/47 requirements)
+[################    ] 36% (17/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 17-04-PLAN.md (Review Session Orchestrator)
+**Last activity:** 2026-01-26 - Completed 17-05-PLAN.md (Review Integration)
 
 ## v1.2 Milestone Overview
 
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
-| 17 | AI User Control | 4 | In Progress (4/5) |
+| 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
-**Critical path:** 14 -> 15 -> 16 -> 17
+**Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
 **Parallel track:** 14 -> 18 -> 19/20
 
 ## Shipped Milestones
@@ -165,9 +165,14 @@ v1.2 Phase 17 decisions (17-04):
 - getItemAt helper for type-safe array access with noUncheckedIndexedAccess
 - Regenerated suggestions stored in separate Map, not mutating original items
 
+v1.2 Phase 17 decisions (17-05):
+- CV updater sorts replacements by length (longest first) to avoid partial matches
+- Only first occurrence replaced for duplicate safety
+- generateFn captures provider and locale in closure for regeneration
+
 ### Open TODOs
 
-- Continue Phase 17 (plan 05)
+- Begin Phase 18 (Wizard Foundation)
 
 ### Blockers
 
@@ -177,8 +182,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 17 plan 04 complete
-**Resume command:** Execute 17-05-PLAN.md
+**Current step:** Phase 17 complete
+**Resume command:** Begin Phase 18 planning
 
 ### Files to Reference
 
@@ -204,8 +209,9 @@ None.
 - `/workspace/.planning/phases/17-ai-user-control/17-02-SUMMARY.md` - Editor Integration and Regeneration summary
 - `/workspace/.planning/phases/17-ai-user-control/17-03-SUMMARY.md` - File Writer and TTY Detection summary
 - `/workspace/.planning/phases/17-ai-user-control/17-04-SUMMARY.md` - Review Session Orchestrator summary
+- `/workspace/.planning/phases/17-ai-user-control/17-05-SUMMARY.md` - Review Integration summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 17-04 Review Session Orchestrator)*
+*Last updated: 2026-01-26 (completed 17-05 Review Integration - Phase 17 complete)*

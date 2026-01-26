@@ -70,14 +70,21 @@ async function collectSingleProjectLink(): Promise<ProjectLink | null> {
 		return null;
 	}
 
+	// Collect URL - empty URL cancels the entry
 	const url = await input({
-		message: 'URL *:',
+		message: 'URL (empty to cancel):',
 		validate: (value) => {
 			const trimmed = value.trim();
-			if (!trimmed) return 'URL is required';
+			// Empty is allowed (user is cancelling)
+			if (!trimmed) return true;
 			return validateUrl(trimmed);
 		},
 	});
+
+	// Empty URL = cancel
+	if (!url.trim()) {
+		return null;
+	}
 
 	const label = await input({
 		message: 'Display label (optional):',

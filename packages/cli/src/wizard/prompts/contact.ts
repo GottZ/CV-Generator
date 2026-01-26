@@ -86,12 +86,16 @@ export async function collectSingleLink(): Promise<Link | null> {
 		return null;
 	}
 
-	// Collect URL with validation
-	const url = await createValidatingInput({
-		message: 'URL *:',
-		required: true,
+	// Collect URL - empty URL cancels the entry
+	const url = await input({
+		message: 'URL (empty to cancel):',
 		validate: validateUrl,
 	});
+
+	// Empty URL = cancel
+	if (!url.trim()) {
+		return null;
+	}
 
 	// Optional label
 	const label = await input({

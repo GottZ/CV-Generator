@@ -24,6 +24,9 @@ export {
 export type { ReviewAction, ReviewContext } from './review-prompt.js';
 // Review prompt for single-key action menu
 export { promptReviewAction } from './review-prompt.js';
+// Review session orchestrator
+export type { ReviewItem, ReviewState } from './review-session.js';
+export { runReviewSession } from './review-session.js';
 // TTY detection for non-interactive environments
 export { ensureInteractiveMode, getTerminalWidth, isTTY } from './tty-check.js';
 export type { WeaknessType } from './weak-bullet-detector.js';

@@ -3,6 +3,10 @@
  * Exports types, state management, menu, and validation utilities.
  */
 
+export type { MenuChoice } from './menu.ts';
+// Menu navigation
+export { formatMenuItem, selectMode, showMainMenu } from './menu.ts';
+
 // State management
 export {
 	createInitialState,
@@ -21,3 +25,11 @@ export type {
 	WizardSection,
 	WizardState,
 } from './types.ts';
+export type { ValidatingInputConfig } from './validation.ts';
+// Validation
+export {
+	createValidatingInput,
+	validateDate,
+	validateEmail,
+	validateRequired,
+} from './validation.ts';

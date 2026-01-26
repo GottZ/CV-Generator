@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 18 - Wizard Foundation (in progress)
-**Plan:** 02 of 5 complete
+**Plan:** 03 of 5 complete
 **Status:** In progress
 
 ```
-[################    ] 40% (19/47 requirements)
+[#################   ] 43% (20/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-02-PLAN.md (Contact and Experience Prompts)
+**Last activity:** 2026-01-26 - Completed 18-03-PLAN.md (Education and Skills Prompts)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | In Progress (2/5 plans) |
+| 18 | Wizard Foundation | 14 | In Progress (3/5 plans) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -182,9 +182,15 @@ v1.2 Phase 18 decisions (18-02):
 - Bullets require minimum 1 with re-prompt on empty
 - End date defaults to 'present' for current positions
 
+v1.2 Phase 18 decisions (18-03):
+- Education end date required (no 'present' for education)
+- Skills entered as comma-separated list for faster input
+- Proficiency levels optional and only in detailed mode
+- CommonCategoryValue type for type-safe category selection
+
 ### Open TODOs
 
-- Continue Phase 18 (plans 03-05 pending)
+- Continue Phase 18 (plans 04-05 pending)
 
 ### Blockers
 
@@ -194,8 +200,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 plan 02 complete
-**Resume command:** Execute 18-03-PLAN.md (Education and Skills prompts)
+**Current step:** Phase 18 plan 03 complete
+**Resume command:** Execute 18-04-PLAN.md (Projects and Certifications prompts)
 
 ### Files to Reference
 
@@ -224,8 +230,9 @@ None.
 - `/workspace/.planning/phases/17-ai-user-control/17-05-SUMMARY.md` - Review Integration summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-01-SUMMARY.md` - Wizard Infrastructure summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-02-SUMMARY.md` - Contact and Experience Prompts summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-03-SUMMARY.md` - Education and Skills Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-02 Contact and Experience Prompts)*
+*Last updated: 2026-01-26 (completed 18-03 Education and Skills Prompts)*

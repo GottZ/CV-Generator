@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 19 COMPLETE
+**Session:** v1.2 PHASE 20 IN PROGRESS
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 19 - Wizard Non-Interactive & Integration (complete)
-**Plan:** 7 of 7 complete
-**Status:** Complete — verified ✓
+**Phase:** 20 - Template Scaffolding (in progress)
+**Plan:** 2 of 5 complete
+**Status:** In progress
 
 ```
-[############################] 81% (38/47 requirements)
+[##############################] 85% (40/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Phase 19 complete (Wizard Non-Interactive & Integration)
+**Last activity:** 2026-01-26 - Completed 20-02-PLAN.md (Types and Constants)
 
 ## v1.2 Milestone Overview
 
@@ -34,7 +34,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
 | 19 | Wizard Non-Interactive & Integration | 7 | Complete (7/7) |
-| 20 | Template Scaffolding | 9 | Pending |
+| 20 | Template Scaffolding | 9 | In Progress (2/5 plans) |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
 **Parallel track:** 14 -> 18 -> 19 (COMPLETE) -> 20
@@ -252,9 +252,14 @@ v1.2 Phase 19 decisions (19-07):
 - Enhancement status message when --enhance flag enabled
 - Mode detection routes to interactive vs non-interactive runners
 
+v1.2 Phase 20 decisions (20-02):
+- Plan 20-01 completed Tasks 1-2 as part of TDD setup (types.ts, constants.ts fully implemented)
+- Barrel export pattern for template module: packages/cli/src/template/index.ts
+- Include copier and validator exports in barrel for complete module API
+
 ### Open TODOs
 
-- Start Phase 20: Template Scaffolding
+- Continue Phase 20: Template Scaffolding (Plans 03-05)
 
 ### Blockers
 
@@ -264,8 +269,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 19 complete, ready for Phase 20
-**Resume command:** `/gsd:plan-phase 20`
+**Current step:** Phase 20 in progress, Plan 02 complete
+**Resume command:** `/gsd:execute-plan .planning/phases/20-template-scaffolding/20-03-PLAN.md`
 
 ### Files to Reference
 
@@ -306,8 +311,10 @@ None.
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-05-SUMMARY.md` - AI Enhancement Integration summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-06-SUMMARY.md` - Non-Interactive Runner & Dry-Run summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-07-SUMMARY.md` - CLI Integration summary
+- `/workspace/.planning/phases/20-template-scaffolding/20-01-SUMMARY.md` - TDD Copier and Validator summary
+- `/workspace/.planning/phases/20-template-scaffolding/20-02-SUMMARY.md` - Types and Constants summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 19-07 CLI Integration - Phase 19 complete)*
+*Last updated: 2026-01-26 (completed 20-02 Types and Constants)*

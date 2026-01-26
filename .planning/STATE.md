@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 19 Wave 3 IN PROGRESS
+**Session:** v1.2 PHASE 19 COMPLETE
 
 ## Project Reference
 
@@ -14,15 +14,15 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 ## Current Position
 
 **Milestone:** v1.2
-**Phase:** 19 - Wizard Non-Interactive & Integration (in progress)
-**Plan:** 6 of 7 (01, 02, 03, 04, 05, 06 complete)
-**Status:** In progress
+**Phase:** 19 - Wizard Non-Interactive & Integration (COMPLETE)
+**Plan:** 7 of 7 (all complete)
+**Status:** Phase complete
 
 ```
-[############################] 68% (32/47 requirements)
+[##############################] 70% (33/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 19-06-PLAN.md (Non-Interactive Runner & Dry-Run)
+**Last activity:** 2026-01-26 - Completed 19-07-PLAN.md (CLI Integration)
 
 ## v1.2 Milestone Overview
 
@@ -33,11 +33,11 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
-| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (6/7 - 01,02,03,04,05,06 done) |
+| 19 | Wizard Non-Interactive & Integration | 7 | Complete (7/7) |
 | 20 | Template Scaffolding | 9 | Pending |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
-**Parallel track:** 14 -> 18 -> 19/20
+**Parallel track:** 14 -> 18 -> 19 (COMPLETE) -> 20
 
 ## Shipped Milestones
 
@@ -246,9 +246,15 @@ v1.2 Phase 19 decisions (19-06):
 - Minimum viable validation consistent with interactive wizard
 - Graceful AI enhancement degradation (log warning, continue with original)
 
+v1.2 Phase 19 decisions (19-07):
+- --help-json flag instead of subcommand for JSON schema display
+- SECTION_MAP for CLI section names to AddableSection types
+- Enhancement status message when --enhance flag enabled
+- Mode detection routes to interactive vs non-interactive runners
+
 ### Open TODOs
 
-- Continue Phase 19 (plan 07 remaining - CLI Integration)
+- Start Phase 20: Template Scaffolding
 
 ### Blockers
 
@@ -258,8 +264,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 19, plans 01, 02, 03, 04, 05, and 06 complete
-**Resume command:** `/gsd:execute-phase 19-07`
+**Current step:** Phase 19 complete, ready for Phase 20
+**Resume command:** `/gsd:plan-phase 20`
 
 ### Files to Reference
 
@@ -299,8 +305,9 @@ None.
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-04-SUMMARY.md` - STAR Method Prompts summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-05-SUMMARY.md` - AI Enhancement Integration summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-06-SUMMARY.md` - Non-Interactive Runner & Dry-Run summary
+- `/workspace/.planning/phases/19-wizard-non-interactive/19-07-SUMMARY.md` - CLI Integration summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 19-06 Non-Interactive Runner & Dry-Run)*
+*Last updated: 2026-01-26 (completed 19-07 CLI Integration - Phase 19 complete)*

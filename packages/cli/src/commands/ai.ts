@@ -8,8 +8,10 @@
 import { Command } from 'commander';
 import { analyzeAction } from './ai/analyze.ts';
 import { configAction } from './ai/config.ts';
+import { contextAction } from './ai/context.ts';
 import { improveAction } from './ai/improve.ts';
 import { promptAction } from './ai/prompt.ts';
+import { statusAction } from './ai/status.ts';
 import { summarizeAction } from './ai/summarize.ts';
 import { tailorAction } from './ai/tailor.ts';
 import { validateAction } from './ai/validate.ts';
@@ -183,6 +185,39 @@ Examples:
 `,
 		)
 		.action(tailorAction);
+
+	// Status subcommand - View workflow progress
+	ai.command('status <name>')
+		.description('View current workflow stage and progress')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai status jane
+  $ cvgen ai status jane --json
+`,
+		)
+		.action(statusAction);
+
+	// Context subcommand - Lookup section details
+	ai.command('context <name> [section]')
+		.description('Lookup context details from previous stages')
+		.option('--verbose', 'Show full history through all stages')
+		.option('--format <format>', 'Output format: terminal (default), md, json')
+		.option('--quiet', 'Suppress non-error output')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai context jane              # List available sections
+  $ cvgen ai context jane experience   # Show experience section context
+  $ cvgen ai context jane experience --verbose
+  $ cvgen ai context jane experience --format=json
+`,
+		)
+		.action(contextAction);
 
 	return ai;
 }

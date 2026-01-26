@@ -3,6 +3,23 @@
  * Provides JSON input validation, stdin reading, and schema export.
  */
 
+// Flag collector
+export type {
+	AddCertificationFlagOptions,
+	AddEducationFlagOptions,
+	AddExperienceFlagOptions,
+	AddProjectFlagOptions,
+	AddSkillsFlagOptions,
+	InitFlagOptions,
+} from './flag-collector.ts';
+export {
+	buildCertificationFromFlags,
+	buildContactFromFlags,
+	buildEducationFromFlags,
+	buildExperienceFromFlags,
+	buildProjectFromFlags,
+	buildSkillsFromFlags,
+} from './flag-collector.ts';
 // JSON input reading
 export { parseJsonContent, readJsonInput } from './input-reader.ts';
 // Mode detection
@@ -14,7 +31,6 @@ export {
 	detectMode,
 	ensureNonInteractiveRequirements,
 } from './mode-detector.ts';
-
 // Output formatting
 export type { ErrorDetails, ExitCode } from './output-formatter.ts';
 export {
@@ -23,7 +39,6 @@ export {
 	output,
 	progress,
 } from './output-formatter.ts';
-
 // Schema export
 export type { SchemaCommand } from './schema-export.ts';
 export {
@@ -75,3 +90,12 @@ export {
 	// Full wizard schemas
 	WizardInitInputSchema,
 } from './schemas.ts';
+
+// State builder
+export type { ConflictDetails } from './state-builder.ts';
+export {
+	buildWizardState,
+	detectConflicts,
+	hasMinimumData,
+	mergeContactFlags,
+} from './state-builder.ts';

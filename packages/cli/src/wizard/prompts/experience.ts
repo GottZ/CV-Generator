@@ -7,19 +7,29 @@ import type { WorkExperience } from '@gottz/cv-core';
 import { confirm, input } from '@inquirer/prompts';
 import pc from 'picocolors';
 
+import {
+	detectRoleType,
+	getStarGuidance,
+	showStarExample,
+} from '../enhance/star-prompts.ts';
 import type { WizardMode } from '../types.ts';
 import { createValidatingInput, validateDate } from '../validation.ts';
 
 /**
- * Collect achievement/responsibility bullets with repeated prompts.
- * Per RESEARCH.md: "Repeated input prompts with 'Add another bullet?' or empty Enter to finish"
+ * Collect achievement/responsibility bullets with STAR guidance.
+ * Per WIZ-19: Show examples and STAR hints to guide better bullets.
  * Minimum 1 bullet required.
  *
+ * @param role - Job role for context-aware examples
  * @param existing - Existing bullets to show as context
  * @returns Promise resolving to array of bullet strings
  */
-export async function collectBullets(existing?: string[]): Promise<string[]> {
+export async function collectBullets(
+	role: string,
+	existing?: string[],
+): Promise<string[]> {
 	const bullets: string[] = [];
+	const roleType = detectRoleType(role);
 
 	// Show existing bullets if editing
 	if (existing && existing.length > 0) {
@@ -31,26 +41,38 @@ export async function collectBullets(existing?: string[]): Promise<string[]> {
 	}
 
 	console.log(
-		pc.dim('  Enter achievements/responsibilities (empty line to finish)'),
+		pc.dim(
+			'  Add achievements - aim for specific results with metrics when possible',
+		),
 	);
 
 	// Collect bullets until empty input
 	let bulletCount = 0;
 	while (true) {
+		// Show STAR example before each prompt (WIZ-19)
+		showStarExample(roleType, bulletCount);
+
 		const bullet = await input({
-			message: `Bullet ${bulletCount + 1} (empty to finish):`,
+			message: `Bullet ${bulletCount + 1} (${getStarGuidance()}, empty to finish):`,
+			validate: (value: string) => {
+				const trimmed = value.trim();
+				// Empty = done (if we have at least 1)
+				if (!trimmed) {
+					if (bullets.length === 0) {
+						return 'At least one bullet is required';
+					}
+					return true;
+				}
+				// Encourage detail
+				if (trimmed.length < 30) {
+					return 'Bullet seems short. Add more detail about your impact or results.';
+				}
+				return true;
+			},
 		});
 
 		const trimmed = bullet.trim();
-
-		// Empty input = done (if we have at least 1 bullet)
-		if (!trimmed) {
-			if (bullets.length === 0) {
-				console.log(pc.yellow('  At least one bullet is required'));
-				continue;
-			}
-			break;
-		}
+		if (!trimmed) break;
 
 		bullets.push(trimmed);
 		bulletCount++;
@@ -130,7 +152,7 @@ export async function collectSingleExperience(
 
 	// Bullets (always required - at least 1)
 	console.log(pc.dim('\n  Add achievements/responsibilities for this role:'));
-	const bullets = await collectBullets(existing?.bullets);
+	const bullets = await collectBullets(role.trim(), existing?.bullets);
 
 	// Tech stack (detailed mode only)
 	let techStack: string[] | undefined;

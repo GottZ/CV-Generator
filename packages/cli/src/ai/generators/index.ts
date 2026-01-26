@@ -15,3 +15,6 @@ export {
 	ImprovementsOutputSchema,
 } from './improve-standalone.ts';
 export { generateSummary, type SummaryOptions } from './summary.ts';
+
+// Standalone tailor generator
+export { tailorCV } from './tailor-standalone.ts';

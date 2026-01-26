@@ -118,7 +118,7 @@ Examples:
 		)
 		.action(analyzeAction);
 
-	// Improve subcommand - Stage 2: Generate improved bullets
+	// Improve subcommand - Stage 2: Generate improved bullets with interactive review
 	ai.command('improve <name>')
 		.description(
 			'Stage 2: Generate improved achievement bullets using STAR method',
@@ -128,16 +128,20 @@ Examples:
 			'AI provider to use (openai, anthropic, ollama)',
 		)
 		.option('--force', 'Re-run even if stage is complete')
+		.option('--dry-run', 'Show suggestions without writing changes')
+		.option('--accept-all', 'Accept all suggestions without interactive review')
 		.option('--quiet', 'Suppress non-error output')
 		.option('--json', 'Output as JSON')
 		.addHelpText(
 			'after',
 			`
 Examples:
-  $ cvgen ai improve johndoe
+  $ cvgen ai improve johndoe                  # Interactive review (default)
+  $ cvgen ai improve johndoe --dry-run        # Preview without writing
+  $ cvgen ai improve johndoe --accept-all     # Accept all with confirmation
   $ cvgen ai improve johndoe --provider openai
-  $ cvgen ai improve johndoe --force  # Re-run even if complete
-  $ cvgen ai improve johndoe --json   # Output as JSON
+  $ cvgen ai improve johndoe --force          # Re-run even if complete
+  $ cvgen ai improve johndoe --json           # Output as JSON (non-interactive)
 `,
 		)
 		.action(improveAction);

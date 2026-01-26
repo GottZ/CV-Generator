@@ -1,11 +1,13 @@
 /**
  * AI improve subcommand.
  * Stage 2: Generate improved achievement bullets using STAR method.
+ * Enhanced with diff display for before/after comparison.
  */
 
 import path from 'node:path';
 import ora from 'ora';
 import pc from 'picocolors';
+import { displayComparison } from '../../ai/display/diff-display.ts';
 import { createProvider, loadAIConfig } from '../../ai/index.ts';
 import type { AIProvider } from '../../ai/providers/types.ts';
 import type { ProviderType } from '../../ai/types.ts';
@@ -150,7 +152,9 @@ export async function improveAction(
 }
 
 /**
- * Display improvement results in a formatted way.
+ * Display improvement results with diff comparison.
+ * Uses side-by-side display when terminal >= 120 columns,
+ * inline diff when terminal < 120 columns.
  */
 function displayImproveResult(result: ImproveOutput): void {
 	console.log(`\n${pc.bold('Improved Bullets:')}`);
@@ -159,14 +163,15 @@ function displayImproveResult(result: ImproveOutput): void {
 		console.log(`\n${pc.bold(pc.blue(job.role))} at ${pc.bold(job.company)}`);
 
 		for (const bullet of job.bullets) {
-			console.log(`\n  ${pc.dim('Original:')}`);
-			console.log(`    ${pc.dim(bullet.original)}`);
-			console.log(`  ${pc.green('Improved:')}`);
-			console.log(`    ${pc.green(bullet.improved)}`);
+			console.log('');
+			// Use diff display for comparison
+			const diff = displayComparison(bullet.original, bullet.improved);
+			console.log(diff);
+
 			if (bullet.metrics && bullet.metrics.length > 0) {
-				console.log(`  ${pc.cyan('Metrics:')} ${bullet.metrics.join(', ')}`);
+				console.log(`${pc.cyan('Metrics:')} ${bullet.metrics.join(', ')}`);
 			}
-			console.log(`  ${pc.dim('Reasoning:')} ${pc.dim(bullet.reasoning)}`);
+			console.log(`${pc.dim('Reasoning:')} ${pc.dim(bullet.reasoning)}`);
 		}
 	}
 

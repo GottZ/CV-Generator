@@ -15,6 +15,7 @@ import { keywordsAction } from './ai/keywords.ts';
 import { promptAction } from './ai/prompt.ts';
 import { statusAction } from './ai/status.ts';
 import { summarizeAction } from './ai/summarize.ts';
+import { summaryAction } from './ai/summary.ts';
 import { tailorAction } from './ai/tailor.ts';
 import { validateAction } from './ai/validate.ts';
 
@@ -274,6 +275,36 @@ Examples:
 `,
 		)
 		.action(bulletsAction);
+
+	// Summary subcommand - Generate professional summary (AI-07)
+	// Note: Distinct from 'summarize' which is a workflow stage command
+	ai.command('summary <name>')
+		.description(
+			'Generate professional summary from CV (standalone, not workflow)',
+		)
+		.option('--target-role <role>', 'Target role to tailor summary for')
+		.option(
+			'--provider <provider>',
+			'AI provider to use (openai, anthropic, ollama)',
+		)
+		.option('--output <file>', 'Write summary to file instead of stdout')
+		.option('--quiet', 'Suppress non-error output')
+		.option('--json', 'Output as JSON')
+		.addHelpText(
+			'after',
+			`
+Examples:
+  $ cvgen ai summary jane                                  # Generate summary
+  $ cvgen ai summary jane --target-role "Senior Engineer"  # For specific role
+  $ cvgen ai summary jane --output summary.md              # Write to file
+  $ cvgen ai summary jane --provider openai                # Use specific provider
+  $ cvgen ai summary jane --json                           # Output as JSON
+
+Note: This is a standalone generator. For the workflow stage command
+that builds on previous analysis, use 'cvgen ai summarize' instead.
+`,
+		)
+		.action(summaryAction);
 
 	return ai;
 }

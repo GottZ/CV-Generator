@@ -3,9 +3,7 @@
  * Provides copyTemplate for creating template copies and formatTemplateName for name formatting.
  */
 
-// biome-ignore lint/correctness/noUnusedImports: Used in implementation (TDD stub)
 import { cp, readFile, writeFile } from 'node:fs/promises';
-// biome-ignore lint/correctness/noUnusedImports: Used in implementation (TDD stub)
 import path from 'node:path';
 
 /**
@@ -13,9 +11,12 @@ import path from 'node:path';
  * "my-custom" -> "My Custom"
  * "my-test-template" -> "My Test Template"
  */
-export function formatTemplateName(_templateId: string): string {
-	// TODO: Implement
-	throw new Error('Not implemented');
+export function formatTemplateName(templateId: string): string {
+	if (!templateId) return '';
+	return templateId
+		.split('-')
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join(' ');
 }
 
 /**
@@ -26,10 +27,24 @@ export function formatTemplateName(_templateId: string): string {
  * - Throws if target already exists (overwrite protection)
  */
 export async function copyTemplate(
-	_sourceId: string,
-	_targetId: string,
-	_templatesDir: string,
+	sourceId: string,
+	targetId: string,
+	templatesDir: string,
 ): Promise<void> {
-	// TODO: Implement
-	throw new Error('Not implemented');
+	const sourcePath = path.join(templatesDir, sourceId);
+	const targetPath = path.join(templatesDir, targetId);
+
+	// Recursive copy with overwrite protection
+	await cp(sourcePath, targetPath, {
+		recursive: true,
+		errorOnExist: true,
+		force: false,
+	});
+
+	// Update config.json with new name and remove private flag
+	const configPath = path.join(targetPath, 'config.json');
+	const config = JSON.parse(await readFile(configPath, 'utf-8'));
+	config.name = formatTemplateName(targetId);
+	delete config.private;
+	await writeFile(configPath, JSON.stringify(config, null, '\t'), 'utf-8');
 }

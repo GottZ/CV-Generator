@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 16 IN PROGRESS
+**Session:** v1.2 PHASE 16 IN PROGRESS (16-02 complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 16 - AI Content Generation (in progress)
-**Plan:** 01 of 7 complete
+**Plan:** 02 of 7 complete
 **Status:** In progress
 
 ```
-[#####               ] 10% (5/47 requirements)
+[######              ] 12% (6/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 16-01 (Core Utility Infrastructure)
+**Last activity:** 2026-01-26 - Completed 16-02 (Display Utilities and Keyword Matcher)
 
 ## v1.2 Milestone Overview
 
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 |-------|------|--------------|--------|
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
-| 16 | AI Content Generation | 5 | In progress (1/5) |
+| 16 | AI Content Generation | 5 | In progress (2/5) |
 | 17 | AI User Control | 4 | Pending |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
@@ -114,9 +114,15 @@ v1.2 Phase 16 decisions (16-01):
 - Simple regex HTML extraction sufficient for job postings
 - STAR breakdown as markdown comments (hidden by default)
 
+v1.2 Phase 16 decisions (16-02):
+- Terminal width threshold: 120 columns for side-by-side vs inline diff
+- Fuse.js threshold: 0.3 for fuzzy keyword matching
+- Synonym mappings hardcoded for common tech abbreviations (JS, TS, K8s, ML)
+- Biome-ignore for ANSI regex control characters
+
 ### Open TODOs
 
-- Continue Phase 16 (AI Content Generation) - 16-02 next
+- Continue Phase 16 (AI Content Generation) - 16-03 next
 
 ### Blockers
 
@@ -126,8 +132,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 16 plan 01 complete, continue with 16-02
-**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-02-PLAN.md`
+**Current step:** Phase 16 plan 02 complete, continue with 16-03
+**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-03-PLAN.md`
 
 ### Files to Reference
 
@@ -143,8 +149,9 @@ None.
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-03-SUMMARY.md` - Summarize/Tailor stages summary
 - `/workspace/.planning/phases/15-multi-stage-workflow/15-04-SUMMARY.md` - Status/Context commands summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-01-SUMMARY.md` - Core Utility Infrastructure summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-02-SUMMARY.md` - Display Utilities and Keyword Matcher summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 16-01 Core Utility Infrastructure)*
+*Last updated: 2026-01-26 (completed 16-02 Display Utilities and Keyword Matcher)*

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 16 IN PROGRESS (16-03 complete)
+**Session:** v1.2 PHASE 16 IN PROGRESS (16-05 complete)
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 16 - AI Content Generation (in progress)
-**Plan:** 03 of 7 complete
+**Plan:** 05 of 7 complete
 **Status:** In progress
 
 ```
-[#######             ] 14% (7/47 requirements)
+[########            ] 18% (9/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 16-03 (Bullets Generation Command)
+**Last activity:** 2026-01-26 - Completed 16-05 (Keywords Analysis Command)
 
 ## v1.2 Milestone Overview
 
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 |-------|------|--------------|--------|
 | 14 | AI Foundation | 2 | Complete (2/2) |
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
-| 16 | AI Content Generation | 5 | In progress (3/5) |
+| 16 | AI Content Generation | 5 | In progress (5/5) |
 | 17 | AI User Control | 4 | Pending |
 | 18 | Wizard Foundation | 14 | Pending |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
@@ -126,9 +126,15 @@ v1.2 Phase 16 decisions (16-03):
 - Bullet count reasoning for transparency on 3-8 bullet range
 - renderPrompt for bullets (uses standard PromptContext with options)
 
+v1.2 Phase 16 decisions (16-05):
+- LLM for keyword extraction from natural language job postings
+- match_mode option in prompt template for fuzzy vs exact matching
+- KeywordsOutputSchema with byCategory (required/preferred) and bySection grouping
+- highCoverage boolean flag for >90% celebration mode
+
 ### Open TODOs
 
-- Continue Phase 16 (AI Content Generation) - 16-04 next
+- Continue Phase 16 (AI Content Generation) - remaining plans
 
 ### Blockers
 
@@ -138,8 +144,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 16 plan 03 complete, continue with 16-04
-**Resume command:** `/gsd:execute-plan .planning/phases/16-ai-content-generation/16-04-PLAN.md`
+**Current step:** Phase 16 plan 05 complete
+**Resume command:** Continue with remaining Phase 16 plans or start Phase 17
 
 ### Files to Reference
 
@@ -157,8 +163,9 @@ None.
 - `/workspace/.planning/phases/16-ai-content-generation/16-01-SUMMARY.md` - Core Utility Infrastructure summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-02-SUMMARY.md` - Display Utilities and Keyword Matcher summary
 - `/workspace/.planning/phases/16-ai-content-generation/16-03-SUMMARY.md` - Bullets Generation Command summary
+- `/workspace/.planning/phases/16-ai-content-generation/16-05-SUMMARY.md` - Keywords Analysis Command summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 16-03 Bullets Generation Command)*
+*Last updated: 2026-01-26 (completed 16-05 Keywords Analysis Command)*

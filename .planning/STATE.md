@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 19 - Wizard Non-Interactive & Integration (in progress)
-**Plan:** 3 of 7 (01, 02, 04 complete)
+**Plan:** 4 of 7 (01, 02, 03, 04 complete)
 **Status:** In progress
 
 ```
-[#########################] 62% (29/47 requirements)
+[##########################] 64% (30/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 19-02-PLAN.md (Zod Schemas and JSON Input)
+**Last activity:** 2026-01-26 - Completed 19-03-PLAN.md (Flag Collector and State Builder)
 
 ## v1.2 Milestone Overview
 
@@ -33,7 +33,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
 | 18 | Wizard Foundation | 13 | Complete (13/13) |
-| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (3/7 - 01,02,04 done) |
+| 19 | Wizard Non-Interactive & Integration | 7 | In Progress (4/7 - 01,02,03,04 done) |
 | 20 | Template Scaffolding | 9 | Pending |
 
 **Critical path:** 14 -> 15 -> 16 -> 17 (COMPLETE)
@@ -228,9 +228,15 @@ v1.2 Phase 19 decisions (19-02):
 - JSON Schema uses draft-2020-12 target for modern tooling support
 - validateWizardInput() returns typed data or throws structured error
 
+v1.2 Phase 19 decisions (19-03):
+- Conflict detection only compares top-level contact fields (name, email, phone, location)
+- JSON takes full precedence for arrays/nested data (flags don't support arrays)
+- mergeContactFlags allows flags to supplement JSON when no overlap
+- Flag builder pattern: buildXFromFlags returns typed object or null if required fields missing
+
 ### Open TODOs
 
-- Continue Phase 19 (plans 03, 05, 06, 07 remaining)
+- Continue Phase 19 (plans 05, 06, 07 remaining)
 
 ### Blockers
 
@@ -240,8 +246,8 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 19, plans 01, 02, and 04 complete
-**Resume command:** `/gsd:execute-phase 19-03`
+**Current step:** Phase 19, plans 01, 02, 03, and 04 complete
+**Resume command:** `/gsd:execute-phase 19-05`
 
 ### Files to Reference
 
@@ -277,9 +283,10 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-08-SUMMARY.md` - Gap Closure summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-01-SUMMARY.md` - Non-Interactive Mode Infrastructure summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-02-SUMMARY.md` - Zod Schemas and JSON Input summary
+- `/workspace/.planning/phases/19-wizard-non-interactive/19-03-SUMMARY.md` - Flag Collector and State Builder summary
 - `/workspace/.planning/phases/19-wizard-non-interactive/19-04-SUMMARY.md` - STAR Method Prompts summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 19-02 Zod Schemas and JSON Input)*
+*Last updated: 2026-01-26 (completed 19-03 Flag Collector and State Builder)*

@@ -1,7 +1,7 @@
 # Project State: CV Generator
 
 **Last Updated:** 2026-01-26
-**Session:** v1.2 PHASE 18 GAPS FOUND
+**Session:** v1.2 PHASE 18 GAP CLOSURE COMPLETE
 
 ## Project Reference
 
@@ -15,14 +15,14 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 
 **Milestone:** v1.2
 **Phase:** 18 - Wizard Foundation (in progress)
-**Plan:** 06 of 7 complete
+**Plan:** 07 of 8 complete (gap closure done)
 **Status:** In progress
 
 ```
-[###################  ] 47% (22/47 requirements)
+[###################  ] 49% (23/47 requirements)
 ```
 
-**Last activity:** 2026-01-26 - Completed 18-06-PLAN.md (Runner and CLI Commands)
+**Last activity:** 2026-01-26 - Completed 18-08-PLAN.md (Gap Closure)
 
 ## v1.2 Milestone Overview
 
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 | 15 | Multi-Stage Workflow | 6 | Complete (6/6) |
 | 16 | AI Content Generation | 5 | Complete (5/5) |
 | 17 | AI User Control | 4 | Complete (4/4) |
-| 18 | Wizard Foundation | 14 | In Progress (6/7 plans) |
+| 18 | Wizard Foundation | 14 | In Progress (7/8 plans, gap closure done) |
 | 19 | Wizard Non-Interactive & Integration | 6 | Pending |
 | 20 | Template Scaffolding | 9 | Pending |
 
@@ -204,10 +204,16 @@ v1.2 Phase 18 decisions (18-06):
 - runAddSection recursively calls itself when user selects 'edit' after add
 - ParseResult uses data field not success field for cv-core compatibility
 
+v1.2 Phase 18 decisions (18-08):
+- Locale selection uses predefined common locales with custom option
+- Back option uses Unicode left arrow character for visual clarity
+- Null return pattern allows parent collectors to skip cancelled entries
+- Empty URL provides second escape path from nested prompts
+
 ### Open TODOs
 
-- Execute Phase 18 gap closure plan (18-08)
-- Re-verify wizard after gap closure
+- Execute Phase 18 E2E tests (18-07)
+- Re-verify wizard after all changes
 
 ### Blockers
 
@@ -217,7 +223,7 @@ None.
 
 ### For Next Session
 
-**Current step:** Phase 18 plan 06 complete
+**Current step:** Phase 18 gap closure complete (18-08)
 **Resume command:** Execute 18-07-PLAN.md (E2E Tests)
 
 ### Files to Reference
@@ -251,8 +257,9 @@ None.
 - `/workspace/.planning/phases/18-wizard-foundation/18-04-SUMMARY.md` - Projects and Certifications Prompts summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-05-SUMMARY.md` - Summary and Output summary
 - `/workspace/.planning/phases/18-wizard-foundation/18-06-SUMMARY.md` - Runner and CLI Commands summary
+- `/workspace/.planning/phases/18-wizard-foundation/18-08-SUMMARY.md` - Gap Closure summary
 
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-01-26 (completed 18-06 Runner and CLI Commands)*
+*Last updated: 2026-01-26 (completed 18-08 Gap Closure)*

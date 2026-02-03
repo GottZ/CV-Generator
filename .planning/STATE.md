@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 014: Add "all" template alias to build command
+**Last activity:** 2026-02-03 - Completed quick task 015: Fix modern template job-tech-stack border position
 
 ## v1.2 Milestone Overview
 
@@ -293,6 +293,7 @@ v1.2 Phase 20 decisions (20-05):
 | 012 | Fix DOCX date alignment to same line | 2026-02-03 | 3ac90cc | [012-fix-word-document-date-alignment-to-same](./quick/012-fix-word-document-date-alignment-to-same/) |
 | 013 | Rename Summary/Zusammenfassung to Profile/Profil | 2026-02-03 | af42e6b | [013-rename-summary-category-to-profile-in-te](./quick/013-rename-summary-category-to-profile-in-te/) |
 | 014 | Add "all" template alias to build command | 2026-02-03 | 1c2014e | [014-add-all-template-alias-to-build-all-temp](./quick/014-add-all-template-alias-to-build-all-temp/) |
+| 015 | Fix modern template job-tech-stack border position | 2026-02-03 | 7e9bee5 | [015-fix-modern-theme-horizontal-line-positio](./quick/015-fix-modern-theme-horizontal-line-positio/) |
 
 ### Blockers
 
@@ -353,4 +354,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 014 - add all template alias)*
+*Last updated: 2026-02-03 (completed quick task 015 - fix modern template job-tech-stack border position)*

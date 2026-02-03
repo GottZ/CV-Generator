@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/de';
 import { marked } from 'marked';
 import nunjucks from 'nunjucks';
 import { getLocalizedText, getSectionHeader } from '../i18n/index.ts';
@@ -34,8 +35,8 @@ function registerDateFilters(env: nunjucks.Environment): void {
 		const parsed = dayjs(date);
 		if (!parsed.isValid()) return date;
 
-		// Format: "Jan 2024"
-		return parsed.format('MMM YYYY');
+		// Format: "Jan 2024" - use locale-aware formatting
+		return parsed.locale(locale).format('MMM YYYY');
 	});
 
 	// Format a date range: "Jan 2020 - Present"

@@ -71,19 +71,20 @@ export function parseCV(markdown: string): ParseResult<CVData> {
 	);
 
 	// Certifications are NOT localized (cert names are universal)
-	// Parse all certification sections and collect warnings
-	const certifications: Certification[] = [];
-	for (const section of sectionsResult.sections) {
-		if (section.sectionType === 'certifications' && section.content) {
-			const context: CertificationParseContext = {
+	// Pick ONE certification section: prefer 'en', fallback to first found
+	const certificationSections = sectionsResult.sections.filter(
+		(s) => s.sectionType === 'certifications' && s.content,
+	);
+	const certificationSection =
+		certificationSections.find((s) => s.language === 'en') ??
+		certificationSections[0];
+
+	const certifications: Certification[] = certificationSection
+		? parseCertificationEntries(certificationSection.content, {
 				warnings,
-				startLine: section.line,
-			};
-			certifications.push(
-				...parseCertificationEntries(section.content, context),
-			);
-		}
-	}
+				startLine: certificationSection.line,
+			})
+		: [];
 
 	// Step 4: Validate tech-to-skills consistency
 	validateTechToSkills(experience, skills, warnings);

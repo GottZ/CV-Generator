@@ -180,4 +180,16 @@
   .theme-toggle {
     display: none !important;
   }
+
+  /* === Prevent Empty Trailing Page === */
+  /* Remove margin-bottom from last section to prevent overflow to empty page */
+  main > .section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  /* Also remove margin-bottom from last entry in last section */
+  main > .section:last-child > .entry:last-child {
+    margin-bottom: 0;
+  }
 }

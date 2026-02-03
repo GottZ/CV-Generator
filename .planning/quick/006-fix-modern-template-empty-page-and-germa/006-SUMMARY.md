@@ -49,6 +49,7 @@ key-files:
 - Added CSS rules to remove margin-bottom from last section in print media
 - Added CSS rules to remove padding-bottom from last section
 - Added CSS rules to remove margin-bottom from last entry in last section
+- Added padding-bottom: 0 to .cv-page in print (additional fix after verification)
 - These rules prevent empty page overflow caused by trailing whitespace
 
 ## Deviations from Plan
@@ -77,7 +78,12 @@ key-files:
 | 9948a5a | feat(006): add i18n filter for localized job title preposition |
 | ad280f3 | fix(006): use localized job title preposition in templates |
 | bbec5c1 | fix(006): prevent empty trailing page in PDF output |
+| fc814d7 | fix(006): remove cv-page padding-bottom in print to prevent empty page |
 
 ## Verification Notes
 
-PDF generation could not be tested due to Chrome/Puppeteer not being available in the environment. The CSS fix follows established patterns from existing _print.css rules and targets the specific issue (margin/padding on last section causing page overflow). Manual PDF verification recommended in an environment with Puppeteer installed.
+- PDF generation verified with Puppeteer/Chrome
+- German PDF: 8 pages with content (was 9 with empty last page)
+- English PDF: 8 pages with content
+- German HTML: Job titles show "bei" correctly
+- English HTML: Job titles show "at" correctly

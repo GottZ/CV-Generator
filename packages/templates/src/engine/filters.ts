@@ -18,7 +18,7 @@ export function registerFilters(env: nunjucks.Environment): void {
  * Date formatting filters using dayjs.
  */
 function registerDateFilters(env: nunjucks.Environment): void {
-	// Format a single date: "2024-01" -> "Jan 2024"
+	// Format a single date: "2024-01" -> "Jan 2024", "2001" -> "2001"
 	env.addFilter('formatDate', (date: string, locale: string = 'en') => {
 		if (!date) return '';
 
@@ -30,6 +30,11 @@ function registerDateFilters(env: nunjucks.Environment): void {
 			lowerDate === 'current'
 		) {
 			return locale === 'de' ? 'heute' : 'Present';
+		}
+
+		// Year-only format (e.g., "2001") - return as-is
+		if (/^\d{4}$/.test(date)) {
+			return date;
 		}
 
 		const parsed = dayjs(date);

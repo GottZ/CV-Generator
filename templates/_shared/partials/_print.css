@@ -23,6 +23,8 @@
     margin: 0;
     width: 100%;
     min-height: auto;
+    /* Remove bottom padding in print - @page margin handles footer spacing */
+    padding-bottom: 0;
   }
 
   /* Sections CAN span pages - don't force entire sections to new page */

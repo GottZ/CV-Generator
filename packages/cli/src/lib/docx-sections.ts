@@ -27,6 +27,7 @@ import {
 	HeadingLevel,
 	ImageRun,
 	Paragraph,
+	TabStopType,
 	TextRun,
 } from 'docx';
 import sharp from 'sharp';
@@ -34,6 +35,13 @@ import {
 	DEFAULT_DOCX_STYLES,
 	type DocxStyleConfig,
 } from './docx-style-extractor.ts';
+
+/**
+ * Right margin tab stop position in TWIPs.
+ * Standard A4 width (11906) minus margins (1418 * 2) = 9070 TWIPs
+ * This positions right-aligned content at the right margin.
+ */
+const RIGHT_TAB_POSITION = 9070;
 
 /**
  * Spacing constants in TWIPs (1 line ~ 240 TWIPs for 12pt text).
@@ -145,6 +153,78 @@ export function textWithBreaks(
 	}
 
 	return runs;
+}
+
+/**
+ * Part of an entry header (left side).
+ */
+interface EntryHeaderPart {
+	text: string;
+	bold?: boolean;
+	size: number;
+	color: string;
+	font: string;
+}
+
+/**
+ * Build entry header with title on left and metadata on right.
+ * Uses tab stop for space-between effect like HTML flexbox.
+ *
+ * @param leftParts - Text parts for left side (company, role, etc.)
+ * @param rightText - Text for right side (dates, location)
+ * @param styles - Style configuration
+ * @param beforeSpacing - Optional spacing before the paragraph
+ * @returns Paragraph with tab-stop layout
+ */
+function buildEntryHeader(
+	leftParts: EntryHeaderPart[],
+	rightText: string,
+	styles: DocxStyleConfig,
+	beforeSpacing?: number,
+): Paragraph {
+	const children: TextRun[] = [];
+
+	// Add left parts
+	for (const part of leftParts) {
+		children.push(
+			new TextRun({
+				text: part.text,
+				bold: part.bold,
+				size: part.size,
+				color: part.color,
+				font: part.font,
+			}),
+		);
+	}
+
+	// Add tab character to jump to right tab stop
+	children.push(
+		new TextRun({
+			text: '\t',
+		}),
+	);
+
+	// Add right text (italic, small, muted)
+	children.push(
+		new TextRun({
+			text: rightText,
+			italics: true,
+			size: styles.fontSizes.small,
+			color: styles.colors.muted,
+			font: styles.fonts.body,
+		}),
+	);
+
+	return new Paragraph({
+		children,
+		tabStops: [
+			{
+				type: TabStopType.RIGHT,
+				position: RIGHT_TAB_POSITION,
+			},
+		],
+		spacing: beforeSpacing ? { before: beforeSpacing } : undefined,
+	});
 }
 
 /**
@@ -414,29 +494,7 @@ function buildExperienceSection(
 	);
 
 	for (const exp of experiences) {
-		// Company | Role (bold company)
-		paragraphs.push(
-			new Paragraph({
-				children: [
-					new TextRun({
-						text: exp.company,
-						bold: true,
-						size: styles.fontSizes.subsection,
-						color: styles.colors.heading,
-						font: styles.fonts.heading,
-					}),
-					new TextRun({
-						text: ` | ${exp.role}`,
-						size: styles.fontSizes.body,
-						color: styles.colors.body,
-						font: styles.fonts.body,
-					}),
-				],
-				spacing: { before: SPACING.beforeEntry },
-			}),
-		);
-
-		// Dates | Location (italic, right-aligned)
+		// Build date/location string for right side
 		const dateParts: string[] = [];
 		if (exp.startDate) {
 			dateParts.push(exp.startDate);
@@ -446,21 +504,30 @@ function buildExperienceSection(
 		}
 		const dateStr = dateParts.join(' - ');
 		const locationStr = exp.location ? ` | ${exp.location}` : '';
+		const rightText = `${dateStr}${locationStr}`;
 
+		// Company | Role [TAB->RIGHT] Date | Location (single line with tab stop)
 		paragraphs.push(
-			new Paragraph({
-				alignment: AlignmentType.RIGHT,
-				children: [
-					new TextRun({
-						text: `${dateStr}${locationStr}`,
-						italics: true,
-						size: styles.fontSizes.small,
-						color: styles.colors.muted,
+			buildEntryHeader(
+				[
+					{
+						text: exp.company,
+						bold: true,
+						size: styles.fontSizes.subsection,
+						color: styles.colors.heading,
+						font: styles.fonts.heading,
+					},
+					{
+						text: ` | ${exp.role}`,
+						size: styles.fontSizes.body,
+						color: styles.colors.body,
 						font: styles.fonts.body,
-					}),
+					},
 				],
-				spacing: { after: SPACING.afterDateLine },
-			}),
+				rightText,
+				styles,
+				SPACING.beforeEntry,
+			),
 		);
 
 		// Bullet highlights - single newlines within bullets become line breaks
@@ -539,29 +606,43 @@ function buildEducationSection(
 	);
 
 	for (const edu of education) {
-		// Institution | Degree (bold institution)
+		// Build date/location string for right side
+		const dateParts: string[] = [];
+		if (edu.startDate) {
+			dateParts.push(edu.startDate);
+		}
+		if (edu.endDate) {
+			dateParts.push(edu.endDate);
+		}
+		const dateStr = dateParts.join(' - ');
+		const locationStr = edu.location ? ` | ${edu.location}` : '';
+		const rightText = `${dateStr}${locationStr}`;
+
+		// Institution | Degree [TAB->RIGHT] Date | Location (single line with tab stop)
 		paragraphs.push(
-			new Paragraph({
-				children: [
-					new TextRun({
+			buildEntryHeader(
+				[
+					{
 						text: edu.institution,
 						bold: true,
 						size: styles.fontSizes.subsection,
 						color: styles.colors.heading,
 						font: styles.fonts.heading,
-					}),
-					new TextRun({
+					},
+					{
 						text: ` | ${edu.degree}`,
 						size: styles.fontSizes.body,
 						color: styles.colors.body,
 						font: styles.fonts.body,
-					}),
+					},
 				],
-				spacing: { before: SPACING.beforeEntry },
-			}),
+				rightText,
+				styles,
+				SPACING.beforeEntry,
+			),
 		);
 
-		// Field (if present)
+		// Field (if present) - now on its own line after the header
 		if (edu.field) {
 			paragraphs.push(
 				new Paragraph({
@@ -576,33 +657,6 @@ function buildEducationSection(
 				}),
 			);
 		}
-
-		// Dates | Location (italic, right-aligned)
-		const dateParts: string[] = [];
-		if (edu.startDate) {
-			dateParts.push(edu.startDate);
-		}
-		if (edu.endDate) {
-			dateParts.push(edu.endDate);
-		}
-		const dateStr = dateParts.join(' - ');
-		const locationStr = edu.location ? ` | ${edu.location}` : '';
-
-		paragraphs.push(
-			new Paragraph({
-				alignment: AlignmentType.RIGHT,
-				children: [
-					new TextRun({
-						text: `${dateStr}${locationStr}`,
-						italics: true,
-						size: styles.fontSizes.small,
-						color: styles.colors.muted,
-						font: styles.fonts.body,
-					}),
-				],
-				spacing: { after: SPACING.afterDateLine },
-			}),
-		);
 
 		// Honors (if present) - single newlines become line breaks
 		if (edu.honors) {
@@ -742,59 +796,59 @@ function buildProjectsSection(
 	);
 
 	for (const project of projects) {
-		// Project name | Role
-		const nameChildren: TextRun[] = [
-			new TextRun({
+		// Build metadata string for right side (dates and type)
+		const metaParts: string[] = [];
+		if (project.startDate) {
+			metaParts.push(
+				project.endDate
+					? `${project.startDate} - ${project.endDate}`
+					: project.startDate,
+			);
+		}
+		if (project.type) {
+			metaParts.push(project.type);
+		}
+		const rightText = metaParts.join(' | ');
+
+		// Build left parts (project name and optional role)
+		const leftParts: EntryHeaderPart[] = [
+			{
 				text: project.name,
 				bold: true,
 				size: styles.fontSizes.subsection,
 				color: styles.colors.heading,
 				font: styles.fonts.heading,
-			}),
+			},
 		];
 		if (project.role) {
-			nameChildren.push(
-				new TextRun({
-					text: ` | ${project.role}`,
-					size: styles.fontSizes.body,
-					color: styles.colors.body,
-					font: styles.fonts.body,
-				}),
-			);
+			leftParts.push({
+				text: ` | ${project.role}`,
+				size: styles.fontSizes.body,
+				color: styles.colors.body,
+				font: styles.fonts.body,
+			});
 		}
-		paragraphs.push(
-			new Paragraph({
-				children: nameChildren,
-				spacing: { before: SPACING.beforeEntry },
-			}),
-		);
 
-		// Dates | Type (italic, right-aligned)
-		if (project.startDate || project.type) {
-			const metaParts: string[] = [];
-			if (project.startDate) {
-				metaParts.push(
-					project.endDate
-						? `${project.startDate} - ${project.endDate}`
-						: project.startDate,
-				);
-			}
-			if (project.type) {
-				metaParts.push(project.type);
-			}
+		// Project Name | Role [TAB->RIGHT] Date | Type (single line with tab stop)
+		// If no right text (no dates/type), just show left parts without tab stop
+		if (rightText) {
+			paragraphs.push(
+				buildEntryHeader(leftParts, rightText, styles, SPACING.beforeEntry),
+			);
+		} else {
 			paragraphs.push(
 				new Paragraph({
-					alignment: AlignmentType.RIGHT,
-					children: [
-						new TextRun({
-							text: metaParts.join(' | '),
-							italics: true,
-							size: styles.fontSizes.small,
-							color: styles.colors.muted,
-							font: styles.fonts.body,
-						}),
-					],
-					spacing: { after: SPACING.afterDateLine },
+					children: leftParts.map(
+						(part) =>
+							new TextRun({
+								text: part.text,
+								bold: part.bold,
+								size: part.size,
+								color: part.color,
+								font: part.font,
+							}),
+					),
+					spacing: { before: SPACING.beforeEntry },
 				}),
 			);
 		}
@@ -928,54 +982,33 @@ function buildCertificationsSection(
 	);
 
 	for (const cert of certifications) {
-		// Cert name (bold)
+		// Build date string for right side
+		const dateStr = cert.expiryDate
+			? `${cert.date} - ${cert.expiryDate}`
+			: cert.date;
+
+		// Cert Name - Issuer [TAB->RIGHT] Date (single line with tab stop)
 		paragraphs.push(
-			new Paragraph({
-				children: [
-					new TextRun({
+			buildEntryHeader(
+				[
+					{
 						text: cert.name,
 						bold: true,
 						size: styles.fontSizes.subsection,
 						color: styles.colors.heading,
 						font: styles.fonts.heading,
-					}),
-				],
-				spacing: { before: SPACING.beforeEntry },
-			}),
-		);
-
-		// Issuer
-		paragraphs.push(
-			new Paragraph({
-				children: [
-					new TextRun({
-						text: cert.issuer,
+					},
+					{
+						text: ` - ${cert.issuer}`,
 						size: styles.fontSizes.body,
 						color: styles.colors.muted,
 						font: styles.fonts.body,
-					}),
+					},
 				],
-			}),
-		);
-
-		// Dates (right-aligned, italic)
-		const dateStr = cert.expiryDate
-			? `${cert.date} - ${cert.expiryDate}`
-			: cert.date;
-		paragraphs.push(
-			new Paragraph({
-				alignment: AlignmentType.RIGHT,
-				children: [
-					new TextRun({
-						text: dateStr,
-						italics: true,
-						size: styles.fontSizes.small,
-						color: styles.colors.muted,
-						font: styles.fonts.body,
-					}),
-				],
-				spacing: { after: SPACING.afterDateLine },
-			}),
+				dateStr,
+				styles,
+				SPACING.beforeEntry,
+			),
 		);
 
 		// Credential ID (if present)

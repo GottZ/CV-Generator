@@ -173,9 +173,9 @@ function parseExperienceEntries(content: string): WorkExperience[] {
 				}
 			}
 
-			// ### Role at Company
+			// ### Role at/bei Company (supports both English "at" and German "bei")
 			if (trimmed.startsWith('### ')) {
-				const headerMatch = trimmed.match(/^###\s+(.+?)\s+at\s+(.+)$/i);
+				const headerMatch = trimmed.match(/^###\s+(.+?)\s+(?:at|bei)\s+(.+)$/i);
 				if (headerMatch) {
 					experience.role = (headerMatch[1] ?? '').trim();
 					experience.company = (headerMatch[2] ?? '').trim();
@@ -235,9 +235,9 @@ function parseEducationEntries(content: string): Education[] {
 		for (const line of lines) {
 			const trimmed = line.trim();
 
-			// ### Degree at Institution
+			// ### Degree at/bei Institution (supports both English "at" and German "bei")
 			if (trimmed.startsWith('### ')) {
-				const headerMatch = trimmed.match(/^###\s+(.+?)\s+at\s+(.+)$/i);
+				const headerMatch = trimmed.match(/^###\s+(.+?)\s+(?:at|bei)\s+(.+)$/i);
 				if (headerMatch) {
 					education.degree = (headerMatch[1] ?? '').trim();
 					education.institution = (headerMatch[2] ?? '').trim();

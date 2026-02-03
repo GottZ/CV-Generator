@@ -43,7 +43,7 @@
         {% for job in experience %}
         <article class="entry experience-entry">
           <div class="entry-header">
-            <h3 class="entry-title">{{ job.role }} at {{ job.company }}</h3>
+            <h3 class="entry-title">{{ job.role }} {{ 'roleAt' | i18n(locale) }} {{ job.company }}</h3>
             <span class="date-range">{{ job.startDate | formatDate(locale) }} - {{ job.endDate | formatDate(locale) }}</span>
           </div>
           {% if job.location %}<div class="entry-location">{{ job.location }}</div>{% endif %}

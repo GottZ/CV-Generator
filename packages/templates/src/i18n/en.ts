@@ -9,4 +9,5 @@ export const en: Record<string, string> = {
 	skills: 'Skills',
 	projects: 'Projects',
 	certifications: 'Certifications',
+	roleAt: 'at',
 };

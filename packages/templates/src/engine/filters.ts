@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { marked } from 'marked';
 import nunjucks from 'nunjucks';
-import { getSectionHeader } from '../i18n/index.ts';
+import { getLocalizedText, getSectionHeader } from '../i18n/index.ts';
 
 /**
  * Register all custom filters on a Nunjucks environment.
@@ -80,12 +80,17 @@ function registerMarkdownFilters(env: nunjucks.Environment): void {
 }
 
 /**
- * Internationalization filters for section headers.
+ * Internationalization filters for section headers and general text.
  */
 function registerI18nFilters(env: nunjucks.Environment): void {
 	// Get localized section header
 	env.addFilter('sectionHeader', (section: string, locale: string = 'en') => {
 		return getSectionHeader(section, locale);
+	});
+
+	// Get localized text by key (general i18n)
+	env.addFilter('i18n', (key: string, locale: string = 'en') => {
+		return getLocalizedText(key, locale);
 	});
 }
 

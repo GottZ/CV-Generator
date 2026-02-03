@@ -8,4 +8,5 @@ export const de: Record<string, string> = {
 	skills: 'Kenntnisse',
 	projects: 'Projekte',
 	certifications: 'Zertifizierungen',
+	roleAt: 'bei',
 };

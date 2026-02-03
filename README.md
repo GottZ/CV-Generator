@@ -103,6 +103,20 @@ cvgen list-templates
 
 ## Development
 
+### Running the CLI
+
+When developing locally, use the convenience script instead of the full path:
+
+```bash
+# Instead of: bun run packages/cli/src/index.ts build jane modern
+bun run cvgen build jane modern
+
+# All commands work the same
+bun run cvgen --help
+bun run cvgen init john-doe
+bun run cvgen ai analyze jane
+```
+
 ### Running Tests
 
 Tests run in Docker to ensure consistent font rendering across all environments (local development and CI). Font rendering differences between operating systems can cause visual regression tests to fail even when the code is correct.

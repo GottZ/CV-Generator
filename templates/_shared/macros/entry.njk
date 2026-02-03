@@ -53,16 +53,16 @@
   </div>
   {% endif %}
   {% if project.description %}<p class="project-description">{{ project.description | md | safe }}</p>{% endif %}
-  {% if project.techStack and project.techStack | length > 0 %}
-  <div class="tech-stack">
-    {% for tech in project.techStack %}
-    <span class="tech-tag">{{ tech }}</span>
-    {% endfor %}
-  </div>
-  {% endif %}
   {% if project.outcome %}
   <div class="project-outcome">
     <strong>Outcome:</strong> {{ project.outcome | md | safe }}
+  </div>
+  {% endif %}
+  {% if project.techStack and project.techStack | length > 0 %}
+  <div class="tech-stack project-tech-stack">
+    {% for tech in project.techStack %}
+    <span class="tech-tag">{{ tech }}</span>
+    {% endfor %}
   </div>
   {% endif %}
   {% if project.links and project.links | length > 0 %}

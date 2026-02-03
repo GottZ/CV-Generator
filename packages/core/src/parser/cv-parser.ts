@@ -192,7 +192,7 @@ function parseExperienceEntries(content: string): WorkExperience[] {
 
 				if (parts[0]) {
 					const dateMatch = parts[0].match(
-						/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/,
+						/^(\d{4}(?:-\d{2})?(?:-\d{2})?)\s*-\s*(.+)$/,
 					);
 					if (dateMatch) {
 						experience.startDate = dateMatch[1] ?? '';
@@ -255,7 +255,7 @@ function parseEducationEntries(content: string): Education[] {
 					const parts = metaContent.split('|').map((p) => p.trim());
 					if (parts[0]) {
 						const dateMatch = parts[0].match(
-							/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/,
+							/^(\d{4}(?:-\d{2})?(?:-\d{2})?)\s*-\s*(.+)$/,
 						);
 						if (dateMatch) {
 							education.startDate = dateMatch[1] ?? '';
@@ -556,8 +556,8 @@ function parseProjectMeta(meta: string, project: Project): void {
 			continue;
 		}
 
-		// Check for date range (YYYY-MM - YYYY-MM or YYYY-MM - present)
-		const dateMatch = part.match(/^(\d{4}-\d{2}(?:-\d{2})?)\s*-\s*(.+)$/);
+		// Check for date range (YYYY-MM - YYYY-MM or YYYY-MM - present or YYYY - present)
+		const dateMatch = part.match(/^(\d{4}(?:-\d{2})?(?:-\d{2})?)\s*-\s*(.+)$/);
 		if (dateMatch) {
 			project.startDate = dateMatch[1] ?? '';
 			project.endDate = (dateMatch[2] ?? '').trim();

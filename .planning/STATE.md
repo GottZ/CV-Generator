@@ -285,6 +285,7 @@ v1.2 Phase 20 decisions (20-05):
 |---|-------------|------|--------|-----------|
 | 006 | Fix modern template empty page and German HTML 'at' suffix bugs | 2026-02-03 | 0a7f5ad | [006-fix-modern-template-empty-page-and-germa](./quick/006-fix-modern-template-empty-page-and-germa/) |
 | 007 | Fix German date localization in CV rendering | 2026-02-03 | 1677505 | [007-fix-german-date-localization-in-cv-rende](./quick/007-fix-german-date-localization-in-cv-rende/) |
+| 008 | Fix skill bubbles word-break in print CSS | 2026-02-03 | f08a275 | [008-fix-skill-bubbles-word-break-in-print-cs](./quick/008-fix-skill-bubbles-word-break-in-print-cs/) |
 
 ### Blockers
 
@@ -345,4 +346,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 007 - German date localization fix)*
+*Last updated: 2026-02-03 (completed quick task 008 - skill bubbles word-break fix)*

@@ -12,11 +12,11 @@ links:
     url: https://janedeveloper.dev
 ---
 
-## Summary `en`
+## Profile `en`
 
 Senior Software Engineer with 8+ years of experience building scalable web applications and leading engineering teams. Passionate about clean code, developer experience, and mentoring junior developers.
 
-## Zusammenfassung `de`
+## Profil `de`
 
 Senior Software Engineer mit mehr als 8 Jahren Erfahrung in der Entwicklung skalierbarer Webanwendungen und der Leitung von Entwicklungsteams. Leidenschaftlich fuer sauberen Code, Entwicklererfahrung und Mentoring von Junior-Entwicklern.
 

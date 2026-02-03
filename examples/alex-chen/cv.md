@@ -13,11 +13,11 @@ links:
     label: Portfolio
 ---
 
-## Summary `en`
+## Profile `en`
 
 Full-stack software engineer with 7+ years of experience building scalable web applications and cloud-native systems. Passionate about developer experience, performance optimization, and mentoring junior engineers. Led teams of 3-8 engineers across multiple successful product launches.
 
-## Zusammenfassung `de`
+## Profil `de`
 
 Full-Stack-Softwareingenieur mit uber 7 Jahren Erfahrung in der Entwicklung skalierbarer Webanwendungen und cloud-nativer Systeme. Leidenschaftlich engagiert fur Developer Experience, Performance-Optimierung und Mentoring von Junior-Entwicklern. Leitete Teams von 3-8 Ingenieuren bei mehreren erfolgreichen Produkteinfuhrungen.
 

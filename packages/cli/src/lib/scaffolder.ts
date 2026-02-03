@@ -73,12 +73,12 @@ photo: ./images/photo.jpg  # Optional: your photo
 #     label: GitHub
 ---
 
-## Summary \`en\`
-<!-- Professional summary in English (2-3 sentences) -->
+## Profile \`en\`
+<!-- Professional profile in English (2-3 sentences) -->
 Experienced professional with expertise in...
 
-## Zusammenfassung \`de\`
-<!-- Berufliche Zusammenfassung auf Deutsch (2-3 Saetze) -->
+## Profil \`de\`
+<!-- Berufsprofil auf Deutsch (2-3 Saetze) -->
 Erfahrener Fachmann mit Expertise in...
 
 ## Experience \`en\`

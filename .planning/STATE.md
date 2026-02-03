@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 012: Fix Word document date alignment to same line
+**Last activity:** 2026-02-03 - Completed quick task 013: Rename Summary/Zusammenfassung to Profile/Profil
 
 ## v1.2 Milestone Overview
 
@@ -291,6 +291,7 @@ v1.2 Phase 20 decisions (20-05):
 | 011 | Fix duplicate certifications entries | 2026-02-03 | 29b7b0c | [011-fix-duplicate-certifications-entries](./quick/011-fix-duplicate-certifications-entries/) |
 | 012 | Fix Word document date alignment to same line | 2026-02-03 | 34b3ec9 | [012-fix-word-document-date-alignment-to-same](./quick/012-fix-word-document-date-alignment-to-same/) |
 | 012 | Fix DOCX date alignment to same line | 2026-02-03 | 3ac90cc | [012-fix-word-document-date-alignment-to-same](./quick/012-fix-word-document-date-alignment-to-same/) |
+| 013 | Rename Summary/Zusammenfassung to Profile/Profil | 2026-02-03 | af42e6b | [013-rename-summary-category-to-profile-in-te](./quick/013-rename-summary-category-to-profile-in-te/) |
 
 ### Blockers
 
@@ -351,4 +352,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 012 - fix DOCX date alignment to same line)*
+*Last updated: 2026-02-03 (completed quick task 013 - rename Summary to Profile)*

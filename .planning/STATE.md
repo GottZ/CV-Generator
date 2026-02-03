@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 007: Fix German date localization in CV rendering
+**Last activity:** 2026-02-03 - Completed quick task 008: Fix skill bubbles word-break in print CSS
 
 ## v1.2 Milestone Overview
 

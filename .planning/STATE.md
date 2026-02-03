@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 016: Modern theme move outcome above tags
+**Last activity:** 2026-02-03 - Completed quick task 017: Education below Projects section order
 
 ## v1.2 Milestone Overview
 
@@ -295,6 +295,7 @@ v1.2 Phase 20 decisions (20-05):
 | 014 | Add "all" template alias to build command | 2026-02-03 | 1c2014e | [014-add-all-template-alias-to-build-all-temp](./quick/014-add-all-template-alias-to-build-all-temp/) |
 | 015 | Fix modern template job-tech-stack border position | 2026-02-03 | 7e9bee5 | [015-fix-modern-theme-horizontal-line-positio](./quick/015-fix-modern-theme-horizontal-line-positio/) |
 | 016 | Modern theme: move outcome above tags, add horizontal line | 2026-02-03 | b4c4e6c | [016-modern-theme-move-outcome-above-tags-add](./quick/016-modern-theme-move-outcome-above-tags-add/) |
+| 017 | Reorder sections: Projects before Education | 2026-02-03 | 6f5d0f5 | [017-education-should-be-below-projects-in-ou](./quick/017-education-should-be-below-projects-in-ou/) |
 
 ### Blockers
 
@@ -355,4 +356,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 016 - modern theme move outcome above tags)*
+*Last updated: 2026-02-03 (completed quick task 017 - education below projects section order)*

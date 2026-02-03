@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 010: Document bun run cvgen in README
+**Last activity:** 2026-02-03 - Completed quick task 011: Fix duplicate certifications entries
 
 ## v1.2 Milestone Overview
 
@@ -288,6 +288,7 @@ v1.2 Phase 20 decisions (20-05):
 | 008 | Fix skill bubbles word-break in print CSS | 2026-02-03 | f08a275 | [008-fix-skill-bubbles-word-break-in-print-cs](./quick/008-fix-skill-bubbles-word-break-in-print-cs/) |
 | 009 | Add bun run cvgen script to root package.json | 2026-02-03 | bcd1af7 | [009-make-bun-run-cvgen-a-thing](./quick/009-make-bun-run-cvgen-a-thing/) |
 | 010 | Document bun run cvgen in README | 2026-02-03 | d3c9709 | [010-extend-readme-for-bun-run-cvgen](./quick/010-extend-readme-for-bun-run-cvgen/) |
+| 011 | Fix duplicate certifications entries | 2026-02-03 | 29b7b0c | [011-fix-duplicate-certifications-entries](./quick/011-fix-duplicate-certifications-entries/) |
 
 ### Blockers
 
@@ -348,4 +349,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 008 - skill bubbles word-break fix)*
+*Last updated: 2026-02-03 (completed quick task 011 - fix duplicate certifications entries)*

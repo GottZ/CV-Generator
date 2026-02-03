@@ -20,7 +20,10 @@ program
 	.command('build')
 	.description('Build CV output files')
 	.argument('<name>', 'Person directory name (e.g., johndoe)')
-	.argument('<template>', 'Template ID to use (e.g., base, or "auto")')
+	.argument(
+		'<template>',
+		'Template ID to use (e.g., base, "auto" for single, or "all" for all templates)',
+	)
 	.option(
 		'--format <formats>',
 		'Output formats (comma-separated: html,pdf,docx)',
@@ -53,6 +56,7 @@ Examples:
   $ cvgen build johndoe modern --watch
   $ cvgen build johndoe modern --dry-run
   $ cvgen build johndoe auto              # Auto-selects if only one template
+  $ cvgen build johndoe all               # Build with all available templates
 `,
 	)
 	.action(buildAction);

@@ -85,6 +85,50 @@ export async function buildAction(
 		}
 	}
 
+	// "all" template alias - build with all available templates
+	if (template === 'all') {
+		// Watch mode doesn't make sense with "all" templates
+		if (options.watch) {
+			cons.error(
+				'Watch mode not supported with "all" templates. Specify a single template.',
+			);
+			process.exit(1);
+		}
+
+		const templates = await discoverTemplates(templatesDir);
+		if (templates.length === 0) {
+			cons.error('No templates found');
+			process.exit(EXIT_TEMPLATE_ERROR);
+		}
+
+		cons.info(
+			`Building with all templates: ${templates.map((t) => t.id).join(', ')}`,
+		);
+
+		// Build for each template
+		for (const tmpl of templates) {
+			try {
+				cons.info(`\nBuilding with template: ${tmpl.id}`);
+				await runBuild(
+					name,
+					tmpl.id,
+					options,
+					cons,
+					personDir,
+					templatesDir,
+					peopleDir,
+					cwd,
+				);
+			} catch (err) {
+				cons.error(
+					`Failed with template ${tmpl.id}: ${(err as Error).message}`,
+				);
+				// Continue with other templates instead of failing fast
+			}
+		}
+		return;
+	}
+
 	// Watch mode
 	if (options.watch) {
 		const filter = parseWatchFilter(options.watch);

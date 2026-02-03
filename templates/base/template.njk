@@ -66,25 +66,6 @@
       </section>
       {% endif %}
 
-      {# Education section #}
-      {% if education and education | length > 0 %}
-      <section class="section education">
-        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
-        {% for edu in education %}
-        <article class="entry education-entry">
-          <div class="entry-header">
-            <h3 class="entry-title">{{ edu.degree }}{% if edu.field %}, {{ edu.field }}{% endif %}</h3>
-            <span class="date-range">{{ edu.startDate | formatDate(locale) }} - {{ edu.endDate | formatDate(locale) }}</span>
-          </div>
-          <div class="entry-institution">{{ edu.institution }}</div>
-          {% if edu.location %}<div class="entry-location">{{ edu.location }}</div>{% endif %}
-          {% if edu.honors %}<div class="entry-honors">{{ edu.honors }}</div>{% endif %}
-          {% if edu.notes %}<div class="entry-notes">{{ edu.notes | md | safe }}</div>{% endif %}
-        </article>
-        {% endfor %}
-      </section>
-      {% endif %}
-
       {# Projects section #}
       {% if projects and projects | length > 0 %}
       <section class="section projects">
@@ -123,6 +104,25 @@
             {% endfor %}
           </div>
           {% endif %}
+        </article>
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {# Education section #}
+      {% if education and education | length > 0 %}
+      <section class="section education">
+        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
+        {% for edu in education %}
+        <article class="entry education-entry">
+          <div class="entry-header">
+            <h3 class="entry-title">{{ edu.degree }}{% if edu.field %}, {{ edu.field }}{% endif %}</h3>
+            <span class="date-range">{{ edu.startDate | formatDate(locale) }} - {{ edu.endDate | formatDate(locale) }}</span>
+          </div>
+          <div class="entry-institution">{{ edu.institution }}</div>
+          {% if edu.location %}<div class="entry-location">{{ edu.location }}</div>{% endif %}
+          {% if edu.honors %}<div class="entry-honors">{{ edu.honors }}</div>{% endif %}
+          {% if edu.notes %}<div class="entry-notes">{{ edu.notes | md | safe }}</div>{% endif %}
         </article>
         {% endfor %}
       </section>

@@ -49,22 +49,22 @@
       </section>
       {% endif %}
 
-      {# Education section #}
-      {% if education and education | length > 0 %}
-      <section class="section education">
-        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
-        {% for edu in education %}
-        {{ educationEntry(edu, locale) }}
-        {% endfor %}
-      </section>
-      {% endif %}
-
       {# Projects section #}
       {% if projects and projects | length > 0 %}
       <section class="section projects">
         <h2>{{ 'projects' | sectionHeader(locale) }}</h2>
         {% for project in projects %}
         {{ projectEntry(project, locale) }}
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {# Education section #}
+      {% if education and education | length > 0 %}
+      <section class="section education">
+        <h2>{{ 'education' | sectionHeader(locale) }}</h2>
+        {% for edu in education %}
+        {{ educationEntry(edu, locale) }}
         {% endfor %}
       </section>
       {% endif %}

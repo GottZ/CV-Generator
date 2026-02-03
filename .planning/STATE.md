@@ -289,6 +289,7 @@ v1.2 Phase 20 decisions (20-05):
 | 009 | Add bun run cvgen script to root package.json | 2026-02-03 | bcd1af7 | [009-make-bun-run-cvgen-a-thing](./quick/009-make-bun-run-cvgen-a-thing/) |
 | 010 | Document bun run cvgen in README | 2026-02-03 | d3c9709 | [010-extend-readme-for-bun-run-cvgen](./quick/010-extend-readme-for-bun-run-cvgen/) |
 | 011 | Fix duplicate certifications entries | 2026-02-03 | 29b7b0c | [011-fix-duplicate-certifications-entries](./quick/011-fix-duplicate-certifications-entries/) |
+| 012 | Fix DOCX date alignment to same line | 2026-02-03 | 3ac90cc | [012-fix-word-document-date-alignment-to-same](./quick/012-fix-word-document-date-alignment-to-same/) |
 
 ### Blockers
 
@@ -349,4 +350,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 011 - fix duplicate certifications entries)*
+*Last updated: 2026-02-03 (completed quick task 012 - fix DOCX date alignment to same line)*

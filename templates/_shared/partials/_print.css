@@ -124,6 +124,7 @@
   .skill {
     display: inline;
     margin-right: 8px;
+    white-space: nowrap;
   }
 
   /* Tech stack tags */

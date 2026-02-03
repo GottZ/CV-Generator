@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-03 - Completed quick task 017: Education below Projects section order
+**Last activity:** 2026-02-03 - Completed quick task 018: Fix year-only date rendering
 
 ## v1.2 Milestone Overview
 
@@ -296,6 +296,7 @@ v1.2 Phase 20 decisions (20-05):
 | 015 | Fix modern template job-tech-stack border position | 2026-02-03 | 7e9bee5 | [015-fix-modern-theme-horizontal-line-positio](./quick/015-fix-modern-theme-horizontal-line-positio/) |
 | 016 | Modern theme: move outcome above tags, add horizontal line | 2026-02-03 | b4c4e6c | [016-modern-theme-move-outcome-above-tags-add](./quick/016-modern-theme-move-outcome-above-tags-add/) |
 | 017 | Reorder sections: Projects before Education | 2026-02-03 | 6f5d0f5 | [017-education-should-be-below-projects-in-ou](./quick/017-education-should-be-below-projects-in-ou/) |
+| 018 | Fix year-only date rendering (e.g., "2001 - present") | 2026-02-03 | 4d01ce4 | [018-fix-year-only-date-rendering-e-g-2001-he](./quick/018-fix-year-only-date-rendering-e-g-2001-he/) |
 
 ### Blockers
 
@@ -356,4 +357,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-03 (completed quick task 017 - education below projects section order)*
+*Last updated: 2026-02-03 (completed quick task 018 - fix year-only date rendering)*

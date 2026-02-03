@@ -25,6 +25,7 @@ interface SectionsResult {
 const SECTION_MAPPINGS: Record<string, string> = {
 	// English - Core sections
 	summary: 'summary',
+	profile: 'summary',
 	'professional summary': 'summary',
 	objective: 'summary',
 	'work experience': 'experience',
@@ -102,7 +103,7 @@ export function extractSections(markdown: string): SectionsResult {
 					type: 'warning',
 					line: lineNum,
 					message: `Unknown section type: "${header}"`,
-					suggestion: `Known sections: Summary, Work Experience, Education, Skills, Projects, Certifications`,
+					suggestion: `Known sections: Profile, Work Experience, Education, Skills, Projects, Certifications`,
 					context: line,
 				});
 			}

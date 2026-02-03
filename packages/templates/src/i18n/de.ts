@@ -2,7 +2,7 @@
  * German section header translations.
  */
 export const de: Record<string, string> = {
-	summary: 'Zusammenfassung',
+	summary: 'Profil',
 	experience: 'Berufserfahrung',
 	education: 'Ausbildung',
 	skills: 'Kenntnisse',

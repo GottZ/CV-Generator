@@ -5,6 +5,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"cvgen": "bun run packages/cli/src/index.ts",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
@@ -21,5 +22,8 @@
 	},
 	"optionalDependencies": {
 		"playwright": "^1.57.0"
+	},
+	"dependencies": {
+		"puppeteer": "^24.36.1"
 	}
 }

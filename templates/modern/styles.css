@@ -179,11 +179,17 @@ h2 {
   font-size: var(--font-size-section);
   color: var(--color-heading);
   font-weight: 700;
+  margin-top: var(--spacing-xl);
   margin-bottom: var(--spacing-md);
   padding-bottom: var(--spacing-sm);
   border-bottom: var(--divider-width) solid var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* First section doesn't need extra top margin (follows contact header) */
+.section:first-of-type h2 {
+  margin-top: 0;
 }
 
 /* Entry components */

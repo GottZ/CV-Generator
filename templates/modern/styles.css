@@ -163,6 +163,54 @@ h1 {
   text-decoration: underline;
 }
 
+/* Two-column header layout (when photo present) */
+.contact-header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+.contact-info-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.contact-info-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  color: var(--color-muted);
+  font-size: var(--font-size-body);
+}
+
+.contact-info-stacked .contact-item {
+  /* No separator styling needed for stacked layout */
+}
+
+.contact-links-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.contact-links-stacked .contact-link {
+  display: block;
+}
+
+.contact-photo-column {
+  flex-shrink: 0;
+}
+
+.contact-photo-column .photo {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 /* Single column layout */
 main {
   display: flex;
@@ -420,6 +468,20 @@ h3 {
 /* Photo - Modern: rounded corners */
 .photo {
   border-radius: 12px;
+}
+
+/* Photo sizing in print */
+@media print {
+  .contact-photo-column .photo {
+    width: 90px;
+    height: auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .contact-header-grid {
+    gap: var(--spacing-md);
+  }
 }
 
 /* Theme toggle */

@@ -302,6 +302,7 @@ v1.2 Phase 20 decisions (20-05):
 | 021 | Fix skill pills vertical padding in print mode | 2026-02-04 | e25ee3a | [021-fix-skill-pills-vertical-padding-in-mode](./quick/021-fix-skill-pills-vertical-padding-in-mode/) |
 | 022 | Add vertical padding to tech tags in print mode | 2026-02-04 | 53f38dc | [022-add-vertical-padding-to-tech-tags-in-exp](./quick/022-add-vertical-padding-to-tech-tags-in-exp/) |
 | 023 | Remove redundant horizontal lines from modern theme | 2026-02-04 | 12c7b2a | [023-remove-redundant-horizontal-lines-modern-theme](./quick/023-remove-redundant-horizontal-lines-modern-theme/) |
+| 024 | Increase section header spacing in modern theme | 2026-02-04 | f26832f | [024-increase-section-header-spacing-modern-t](./quick/024-increase-section-header-spacing-modern-t/) |
 
 ### Blockers
 
@@ -362,4 +363,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-04 (completed quick task 023 - remove redundant horizontal lines from modern theme)*
+*Last updated: 2026-02-04 (completed quick task 024 - increase section header spacing in modern theme)*

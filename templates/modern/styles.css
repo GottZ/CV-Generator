@@ -335,6 +335,13 @@ h3 {
   border-bottom: 1px solid var(--color-border);
 }
 
+/* Remove border from tech stack in last entry (no separator needed at section end) */
+.entry:last-child .job-tech-stack,
+.entry:last-child .project-tech-stack {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
 /* Project styles */
 .project-entry.highlighted {
   border-left: var(--divider-width) solid var(--color-accent);

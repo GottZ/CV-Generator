@@ -16,6 +16,28 @@
     {# Contact in body, not header - ATS-02 #}
     <header class="contact">
       <h1>{{ contact.name }}</h1>
+      {% if photo %}
+      <div class="contact-header-grid">
+        <div class="contact-info-column">
+          <div class="contact-info-stacked">
+            {% if contact.email %}<div class="contact-item">{{ contact.email }}</div>{% endif %}
+            {% if contact.phone %}<div class="contact-item">{{ contact.phone }}</div>{% endif %}
+            {% if contact.location %}<div class="contact-item">{{ contact.location }}</div>{% endif %}
+          </div>
+          {% if contact.links and contact.links | length > 0 %}
+          <div class="contact-links-stacked">
+            {% for link in contact.links %}
+            <a href="{{ link.url }}" class="contact-link">{{ link.label or link.type }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="contact-photo-column">
+          <img src="{{ photo }}" alt="{{ contact.name }}" class="photo">
+        </div>
+      </div>
+      {% else %}
+      {# Original layout when no photo #}
       <div class="contact-info">
         {% if contact.email %}<span class="contact-item">{{ contact.email }}</span>{% endif %}
         {% if contact.phone %}<span class="contact-item">{{ contact.phone }}</span>{% endif %}
@@ -27,6 +49,7 @@
         <a href="{{ link.url }}" class="contact-link">{{ link.label or link.type }}</a>
         {% endfor %}
       </div>
+      {% endif %}
       {% endif %}
     </header>
 

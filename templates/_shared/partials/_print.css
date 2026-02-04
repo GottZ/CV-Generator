@@ -122,6 +122,7 @@
   /* Skill lists */
   .skill-list {
     display: block;
+    line-height: 2.2;
   }
 
   .skill {

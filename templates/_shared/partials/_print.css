@@ -114,6 +114,9 @@
   .date-range {
     display: inline;
     float: right;
+    /* Align with h3 baseline - floated elements don't participate in baseline alignment,
+       so we add margin-top to visually align the smaller 10pt text with the 12pt title */
+    margin-top: 0.15em;
   }
 
   /* Skill lists */

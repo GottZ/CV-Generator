@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-04 - Completed quick task 021: Fix skill pills vertical padding in print mode
+**Last activity:** 2026-02-04 - Completed quick task 022: Add vertical padding to tech tags in print mode
 
 ## v1.2 Milestone Overview
 
@@ -300,6 +300,7 @@ v1.2 Phase 20 decisions (20-05):
 | 019 | Prevent technology tags from breaking mid-word in print | 2026-02-04 | 8974b42 | [019-prevent-technology-tags-from-breaking-in](./quick/019-prevent-technology-tags-from-breaking-in/) |
 | 020 | Fix modern theme PDF date vertical alignment | 2026-02-04 | 0cded68 | [020-fix-modern-theme-pdf-date-vertical-align](./quick/020-fix-modern-theme-pdf-date-vertical-align/) |
 | 021 | Fix skill pills vertical padding in print mode | 2026-02-04 | e25ee3a | [021-fix-skill-pills-vertical-padding-in-mode](./quick/021-fix-skill-pills-vertical-padding-in-mode/) |
+| 022 | Add vertical padding to tech tags in print mode | 2026-02-04 | 53f38dc | [022-add-vertical-padding-to-tech-tags-in-exp](./quick/022-add-vertical-padding-to-tech-tags-in-exp/) |
 
 ### Blockers
 
@@ -360,4 +361,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-04 (completed quick task 021 - fix skill pills vertical padding in print mode)*
+*Last updated: 2026-02-04 (completed quick task 022 - add vertical padding to tech tags in print mode)*

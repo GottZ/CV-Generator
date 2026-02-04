@@ -135,6 +135,7 @@
   .tech-tag {
     display: inline;
     margin-right: 8px;
+    white-space: nowrap;
   }
 
   /* Project links */

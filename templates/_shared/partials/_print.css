@@ -134,6 +134,7 @@
   /* Tech stack tags */
   .tech-stack {
     display: block;
+    line-height: 2.2;
   }
 
   .tech-tag {

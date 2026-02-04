@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-04 - Completed quick task 024: Increase section header spacing in modern theme
+**Last activity:** 2026-02-04 - Completed quick task 025: Add photo to modern theme header (two-column)
 
 ## v1.2 Milestone Overview
 
@@ -303,6 +303,7 @@ v1.2 Phase 20 decisions (20-05):
 | 022 | Add vertical padding to tech tags in print mode | 2026-02-04 | 53f38dc | [022-add-vertical-padding-to-tech-tags-in-exp](./quick/022-add-vertical-padding-to-tech-tags-in-exp/) |
 | 023 | Remove redundant horizontal lines from modern theme | 2026-02-04 | 12c7b2a | [023-remove-redundant-horizontal-lines-modern-theme](./quick/023-remove-redundant-horizontal-lines-modern-theme/) |
 | 024 | Increase section header spacing in modern theme | 2026-02-04 | f26832f | [024-increase-section-header-spacing-modern-t](./quick/024-increase-section-header-spacing-modern-t/) |
+| 025 | Add photo to modern theme header (two-column) | 2026-02-04 | 63d2561 | [025-add-photo-to-modern-theme-header-two-col](./quick/025-add-photo-to-modern-theme-header-two-col/) |
 
 ### Blockers
 
@@ -363,4 +364,4 @@ None.
 ---
 
 *State initialized: 2026-01-22*
-*Last updated: 2026-02-04 (completed quick task 024 - increase section header spacing in modern theme)*
+*Last updated: 2026-02-04 (completed quick task 025 - add photo to modern theme header)*

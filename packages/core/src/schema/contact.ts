@@ -26,4 +26,6 @@ export interface Contact {
 	links?: Link[];
 	/** Optional slug for filename (defaults to directory name) */
 	slug?: string;
+	/** Optional photo path (relative to person directory) */
+	photo?: string;
 }

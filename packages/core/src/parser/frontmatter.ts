@@ -36,6 +36,7 @@ export function parseFrontmatter(markdown: string): FrontmatterResult {
 						location: data.location as string | undefined,
 						links: parseLinks(data.links),
 						slug: data.slug as string | undefined,
+						photo: data.photo as string | undefined,
 					}
 				: null;
 

@@ -61,6 +61,7 @@ export async function renderCV(
 	// Per CONTEXT.md: missing translation -> skip section (undefined in context)
 	const context = {
 		contact: cv.contact,
+		photo: cv.contact.photo,
 		summary: cv.summary?.[locale],
 		experience: cv.experience?.[locale],
 		education: cv.education?.[locale],
@@ -153,6 +154,7 @@ export function createRenderer(templatesDir: string) {
 
 		const context = {
 			contact: cv.contact,
+			photo: cv.contact.photo,
 			summary: cv.summary?.[locale],
 			experience: cv.experience?.[locale],
 			education: cv.education?.[locale],

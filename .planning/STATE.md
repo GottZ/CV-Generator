@@ -22,7 +22,7 @@ See: .planning/PROJECT.md (updated 2026-01-25)
 [################################] 100% (47/47 requirements)
 ```
 
-**Last activity:** 2026-02-04 - Completed quick task 023: Remove redundant horizontal lines from modern theme
+**Last activity:** 2026-02-04 - Completed quick task 024: Increase section header spacing in modern theme
 
 ## v1.2 Milestone Overview
 
